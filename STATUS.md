@@ -49,3 +49,4 @@
 - 2026-09-11-1925 · 美术升级轮:微交互打磨——聚光灯卡hover边框/背景强化、cat-blurb行高与透明度优化、prefers-reduced-motion无障碍适配;线上 200。
 - 2026-09-11-2010 · i18n轮:Neon Tide 画布UI中文化——新增 NP_L 字典+T()助手,标题/HUD/暂停/结算共14处文案随 np_lang 切换;JS语法OK,CDN延迟后线上 game.js 已含中文串,play 200。
 - 2026-09-11-2055 · 美术升级轮:2048手感升级——合并金环冲击波+六向金色火花/得分chip弹跳/结束画面标题坠落入场+棋盘灰化/触摸改统一pointer事件含pointercancel复位(GAME_STANDARD合规)/最高分localStorage持久化(np_2048_best)/UI文案i18n字典补齐(得分/最佳/新游戏/结束屏);prefers-reduced-motion适配;QA PASS(exit 0),375×667截图确认首屏全可见,线上 200。
+- 2026-09-11-2145 · 实现方案轮:领取最旧设计文档brickstorm-daily并上线——每日挑战:CLASSIC/DAILY双按钮开局面板(DAILY金字描边+日期)、mulberry32(日期哈希)只注入波次生成器(空位+HP浮动,同日全球同题)、每日最佳独立存储brickstorm_daily_best_<date>、结算页Today's Best+明天再来文案、C/D快捷键、全文案进i18n字典;连修3个遗留bug:游玩态从不draw(棋盘不可见)/rAF双链倍速/首帧waveTimer=0误下压(确定性根因);qa_playtest补rAF垫片(无头canvas游戏通用)+新增brickstorm专属QA脚本;本地QA×2+线上QA PASS,375×667截图D1运行中首屏全可见;2048补跑线上QA PASS;designs/done/brickstorm-daily.md;线上200。

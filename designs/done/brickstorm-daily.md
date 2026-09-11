@@ -62,3 +62,5 @@
 - 375×667 视口：开始面板两按钮首屏可见、≥44px、无横向滚动
 - 游戏内新增文案全英文，且集中进内嵌 `var L={en:{...},zh:{...}}` 字典结构（用 `np_lang` 键），预留 i18n 轮
 - 无控制台报错；移动端首屏验收通过后才可部署
+
+已实现:2026-09-11 https://seyrs1985.github.io/neonplay/brickstorm/ （CLASSIC/DAILY双模式+mulberry32日期种子+每日最佳存储; 顺带修复游玩态不绘制/首帧误下压两个遗留bug; QA脚本 engine/qa_tests/brickstorm.mjs 含同题确定性验证）
