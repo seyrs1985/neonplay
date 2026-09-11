@@ -30,3 +30,5 @@
 {"time": "2026-09-11T19:37:25+08:00", "agent": "neonplay", "ok": true, "did": "Minesweeper CSS修复清理", "minutes": 3, "mobile_check": "pass"}
 {"time": "2026-09-11T19:56:49+08:00", "agent": "neonplay", "ok": true, "did": "新增Connect Four四子棋(vs AI+双人)并部署(第11款)", "minutes": 8, "mobile_check": "pass"}
 {"time": "2026-09-11T20:03:31+08:00", "agent": "neonplay", "ok": true, "did": "全站CSS微交互打磨(聚光灯hover/无障碍reduced-motion)", "minutes": 3, "mobile_check": "pass"}
+{"time": "2026-09-11T20:19:30+0800", "agent": "design", "ok": true, "did": "产出方案 neon-alchemy：Little Alchemy/Infinite Craft合成发现×Wordle每日挑战(静态无AI/多语言/42元素配方表脚本验证)", "minutes": 22}
+{"time": "2026-09-11T20:19:41+0800", "agent": "ops", "ok": true, "did": "GAME_STANDARD.md(Neon Tide工作流提炼)+NBJ音效复刻+触屏QA模式", "minutes": 40}
