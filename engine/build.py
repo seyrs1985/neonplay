@@ -153,11 +153,41 @@ def build_hall(cfg, gms):
 <section class="hero"><h1 data-i18n="hall.title">Free games, zero friction</h1>
 <p data-i18n="hall.sub">Original games that load instantly and run in your browser — no downloads, no accounts, no interruptions. Built with care, played with joy.</p></section>
 {ad_slot(cfg, cfg.get('ad_slot_top', '1111111111'))}
+<div id="spotlight"></div>
 <section class="cat"><h2 data-i18n="hall.all">All games</h2><div class="grid">{cards}</div></section>
 <section class="cat" id="about"><h2 data-i18n="hall.originals">Our games are originals</h2>
 <p class="cat-blurb" data-i18n="hall.originals.blurb">Every game here is either built by us or properly licensed — no scraped clones, no sketchy redirects. They run 100% locally in your browser; nothing you do in a game is tracked or uploaded.</p>
 <p class="cat-blurb" data-i18n="hall.tools_promo">Need a tool instead? Our sister site <a href="{esc((cfg.get('sister_site') or {}).get('url', '#'))}">ToolTide</a> has free online calculators, converters and countdowns.</p></section>
 </main>"""
+    games_json = json.dumps([{"slug":gm["slug"],"emoji":gm["emoji"],"title":gm["h1"],"tag":gm["tagline"][:80]} for gm in gms], ensure_ascii=False)
+    doc += """<script>
+(function(){
+  var GAMES=""" + json.dumps(games_json) + """;
+  var day=Math.floor(Date.now()/86400000);
+  var idx=(day*2654435761)>>>0; idx=idx%GAMES.length;
+  var today=GAMES[idx];
+  var box=document.getElementById('spotlight');
+  var now=new Date(); var todayStr=now.toISOString().slice(0,10);
+  var streak=0; try{
+    var st=JSON.parse(localStorage.getItem('np_streak')||'{}');
+    if(st.last===todayStr) streak=st.n||1;
+    else if(st.last===new Date(Date.now()-86400000).toISOString().slice(0,10)) streak=(st.n||0)+1;
+    else streak=1;
+    localStorage.setItem('np_streak',JSON.stringify({last:todayStr,n:streak}));
+  }catch(e){streak=1;}
+  var isZh=(localStorage.getItem('np_lang')||'').indexOf('zh')===0;
+  var html='<section class="cat spotlight-cat" style="margin-top:0"><div class="spot-card">';
+  html+='<div class="spot-label">'+(isZh?'⚡ 今日推荐':'⚡ TODAY'S GAME')+(streak>1?' · 🔥'+streak:'')+'</div>';
+  html+='<a href="'+base+today.slug+'/" class="spot-link" style="text-decoration:none">';
+  html+='<span class="card-emoji" style="font-size:2.2rem">'+today.emoji+'</span>';
+  html+='<span class="card-title" style="font-size:1.15rem">'+today.title+'</span>';
+  html+='<span class="card-desc">'+today.tag+'</span>';
+  html+='<span class="spot-play" style="display:inline-block;margin-top:6px;padding:6px 18px;border-radius:8px;';
+  html+='background:linear-gradient(135deg,#22d3ee,#a78bfa);color:#0b1020;font-weight:700;font-size:.85rem">';
+  html+=(isZh?'▶ 立即玩':'▶ PLAY NOW')+'</span></a></div></section>';
+  box.innerHTML=html;
+})();
+</script>"""
     doc += footer(cfg) + "</body></html>"
     write("index.html", doc)
 

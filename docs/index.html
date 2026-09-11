@@ -24,11 +24,39 @@
 <section class="hero"><h1 data-i18n="hall.title">Free games, zero friction</h1>
 <p data-i18n="hall.sub">Original games that load instantly and run in your browser — no downloads, no accounts, no interruptions. Built with care, played with joy.</p></section>
 
+<div id="spotlight"></div>
 <section class="cat"><h2 data-i18n="hall.all">All games</h2><div class="grid"><a class="card" href="https://seyrs1985.github.io/neonplay/neon-tide/"><span class="card-emoji">🌊</span><span class="card-title">Neon Tide</span><span class="card-desc">Ride the neon tide — a synthwave arcade shooter with procedural sound, waves of glowing enemies and boss press</span></a><a class="card" href="https://seyrs1985.github.io/neonplay/snake/"><span class="card-emoji">🐍</span><span class="card-title">Snake</span><span class="card-desc">The timeless snake game: eat, grow, don&#x27;t bite yourself. One more run is always one turn away.</span></a><a class="card" href="https://seyrs1985.github.io/neonplay/2048/"><span class="card-emoji">🔢</span><span class="card-title">2048</span><span class="card-desc">Slide, merge, double. A deceptively simple number puzzle that eats hours — reach the 2048 tile.</span></a><a class="card" href="https://seyrs1985.github.io/neonplay/memory-pairs/"><span class="card-emoji">🧠</span><span class="card-title">Memory Pairs</span><span class="card-desc">Flip, remember, match. The classic concentration card game — train your working memory in two minutes.</span></a><a class="card" href="https://seyrs1985.github.io/neonplay/tic-tac-toe/"><span class="card-emoji">⭕</span><span class="card-title">Tic Tac Toe</span><span class="card-desc">X&#x27;s, O&#x27;s and one unbeatable robot. The three-in-a-row classic — now with a minimax AI you can actually beat (s</span></a><a class="card" href="https://seyrs1985.github.io/neonplay/breakout/"><span class="card-emoji">🧱</span><span class="card-title">Breakout</span><span class="card-desc">One ball, one paddle, a wall of glowing bricks — the arcade classic that never gets old.</span></a><a class="card" href="https://seyrs1985.github.io/neonplay/minesweeper/"><span class="card-emoji">💣</span><span class="card-title">Minesweeper</span><span class="card-desc">Ten mines, ninety-one tiles, zero room for luck. The logic puzzle that ate the 90s — reborn for your phone.</span></a><a class="card" href="https://seyrs1985.github.io/neonplay/flappy-dash/"><span class="card-emoji">🚀</span><span class="card-title">Flappy Dash</span><span class="card-desc">One tap to fly, one touch to die. Thread the neon gates and chase your best through a synthwave skyline.</span></a><a class="card" href="https://seyrs1985.github.io/neonplay/brickstorm/"><span class="card-emoji">🧱</span><span class="card-title">Brickstorm</span><span class="card-desc">Catch balls, smash brick waves, pick upgrades — Breakout meets Vampire Survivors in this neon roguelite.</span></a></div></section>
 <section class="cat" id="about"><h2 data-i18n="hall.originals">Our games are originals</h2>
 <p class="cat-blurb" data-i18n="hall.originals.blurb">Every game here is either built by us or properly licensed — no scraped clones, no sketchy redirects. They run 100% locally in your browser; nothing you do in a game is tracked or uploaded.</p>
 <p class="cat-blurb" data-i18n="hall.tools_promo">Need a tool instead? Our sister site <a href="https://seyrs1985.github.io/tooltide/">ToolTide</a> has free online calculators, converters and countdowns.</p></section>
-</main><footer class="site-foot"><div class="wrap">
+</main><script>
+(function(){
+  var GAMES="[{\"slug\": \"neon-tide\", \"emoji\": \"\ud83c\udf0a\", \"title\": \"Neon Tide\", \"tag\": \"Ride the neon tide \u2014 a synthwave arcade shooter with procedural sound, waves of \"}, {\"slug\": \"snake\", \"emoji\": \"\ud83d\udc0d\", \"title\": \"Snake\", \"tag\": \"The timeless snake game: eat, grow, don't bite yourself. One more run is always \"}, {\"slug\": \"2048\", \"emoji\": \"\ud83d\udd22\", \"title\": \"2048\", \"tag\": \"Slide, merge, double. A deceptively simple number puzzle that eats hours \u2014 reach\"}, {\"slug\": \"memory-pairs\", \"emoji\": \"\ud83e\udde0\", \"title\": \"Memory Pairs\", \"tag\": \"Flip, remember, match. The classic concentration card game \u2014 train your working \"}, {\"slug\": \"tic-tac-toe\", \"emoji\": \"\u2b55\", \"title\": \"Tic Tac Toe\", \"tag\": \"X's, O's and one unbeatable robot. The three-in-a-row classic \u2014 now with a minim\"}, {\"slug\": \"breakout\", \"emoji\": \"\ud83e\uddf1\", \"title\": \"Breakout\", \"tag\": \"One ball, one paddle, a wall of glowing bricks \u2014 the arcade classic that never g\"}, {\"slug\": \"minesweeper\", \"emoji\": \"\ud83d\udca3\", \"title\": \"Minesweeper\", \"tag\": \"Ten mines, ninety-one tiles, zero room for luck. The logic puzzle that ate the 9\"}, {\"slug\": \"flappy-dash\", \"emoji\": \"\ud83d\ude80\", \"title\": \"Flappy Dash\", \"tag\": \"One tap to fly, one touch to die. Thread the neon gates and chase your best thro\"}, {\"slug\": \"brickstorm\", \"emoji\": \"\ud83e\uddf1\", \"title\": \"Brickstorm\", \"tag\": \"Catch balls, smash brick waves, pick upgrades \u2014 Breakout meets Vampire Survivors\"}]";
+  var day=Math.floor(Date.now()/86400000);
+  var idx=(day*2654435761)>>>0; idx=idx%GAMES.length;
+  var today=GAMES[idx];
+  var box=document.getElementById('spotlight');
+  var now=new Date(); var todayStr=now.toISOString().slice(0,10);
+  var streak=0; try{
+    var st=JSON.parse(localStorage.getItem('np_streak')||'{}');
+    if(st.last===todayStr) streak=st.n||1;
+    else if(st.last===new Date(Date.now()-86400000).toISOString().slice(0,10)) streak=(st.n||0)+1;
+    else streak=1;
+    localStorage.setItem('np_streak',JSON.stringify({last:todayStr,n:streak}));
+  }catch(e){streak=1;}
+  var isZh=(localStorage.getItem('np_lang')||'').indexOf('zh')===0;
+  var html='<section class="cat spotlight-cat" style="margin-top:0"><div class="spot-card">';
+  html+='<div class="spot-label">'+(isZh?'⚡ 今日推荐':'⚡ TODAY'S GAME')+(streak>1?' · 🔥'+streak:'')+'</div>';
+  html+='<a href="'+base+today.slug+'/" class="spot-link" style="text-decoration:none">';
+  html+='<span class="card-emoji" style="font-size:2.2rem">'+today.emoji+'</span>';
+  html+='<span class="card-title" style="font-size:1.15rem">'+today.title+'</span>';
+  html+='<span class="card-desc">'+today.tag+'</span>';
+  html+='<span class="spot-play" style="display:inline-block;margin-top:6px;padding:6px 18px;border-radius:8px;';
+  html+='background:linear-gradient(135deg,#22d3ee,#a78bfa);color:#0b1020;font-weight:700;font-size:.85rem">';
+  html+=(isZh?'▶ 立即玩':'▶ PLAY NOW')+'</span></a></div></section>';
+  box.innerHTML=html;
+})();
+</script><footer class="site-foot"><div class="wrap">
 <nav><a href="https://seyrs1985.github.io/neonplay/about/">About</a><a href="https://seyrs1985.github.io/neonplay/privacy/">Privacy</a><a href="https://seyrs1985.github.io/neonplay/contact/">Contact</a><a href="https://seyrs1985.github.io/tooltide/">🧰 Free online tools on ToolTide</a></nav>
 <p>© 2026 NeonPlay · Free games that run in your browser. Sister site: ToolTide — Sister site: free online tools (calculators, converters, countdowns).</p>
 </div></footer></body></html>

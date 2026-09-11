@@ -169,3 +169,17 @@ article>.title-emoji{font-size:1.5rem}
   .hero{padding:22px 0 8px}
   .hero h1{font-size:1.5rem}
 }
+
+/* ---- daily spotlight card ---- */
+.spotlight-cat{margin-top:0!important;margin-bottom:8px}
+.spot-card{background:linear-gradient(135deg,rgba(34,211,238,.08),rgba(167,139,250,.08));
+  border:1px solid rgba(34,211,238,.25);border-radius:14px;padding:16px 18px;position:relative;overflow:hidden}
+.spot-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:radial-gradient(circle,rgba(34,211,238,.06) 0%,transparent 60%);pointer-events:none}
+.spot-label{font-size:.78rem;font-weight:700;letter-spacing:1px;color:#22d3ee;text-transform:uppercase;margin-bottom:8px}
+.spot-link{display:flex;flex-direction:column;gap:4px;color:inherit}
+.spot-link:hover .card-title{color:#22d3ee}
+.spot-link .card-emoji{font-size:2rem}
+.spot-play{transition:transform .15s}
+.spot-link:hover .spot-play{transform:scale(1.05)}
+@media (max-width:640px){.spot-card{padding:12px 14px}.spot-card .card-emoji{font-size:1.6rem}}
