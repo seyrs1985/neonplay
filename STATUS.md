@@ -45,3 +45,4 @@
 - 2026-09-11-1800 · 美术升级轮:全站CSS细节打磨——smooth scroll/hero辉光文字/卡片hover浮起+emoji放大/SEO块玻璃底/FAQ左边线/移动端字号适配;全站10页受益;线上 200。
 - 2026-09-11-1815 · i18n轮:Tic Tac Toe 游戏内文案中文化(HUD状态/计分标签/模式按钮 np_lang 联动);JS语法OK,线上 200。
 - 2026-09-11-1910 · 美术升级轮:Minesweeper CSS修复——清理孤立CSS/合并hover/恢复flex居中;线上 play.html 200,radial-gradient+hover确认。
+- 2026-09-11-1920 · 新增游戏轮:第11款游戏 Connect Four 四子棋——7×6棋盘/vs AI/双人/连线检测/霓虹圆盘;CDN延迟后已确认在线,线上 /connect-four/ 200,IndexNow 16 URL。
