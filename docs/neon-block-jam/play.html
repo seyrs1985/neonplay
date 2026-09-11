@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Neon Block Jam</title>
+<style>
+html,body{margin:0;padding:0;min-height:100%;background:radial-gradient(120% 90% at 50% 0%,#141d42 0%,#0a0a18 70%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:system-ui,sans-serif;color:#e2e8f0;user-select:none;touch-action:none}
+#hud{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;justify-content:center}
+#hud .chip{background:rgba(20,26,53,.85);border:1px solid #2b3564;border-radius:999px;
+  padding:5px 14px;font-size:.88rem;display:flex;gap:5px;align-items:center}
+#hud .chip b{color:#22d3ee}
+#hud button{font:inherit;font-size:.88rem;font-weight:700;padding:6px 14px;min-height:36px;
+  border:1px solid #2b3564;background:rgba(20,26,53,.85);color:#e2e8f0;border-radius:999px;cursor:pointer}
+#board{position:relative;width:min(92vw,420px);aspect-ratio:1;background:rgba(20,26,53,.85);
+  border:2px solid rgba(34,211,238,.2);border-radius:14px;
+  box-shadow:0 0 28px rgba(34,211,238,.1),0 10px 40px rgba(0,0,0,.5)}
+#board .gate{position:absolute;pointer-events:none}
+#board .cellbg{position:absolute;border-radius:6px;background:rgba(255,255,255,.03)}
+.blk{position:absolute;border-radius:8px;cursor:grab;transition:box-shadow .15s;
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:clamp(.7rem,2vw,.9rem);
+  color:rgba(0,0,0,.55);text-shadow:0 1px 0 rgba(255,255,255,.2)}
+.blk.sel{box-shadow:0 0 16px currentColor,0 0 4px currentColor;z-index:3;cursor:grabbing}
+.blk.invalid{animation:invalid .3s ease}
+@keyframes invalid{0%,100%{transform:translate(0,0)}25%{transform:translate(-4px,0)}75%{transform:translate(4px,0)}}
+.blk.vanish{animation:vanish .35s ease-out forwards;pointer-events:none}
+@keyframes vanish{to{transform:scale(0) rotate(90deg);opacity:0}}
+.gateglow{position:absolute;pointer-events:none;animation:gatepulse 2s ease-in-out infinite alternate}
+@keyframes gatepulse{from{opacity:.5}to{opacity:1}}
+#msg{min-height:22px;margin:8px 0;font-size:.9rem;color:#7c8db5;text-align:center}
+#stars{color:#facc15;font-size:1.2rem;letter-spacing:2px;min-height:1.4em;text-align:center}
+#ctrl{display:flex;gap:8px;margin-bottom:8px}
+#ctrl button{font:inherit;font-size:.85rem;padding:8px 16px;min-height:44px;
+  border:1px solid #2b3564;background:rgba(20,26,53,.85);color:#e2e8f0;border-radius:999px;cursor:pointer}
+#ctrl button:hover{border-color:#22d3ee}
+#lvsel{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;width:min(88vw,320px);margin:10px 0}
+#lvsel button{aspect-ratio:1;border-radius:10px;border:1px solid #2b3564;background:rgba(20,26,53,.85);
+  color:#e2e8f0;font-size:1rem;font-weight:700;cursor:pointer;position:relative}
+#lvsel button:hover{border-color:#22d3ee}
+#lvsel button:disabled{opacity:.3;cursor:default}
+#lvsel button .st{position:absolute;bottom:2px;left:0;right:0;font-size:.65rem;color:#facc15;text-align:center}
+#lvsel button.cur{border-color:#22d3ee;box-shadow:0 0 10px rgba(34,211,238,.3)}
+#win{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;
+  background:rgba(8,10,25,.88);backdrop-filter:blur(4px);z-index:20;text-align:center;color:#e2e8f0}
+#win h2{font-size:1.6rem;margin:0 0 4px;background:linear-gradient(135deg,#22d3ee,#c084fc);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+#win .bigstars{font-size:2rem;letter-spacing:4px;margin:6px 0}
+#win .info{color:#94a3b8;margin-bottom:14px}
+#win .btns{display:flex;gap:10px}
+#win button{font:inherit;font-weight:700;padding:10px 22px;border:0;border-radius:10px;
+  background:linear-gradient(135deg,#22d3ee,#a78bfa);color:#0b1020;cursor:pointer}
+#win button.secondary{background:rgba(20,26,53,.9);color:#e2e8f0;border:1px solid #2b3564}
+</style>
+</head>
+<body>
+<div id="hud">
+  <div class="chip">LEVEL <b id="lv">1</b></div>
+  <div class="chip">MOVES <b id="mv">0</b>/<span id="par">1</span></div>
+  <button id="undoBtn">↩ Undo</button>
+  <button id="resetBtn">↻ Reset</button>
+</div>
+<div id="stars"></div>
+<div id="board"></div>
+<div id="lvsel"></div>
+<div id="msg"></div>
+<div id="win">
+  <h2>CLEAR!</h2>
+  <div class="bigstars" id="wstars"></div>
+  <div class="info"><span id="wmv"></span> moves · par <span id="wpar"></span></div>
+  <div class="btns">
+    <button class="secondary" id="wreplay">↻ Replay</button>
+    <button id="wnext">Next →</button>
+  </div>
+</div>
+<script>
+"use strict";
+const N=6,CS=70;
+const LEVELS=[
+ {par:1,doors:{A:[["R",3]]},blocks:[["A",2,3,1,1]]},
+ {par:3,doors:{B:[["L",0]],A:[["R",4]]},blocks:[["B",4,4,1,1],["A",1,4,1,1]]},
+ {par:3,doors:{A:[["R",1]],B:[["L",3]],C:[["T",2]]},blocks:[["A",0,1,2,1],["B",4,3,1,1],["C",2,4,1,1]]},
+ {par:4,doors:{A:[["R",2]],B:[["L",5]],C:[["T",3]]},blocks:[["A",3,2,1,1],["B",4,2,1,1],["C",3,4,1,1]]},
+ {par:7,doors:{A:[["T",1]],B:[["B",4]],C:[["L",2]],D:[["R",0]]},blocks:[["A",1,2,1,2],["B",4,4,1,1],["C",3,1,1,1],["D",0,0,1,1]]},
+ {par:7,doors:{A:[["R",2]],B:[["T",1]],C:[["B",4]],D:[["T",3]],E:[["B",2]]},blocks:[["A",2,2,1,1],["B",1,1,1,1],["C",2,3,1,1],["D",3,2,1,1],["E",0,1,1,1]]},
+ {par:8,doors:{A:[["T",0]],B:[["B",5]],C:[["R",3]],D:[["L",1]],E:[["B",1]]},blocks:[["A",2,2,1,1],["B",4,1,1,1],["C",3,3,1,1],["D",1,4,1,1],["E",0,5,1,1]]},
+ {par:11,doors:{A:[["R",1]],B:[["T",5]],C:[["L",3]],D:[["B",0]],E:[["T",2]],F:[["B",3]]},blocks:[["A",3,1,1,1],["B",5,3,1,1],["C",2,4,1,1],["D",0,4,1,1],["E",1,2,1,1],["F",2,3,1,1]]},
+ {par:11,doors:{A:[["R",1]],B:[["T",5]],C:[["L",3]],D:[["B",0]],E:[["T",2]],F:[["B",3]]},blocks:[["A",4,1,1,1],["B",5,4,1,1],["C",2,3,1,1],["D",1,4,1,1],["E",1,3,1,1],["F",2,4,1,1]]},
+ {par:13,doors:{A:[["R",1]],B:[["T",5]],C:[["L",3]],D:[["B",0]],E:[["T",2]],F:[["B",3]],G:[["B",4]]},blocks:[["A",4,1,1,1],["B",5,4,1,1],["C",2,3,1,1],["D",1,4,1,1],["E",1,3,1,1],["F",2,4,1,1],["G",3,2,1,1]]}
+];
+const COLORS={A:"#00e5ff",B:"#ff2d95",C:"#ffd54a",D:"#a8ff60",E:"#7c4dff",F:"#ff9e40",G:"#39ff88"};
+const GATE_POS={T:function(i){return[i*CS+CS/2,0,"h"]},B:function(i){return[i*CS+CS/2,(N)*CS,"h"]},
+ L:function(i){return[0,i*CS+CS/2,"v"]},R:function(i){return[(N)*CS,i*CS+CS/2,"v"]}};
+let curLv=0,blocks,undoStack,moves,selIdx,progress;
+
+function loadProgress(){
+  try{progress=JSON.parse(localStorage.getItem("np_nbj_progress")||'{"maxLv":0,"stars":{}}');}catch(e){progress={maxLv:0,stars:{}};}
+}
+function saveProgress(){try{localStorage.setItem("np_nbj_progress",JSON.stringify(progress));}catch(e){}}
+
+function boardPx(){return parseFloat(document.getElementById("board").style.width)||420;}
+function cellPx(){return boardPx()/N;}
+
+function canMove(blk,dr,dc){
+  var w=blk.w,h=blk.h;
+  for(var r=0;r<h;r++)for(var c=0;c<w;c++){
+    var nr=blk.row+r+dr,nc=blk.col+c+dc;
+    if(nr<0||nr>=N||nc<0||nc>=N)return false;
+    if(nr>=0&&nr<N&&nc>=0&&nc<N){
+      // gate wall check: different color can't enter gate cell
+      var gateHere=gateAt(nr,nc);
+      if(gateHere&&gateHere!==blk.color)return false;
+      for(var o=0;o<blocks.length;o++){
+        if(o===selIdx||!blocks[o])continue;
+        var ob=blocks[o];
+        if(nr>=ob.row&&nr<ob.row+ob.h&&nc>=ob.col&&nc<ob.col+ob.w)return false;
+      }
+    }
+  }
+  return true;
+}
+function gateAt(r,c){
+  var lv=LEVELS[curLv];
+  for(var col in lv.doors){
+    for(var i=0;i<lv.doors[col].length;i++){
+      var side=lv.doors[col][i][0],pos=lv.doors[col][i][1];
+      if(side==="T"&&r===0&&c===pos)return col;
+      if(side==="B"&&r===N-1&&c===pos)return col;
+      if(side==="L"&&c===0&&r===pos)return col;
+      if(side==="R"&&c===N-1&&r===pos)return col;
+    }
+  }
+  return null;
+}
+function checkVanish(){
+  var removed=false;
+  for(var i=blocks.length-1;i>=0;i--){
+    var blk=blocks[i];
+    for(var r=0;r<blk.h;r++)for(var c=0;c<blk.w;c++){
+      if(gateAt(blk.row+r,blk.col+c)===blk.color){
+        blocks.splice(i,1);
+        removed=true;
+        return;
+      }
+    }
+  }
+  return removed;
+}
+function allClear(){return blocks.length===0;}
+
+function render(){
+  var bd=document.getElementById("board");
+  var px=cellPx();
+  bd.innerHTML="";
+  // gate cells (background indicator)
+  var lv=LEVELS[curLv];
+  for(var col in lv.doors){
+    lv.doors[col].forEach(function(d){
+      var side=d[0],pos=d[1];
+      var gl=document.createElement("div");gl.className="gateglow";
+      var gc=COLORS[col];
+      if(side==="T"){gl.style.cssText="left:"+pos*px+"px;top:0;width:"+px+"px;height:6px;background:"+gc+";border-radius:0 0 6px 6px;box-shadow:0 0 12px "+gc;}
+      if(side==="B"){gl.style.cssText="left:"+pos*px+"px;bottom:0;width:"+px+"px;height:6px;background:"+gc+";border-radius:6px 6px 0 0;box-shadow:0 0 12px "+gc;}
+      if(side==="L"){gl.style.cssText="left:0;top:"+pos*px+"px;width:6px;height:"+px+"px;background:"+gc+";border-radius:0 6px 6px 0;box-shadow:0 0 12px "+gc;}
+      if(side==="R"){gl.style.cssText="right:0;top:"+pos*px+"px;width:6px;height:"+px+"px;background:"+gc+";border-radius:6px 0 0 6px;box-shadow:0 0 12px "+gc;}
+      bd.appendChild(gl);
+    });
+  }
+  blocks.forEach(function(blk,i){
+    var w=blk.w*px-4,h=blk.h*px-4;
+    var d=document.createElement("div");d.className="blk";
+    if(selIdx===i)d.classList.add("sel");
+    d.style.left=(blk.col*px+2)+"px";d.style.top=(blk.row*px+2)+"px";
+    d.style.width=w+"px";d.style.height=h+"px";
+    d.style.background=COLORS[blk.color];
+    d.style.color=COLORS[blk.color];
+    d.textContent=blk.color;
+    d.addEventListener("click",function(e){e.stopPropagation();select(i);});
+    d.addEventListener("pointerdown",function(e){e.stopPropagation();select(i);startDrag(e,i);});
+    bd.appendChild(d);
+  });
+}
+function select(i){selIdx=i;render();}
+function startDrag(e,i){
+  var blk=blocks[i];
+  var startX=e.clientX,startY=e.clientY;
+  var el=document.querySelector('.blk.sel')||document.querySelectorAll('.blk')[i];
+  function mm(ev){
+    var dx=ev.clientX-startX,dy=ev.clientY-startY;
+    var px=cellPx();
+    var steps=Math.round(Math.abs(dx)>Math.abs(dy)?dx/px:dy/px);
+    var dc=steps*(Math.abs(dx)>Math.abs(dy)?Math.sign(dx):0);
+    var dr=steps*(Math.abs(dx)>Math.abs(dy)?0:Math.sign(dy));
+    if(dr||dc){
+      if(canMove(blk,dr,dc)){
+        undoStack.push(JSON.stringify(blocks));
+        if(undoStack.length>50)undoStack.shift();
+        blk.col+=dc;blk.row+=dr;moves++;
+        document.getElementById("mv").textContent=moves;
+        render();
+        startX=ev.clientX;startY=ev.clientY;
+        if(checkVanish()){render();setTimeout(postVanish,350);}
+      } else {
+        el.classList.add("invalid");
+        setTimeout(function(){el.classList.remove("invalid");},300);
+      }
+    }
+  }
+  function mu(){document.removeEventListener("pointermove",mm);document.removeEventListener("pointerup",mu);}
+  document.addEventListener("pointermove",mm);
+  document.addEventListener("pointerup",mu);
+}
+function postVanish(){
+  render();
+  if(allClear()){
+    var par=LEVELS[curLv].par;
+    var st=moves<=par?3:moves<=par+2?2:1;
+    progress.stars[curLv]=Math.max(progress.stars[curLv]||0,st);
+    if(curLv+1>progress.maxLv)progress.maxLv=curLv+1;
+    saveProgress();
+    document.getElementById("wstars").textContent="★".repeat(st)+"☆".repeat(3-st);
+    document.getElementById("wmv").textContent=moves;
+    document.getElementById("wpar").textContent=par;
+    document.getElementById("win").style.display="flex";
+    renderLevelSel();
+  }
+  render();
+}
+function undo(){
+  if(!undoStack.length)return;
+  blocks=JSON.parse(undoStack.pop());moves=Math.max(0,moves-1);selIdx=-1;
+  document.getElementById("mv").textContent=moves;
+  render();
+}
+function loadLevel(n){
+  curLv=n;moves=0;selIdx=-1;undoStack=[];
+  blocks=LEVELS[n].blocks.map(function(b){
+    return{color:b[0],col:b[1],row:b[2],w:b[3],h:b[4]};
+  });
+  document.getElementById("lv").textContent=n+1;
+  document.getElementById("par").textContent=LEVELS[n].par;
+  document.getElementById("mv").textContent="0";
+  document.getElementById("stars").textContent="";
+  document.getElementById("msg").textContent="";
+  document.getElementById("win").style.display="none";
+  renderLevelSel();
+  render();
+}
+function renderLevelSel(){
+  var el=document.getElementById("lvsel");el.innerHTML="";
+  for(var i=0;i<LEVELS.length;i++){
+    var b=document.createElement("button");
+    b.textContent=i+1;
+    var st=progress.stars[i]||0;
+    if(st)b.innerHTML=i+1+'<div class="st">'+"★".repeat(st)+"</div>";
+    if(i===curLv)b.classList.add("cur");
+    if(i>progress.maxLv){b.disabled=true;}
+    b.addEventListener("click",function(n){return function(){loadLevel(n);};}(i));
+    el.appendChild(b);
+  }
+}
+document.getElementById("undoBtn").addEventListener("click",undo);
+document.getElementById("resetBtn").addEventListener("click",function(){loadLevel(curLv);});
+document.getElementById("wreplay").addEventListener("click",function(){loadLevel(curLv);});
+document.getElementById("wnext").addEventListener("click",function(){
+  if(curLv+1<LEVELS.length)loadLevel(curLv+1);else document.getElementById("win").style.display="none";
+});
+document.getElementById("board").addEventListener("click",function(e){
+  if(e.target===this){selIdx=-1;render();}
+});
+loadProgress();
+loadLevel(Math.min(progress.maxLv,LEVELS.length-1));
+renderLevelSel();
+</script>
+</body>
+</html>
