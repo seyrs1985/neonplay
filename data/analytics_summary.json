@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-11 17:04",
+ "generated": "2026-09-11 17:14",
  "ga4_property": "553744321",
  "gsc_site": "https://seyrs1985.github.io/",
  "ga4": {
@@ -23,6 +23,9 @@
   }
  },
  "gsc": {
-  "error": "HTTP 403 from https://searchconsole.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fseyrs1985.github.io%2F/searchAnalytics/query\n{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"User does not have sufficient permission for site 'https://seyrs1985.github.io/'. See also: https://support.google.com/webmasters/answer/2451999.\",\n    \"errors\": [\n      {\n        \"message\": \"User does not have sufficient permission for site 'https://seyrs1985.github.io/'. See also: https://support.google.com/webmasters/answer/2451999.\",\n        \"domain\": \"global\",\n        \"reason\": \"forbidden\"\n      }\n    ]\n  }\n}\n"
+  "7d": {
+   "per_game": {},
+   "top_queries": []
+  }
  }
 }
