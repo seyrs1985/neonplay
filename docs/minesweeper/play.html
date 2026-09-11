@@ -10,13 +10,16 @@
     display:flex;flex-direction:column;align-items:center;justify-content:center;
     touch-action:manipulation;-webkit-tap-highlight-color:transparent}
   #hud{display:flex;gap:18px;align-items:center;margin:10px 0;font-size:15px;font-weight:700}
-  #hud .box{background:#141a35;border:1px solid #2b3564;border-radius:8px;padding:6px 12px;min-width:64px;text-align:center}
+  #hud .box{background:#141a35;border:1px solid #2b3564;border-radius:8px;padding:6px 12px;min-width:64px;text-align:center;transition:transform .15s}
+  #hud .box.bump{transform:scale(1.12)}
   #flagBtn{background:#141a35;border:1px solid #2b3564;border-radius:8px;color:#e2e8f0;
-    font-size:15px;font-weight:700;padding:6px 14px;cursor:pointer}
-  #flagBtn.on{background:#7c3aed;border-color:#a78bfa;color:#fff}
-  #grid{display:grid;grid-template-columns:repeat(9,1fr);gap:3px;background:rgba(20,26,53,.85);
+    font-size:15px;font-weight:700;min-height:44px;padding:6px 14px;cursor:pointer;transition:background .15s,border-color .15s}
+  #flagBtn.on{background:#7c3aed;border-color:#a78bfa;color:#fff;box-shadow:0 0 12px rgba(124,58,237,.5)}
+  #grid{position:relative;display:grid;grid-template-columns:repeat(9,1fr);gap:3px;background:rgba(20,26,53,.85);
     padding:8px;border-radius:12px;border:1px solid rgba(34,211,238,.2);
     box-shadow:0 0 28px rgba(34,211,238,.1),0 10px 40px rgba(0,0,0,.5);width:min(92vw,396px)}
+  #grid.shake{animation:bshake .5s ease-out}
+  @keyframes bshake{0%,100%{transform:none}20%{transform:translateX(-8px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(3px)}}
   .cell{aspect-ratio:1;border:0;border-radius:5px;background:#232b52;color:#e2e8f0;
     font-size:clamp(13px,3.4vw,17px);font-weight:800;cursor:pointer;
     display:flex;align-items:center;justify-content:center;user-select:none;padding:0;
@@ -25,32 +28,61 @@
   .cell.open{animation:reveal .18s ease-out;background:#101532;cursor:default;border:1px solid #1c2450}
   @keyframes reveal{from{transform:scale(.8);opacity:.4}to{transform:scale(1);opacity:1}}
   .cell.mine{background:#7f1d1d}
-  .cell.boom{background:#dc2626;animation:shake .4s ease}
+  .cell.boom{background:#dc2626;animation:cellboom .5s ease}
+  @keyframes cellboom{0%{transform:scale(1)}35%{transform:scale(1.4)}100%{transform:scale(1)}}
   .cell.flag{background:#3b2f7a}
+  .cell.flagpop{animation:flagpop .3s ease-out}
+  @keyframes flagpop{0%{transform:scale(.6)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
   .n1{color:#7dd3fc}.n2{color:#4ade80}.n3{color:#fca5a5}.n4{color:#c4b5fd}
   .n5{color:#fbbf24}.n6{color:#67e8f9}.n7{color:#f472b6}.n8{color:#e2e8f0}
-  #msg{min-height:22px;margin:10px 0;font-size:14px}
-  #again{padding:9px 24px;font-size:14px;font-weight:700;border:0;border-radius:8px;
+  .n1,.n2,.n3,.n4,.n5,.n6,.n7,.n8{text-shadow:0 0 7px currentColor}
+  /* 胜利彩带 */
+  .cf{position:absolute;top:-4%;width:7px;height:11px;border-radius:2px;pointer-events:none;z-index:5;
+    animation:cfall 1s ease-in forwards}
+  @keyframes cfall{0%{transform:translate(0,0) rotate(0);opacity:1}
+    100%{transform:translate(var(--dx),52vh) rotate(540deg);opacity:0}}
+  /* 踩雷红闪 */
+  #flash{position:fixed;inset:0;pointer-events:none;background:#dc2626;opacity:0;z-index:8}
+  #flash.go{animation:redflash .55s ease-out}
+  @keyframes redflash{0%{opacity:.4}100%{opacity:0}}
+  #msg{min-height:22px;margin:10px 0;font-size:14px;text-align:center;padding:0 10px}
+  #msg.wintext{background:linear-gradient(135deg,#facc15,#f97316);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}
+  #again{min-height:44px;padding:9px 24px;font-size:14px;font-weight:700;border:0;border-radius:8px;
     background:linear-gradient(135deg,#22d3ee,#a78bfa);color:#0b1020;cursor:pointer;
-    margin-bottom:12px;visibility:hidden}
+    margin-bottom:12px;visibility:hidden;box-shadow:0 0 14px rgba(34,211,238,.35)}
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  }
 </style>
 </head>
 <body>
 <div id="hud">
-  <div class="box">💣 <span id="mines">10</span></div>
-  <button id="flagBtn">🚩 旗标:关</button>
+  <div class="box" id="mineBox">💣 <span id="mines">10</span></div>
+  <button id="flagBtn">🚩 <span id="flagLbl"></span></button>
   <div class="box">⏱ <span id="time">0</span>s</div>
 </div>
 <div id="grid"></div>
 <div id="msg"></div>
-<button id="again">↻再来一局</button>
+<button id="again">↻ <span id="againLbl"></span></button>
+<div id="flash"></div>
+<script src="np_core.js"></script>
 <script>
 (function(){
 "use strict";
+/* i18n — np_core.js (np_lang 与站点切换器共用) */
+var L={zh:{flagOn:"旗标:开",flagOff:"旗标:关",lose:"💥 踩雷了！点再来一局。",
+  win:"🏆 扫雷成功！用时 {s} 秒。",again:"再来一局"},
+ en:{flagOn:"Flag: ON",flagOff:"Flag: OFF",lose:"💥 Boom! Tap replay.",
+  win:"🏆 Cleared in {s}s!",again:"Play again"}};
+var _t=function(k){return npT(L,k)};
+
 var N=9,MINES=10;
 var gridEl=document.getElementById("grid"),minesEl=document.getElementById("mines"),
     timeEl=document.getElementById("time"),msgEl=document.getElementById("msg"),
-    againB=document.getElementById("again"),flagB=document.getElementById("flagBtn");
+    againB=document.getElementById("again"),flagB=document.getElementById("flagBtn"),
+    flashEl=document.getElementById("flash"),mineBox=document.getElementById("mineBox");
+document.getElementById("flagLbl").textContent=_t("flagOff");
+document.getElementById("againLbl").textContent=_t("again");
 var cells,mineSet,state,timer,sec,flagMode,opened,placed;
 
 function idx(r,c){return r*N+c;}
@@ -63,10 +95,15 @@ function neighbors(i){
   }
   return out;
 }
+function bump(el){
+  el.classList.remove("bump");void el.offsetWidth;el.classList.add("bump");
+  setTimeout(function(){el.classList.remove("bump");},180);
+}
 function reset(){
   cells=[];mineSet={};state="idle";sec=0;flagMode=false;opened=0;placed=false;
-  flagB.classList.remove("on");flagB.textContent="🚩 旗标:关";
+  flagB.classList.remove("on");document.getElementById("flagLbl").textContent=_t("flagOff");
   minesEl.textContent=MINES;timeEl.textContent="0";msgEl.textContent="";
+  msgEl.classList.remove("wintext");
   againB.style.visibility="hidden";
   if(timer){clearInterval(timer);timer=null;}
   gridEl.innerHTML="";
@@ -94,8 +131,21 @@ function paint(i){
   d.textContent="";
   d.classList.toggle("open",c.open);
   d.classList.toggle("flag",c.flag&&!c.open);
+  if(c.flag&&!c.open)d.textContent="🚩";
   if(c.open&&!c.mine&&c.n>0){
     d.textContent=c.n;d.classList.add("n"+c.n);
+  }
+}
+function confetti(){
+  var cols=["#22d3ee","#f472b6","#facc15","#a78bfa","#4ade80"];
+  for(var i=0;i<26;i++){
+    var f=document.createElement("span");f.className="cf";
+    f.style.left=(4+Math.random()*92)+"%";
+    f.style.background=cols[(Math.random()*cols.length)|0];
+    f.style.setProperty("--dx",((Math.random()-.5)*90).toFixed(0)+"px");
+    f.style.animationDelay=(Math.random()*.35).toFixed(2)+"s";
+    gridEl.appendChild(f);
+    (function(el){setTimeout(function(){el.remove();},1500);})(f);
   }
 }
 function reveal(i){
@@ -117,8 +167,11 @@ function toggleFlag(i){
     var c=cells[i];
     if(c.open)return;
     c.flag=!c.flag;paint(i);
+    gridEl.children[i].classList.remove("flagpop");void gridEl.children[i].offsetWidth;
+    gridEl.children[i].classList.add("flagpop");
     var f=cells.filter(function(x){return x.flag;}).length;
     minesEl.textContent=Math.max(0,MINES-f);
+    bump(mineBox);
   }
 }
 function lose(boom){
@@ -131,14 +184,19 @@ function lose(boom){
       gridEl.children[i].textContent="💣";
     }
   }
-  msgEl.textContent="💥 踩雷了！点再来一局。";
+  gridEl.classList.add("shake");
+  setTimeout(function(){gridEl.classList.remove("shake");},550);
+  flashEl.classList.remove("go");void flashEl.offsetWidth;flashEl.classList.add("go");
+  msgEl.textContent=_t("lose");
   againB.style.visibility="visible";
 }
 function checkWin(){
   if(opened===N*N-MINES){
     state="won";
     if(timer)clearInterval(timer);
-    msgEl.textContent="🏆 扫雷成功！用时 "+sec+" 秒。";
+    msgEl.textContent=_t("win").replace("{s}",sec);
+    msgEl.classList.add("wintext");
+    confetti();
     againB.style.visibility="visible";
   }
 }
@@ -163,7 +221,7 @@ gridEl.addEventListener("pointerleave",function(){if(pressT&&pressT!=="flagged")
 flagB.addEventListener("click",function(){
   flagMode=!flagMode;
   flagB.classList.toggle("on",flagMode);
-  flagB.textContent=flagMode?"🚩 旗标:开":"🚩 旗标:关";
+  document.getElementById("flagLbl").textContent=_t(flagMode?"flagOn":"flagOff");
 });
 againB.addEventListener("click",reset);
 reset();
