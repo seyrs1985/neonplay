@@ -5,30 +5,63 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 <title>Tic Tac Toe</title>
 <style>
-html,body{margin:0;min-height:100%;background:#0f172a;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:system-ui,sans-serif;color:#e2e8f0;user-select:none}
-#mode{margin-bottom:10px;font-size:.9rem;color:#94a3b8}
-#mode button{font:inherit;padding:5px 12px;margin:0 4px;border:1px solid #475569;background:transparent;color:#94a3b8;border-radius:8px;cursor:pointer}
-#mode button.on{background:#22c3a6;border-color:#22c3a6;color:#0f172a;font-weight:700}
-#board{display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);gap:8px;width:min(88vw,360px);aspect-ratio:1}
-.cell{background:#1e293b;border:0;border-radius:12px;font-size:clamp(2.2rem,11vw,3.4rem);font-weight:800;color:#e2e8f0;cursor:pointer;line-height:1}
-.cell.x{color:#22d3ee}.cell.o{color:#f472b6}
-.cell.winline{background:#334155;outline:2px solid #22c3a6}
+html,body{margin:0;min-height:100%;background:radial-gradient(120% 90% at 50% 0%,#141d42 0%,#0b1020 70%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:system-ui,sans-serif;color:#e2e8f0;user-select:none}
+#mode{display:flex;gap:8px;margin-bottom:14px}
+#mode button{font:inherit;font-size:.9rem;font-weight:600;padding:8px 18px;min-height:44px;
+  border:1px solid #2b3564;background:rgba(20,26,53,.85);color:#94a3b8;border-radius:999px;cursor:pointer;
+  transition:all .2s ease-out}
+#mode button.on{background:linear-gradient(135deg,#22d3ee,#a78bfa);border-color:transparent;color:#0b1020;
+  box-shadow:0 0 14px rgba(34,211,238,.35)}
+#board{display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);gap:8px;
+  width:min(88vw,360px);aspect-ratio:1;margin-bottom:12px}
+.cell{border:1px solid rgba(43,53,100,.7);border-radius:14px;cursor:pointer;
+  background:rgba(20,26,53,.75);display:flex;align-items:center;justify-content:center;
+  font-size:clamp(2.4rem,11vw,3.6rem);font-weight:800;line-height:1;
+  transition:background .15s,box-shadow .2s,transform .1s;min-height:44px}
+.cell:hover:not(:disabled){background:rgba(34,50,90,.6);transform:scale(1.03)}
 .cell:disabled{cursor:default}
-#status{margin:12px 0 4px;font-size:1.05rem;min-height:1.5em}
-#tally{font-size:.9rem;color:#94a3b8}#tally b{color:#e2e8f0}
-#reset{margin-top:12px;font:inherit;font-weight:700;padding:8px 20px;border:0;border-radius:10px;background:#22c3a6;color:#0f172a;cursor:pointer}
+.cell.x{color:#22d3ee;text-shadow:0 0 16px rgba(34,211,238,.5)}
+.cell.o{color:#f472b6;text-shadow:0 0 16px rgba(244,114,182,.5)}
+.cell.pop{animation:cellpop .18s ease-out}
+@keyframes cellpop{0%{transform:scale(.6)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
+.cell.winline{background:rgba(34,211,238,.12);border-color:#22d3ee;
+  animation:winpulse .8s ease-in-out infinite alternate}
+.cell.winline.x{box-shadow:0 0 22px rgba(34,211,238,.35)}
+.cell.winline.o{border-color:#f472b6;box-shadow:0 0 22px rgba(244,114,182,.35)}
+.cell.winline.o{background:rgba(244,114,182,.08)}
+@keyframes winpulse{from{transform:scale(1)}to{transform:scale(1.06)}}
+#status{margin:12px 0 6px;font-size:1.05rem;min-height:1.4em;font-weight:600}
+#tally{display:flex;gap:10px;margin-bottom:12px}
+#tally .chip{background:rgba(20,26,53,.85);border:1px solid #2b3564;border-radius:999px;
+  padding:5px 14px;font-size:.88rem;display:flex;gap:5px;align-items:center}
+#tally .chip b{color:#22d3ee}
+#tally .chip b.pink{color:#f472b6}
+#tally .chip b.gold{color:#facc15}
+#reset{font:inherit;font-weight:700;padding:9px 22px;min-height:44px;border:0;border-radius:999px;
+  background:linear-gradient(135deg,#22d3ee,#a78bfa);color:#0b1020;cursor:pointer;
+  box-shadow:0 0 14px rgba(34,211,238,.3)}
 </style>
 </head>
 <body>
-<div id="mode">vs computer <button id="m-ai" class="on">🤖 AI</button><button id="m-2p">👥 2 players</button></div>
+<div id="mode">
+  <button id="m-ai" class="on">🤖 vs AI</button>
+  <button id="m-2p">👥 2P</button>
+</div>
 <div id="board"></div>
 <div id="status">Your turn — you are X</div>
-<div id="tally">X <b id="wx">0</b> · draws <b id="wd">0</b> · O <b id="wo">0</b></div>
+<div id="tally">
+  <div class="chip">❌ <b id="wx">0</b></div>
+  <div class="chip">🤝 <b id="wd">0</b></div>
+  <div class="chip">⭕ <b id="wo" class="pink">0</b></div>
+  <div class="chip">🏆 <b id="wt" class="gold">0</b></div>
+</div>
 <button id="reset">↻ New round</button>
 <script>
 'use strict';
 const WINS=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-let b,turn,over,aiMode=true,tally={x:0,o:0,d:0};
+let b,turn,over,aiMode=true,tally={x:0,o:0,d:0},streak=0;
 const g=document.getElementById('board'),st=document.getElementById('status');
 function build(){
   g.innerHTML='';b=Array(9).fill('');turn='X';over=false;
@@ -42,6 +75,7 @@ function line(p){return WINS.find(w=>w.every(i=>b[i]===p));}
 function play(i){
   if(over||b[i])return;
   put(i,turn);
+  const c=g.children[i];c.classList.add('pop');
   const w=line(turn);
   if(w){win(w,turn);return;}
   if(b.every(Boolean)){drawEnd();return;}
@@ -51,7 +85,6 @@ function play(i){
 }
 function put(i,p){b[i]=p;const c=g.children[i];c.textContent=p;c.classList.add(p.toLowerCase());c.disabled=true;}
 function aiMove(){
-  // minimax — perfect play; 20% chance of a random move keeps it beatable
   let idx;
   if(Math.random()<0.2){
     const free=b.map((v,i)=>v?null:i).filter(v=>v!==null);
@@ -79,15 +112,24 @@ function mini(isMax){
   return best;
 }
 function win(w,p){
-  over=true;w.forEach(i=>g.children[i].classList.add('winline'));
-  tally[p.toLowerCase()]++;tallyOut();
-  st.textContent=(aiMode&&p==='O')?'Computer wins 🤖':(p+' wins! 🎉');
+  over=true;
+  w.forEach(function(i){
+    var c=g.children[i];c.classList.add('winline');
+    c.style.animationDelay=(w.indexOf(i)*.12)+'s';
+  });
+  streak++;tally[p.toLowerCase()]++;tallyOut();
+  st.textContent=(aiMode&&p==='O')?'Computer wins 🤖':(p+' wins! 🔥'+streak);
 }
-function drawEnd(){over=true;tally.d++;tallyOut();st.textContent="It's a draw 🤝";}
-function tallyOut(){document.getElementById('wx').textContent=tally.x;document.getElementById('wo').textContent=tally.o;document.getElementById('wd').textContent=tally.d;}
+function drawEnd(){over=true;tally.d++;streak=0;tallyOut();st.textContent="It's a draw 🤝";}
+function tallyOut(){
+  document.getElementById('wx').textContent=tally.x;
+  document.getElementById('wo').textContent=tally.o;
+  document.getElementById('wd').textContent=tally.d;
+  document.getElementById('wt').textContent=streak;
+}
 document.getElementById('reset').addEventListener('click',build);
 document.getElementById('m-ai').addEventListener('click',()=>{aiMode=true;document.getElementById('m-ai').classList.add('on');document.getElementById('m-2p').classList.remove('on');build();});
-document.getElementById('m-2p').addEventListener('click',()=>{aiMode=false;document.getElementById('m-2p').classList.add('on');document.getElementById('m-ai').classList.remove('on');build();});
+document.getElementById('m-2p').addEventListener('click',()=>{aiMode=false;document.getElementById('m-2p').classList.remove('on');document.getElementById('m-ai').classList.add('on');build();});
 addEventListener('keydown',e=>{const i='123456789'.indexOf(e.key);if(i>=0)play(i);});
 build();
 </script>
