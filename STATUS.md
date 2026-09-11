@@ -22,3 +22,4 @@
 
 - 2026-09-11 · 建站:从 ToolTide 拆分游戏版块独立成站;5 款游戏 + 大厅 + 站务页上线;两站互链;旧 /tooltide/games/* 跳转至本站。
 - 2026-09-11-1155 · 新增第6款游戏:打砖块Breakout(画布自研/触屏+键盘/3条命+关卡加速/霓虹风);落地页VideoGame schema+FAQ;线上/breakout/ 200,IndexNow 11 URL 提交。
+- 2026-09-11-1208 · 新增第7款游戏:扫雷Minesweeper(9x9/10雷/首击必安全/长按或右键插旗/计时器);线上 /minesweeper/ 200,IndexNow 12 URL。
