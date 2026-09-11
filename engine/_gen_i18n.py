@@ -118,6 +118,15 @@ function boot(){
   apply();
   switcher();
   document.documentElement.lang=lang;
+  if(new URLSearchParams(location.search).get("lang")){
+    var fr=document.querySelectorAll(".game-frame iframe");
+    for(var fi=0;fi<fr.length;fi++){
+      try{
+        var fu=new URL(fr[fi].getAttribute("src"),location.href);
+        if(!fu.searchParams.get("lang")){fu.searchParams.set("lang",lang);fr[fi].src=fu.toString();}
+      }catch(e){}
+    }
+  }
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot);
 else boot();
