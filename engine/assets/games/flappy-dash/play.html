@@ -21,7 +21,9 @@
     border-radius:10px;background:linear-gradient(135deg,#22d3ee,#a78bfa);color:#0b1020;cursor:pointer;
     box-shadow:0 0 18px rgba(34,211,238,.4)}
   .hide{display:none!important}
-  #score{position:absolute;top:14px;left:0;right:0;text-align:center;font-size:34px;font-weight:800;
+  #score{position:absolute;top:14px;
+    transition:transform .15s ease-out}
+#score.bump{transform:scale(1.3)}left:0;right:0;text-align:center;font-size:34px;font-weight:800;
     color:#fff;text-shadow:0 0 14px rgba(34,211,238,.9),0 2px 6px rgba(0,0,0,.6);pointer-events:none}
 </style>
 </head>
@@ -71,9 +73,17 @@ function die(){
   state="over";shake=16;
   boom(bird.x,bird.y);
   if(score>best){best=score;hbEl.textContent=best;}
+  var medal="";
+  if(score>=50)medal="🏆 Platinum";
+  else if(score>=25)medal="🥇 Gold";
+  else if(score>=10)medal="🥈 Silver";
+  else if(score>=5)medal="🥉 Bronze";
+  var isZh=lang==="zh";
+  var mLabel=isZh?"奖牌":t("medal");
   document.getElementById("overlay").querySelector("p").innerHTML=
-    "Score: <b>"+score+"</b> · Best: <b>"+best+"</b><br>Tap START for another run.";
-  btn.textContent="START";
+    t("scoreL")+" <b>"+score+"</b> · "+t("bestL")+" <b>"+best+"</b>"+
+    (medal?"<br>"+medal:"")+"<br>Tap START for another run.";
+  btn.textContent=t("start");
   setTimeout(function(){ov.classList.remove("hide");},420);
 }
 function boom(x,y){
@@ -84,6 +94,9 @@ function boom(x,y){
   }
 }
 var best=0,particles=[];
+var L={zh:{start:"START",hint:"Tap / click / Space to flap.<br>Thread the neon gates. One touch and it's over.<br>Best:",scoreL:"Score:",bestL:"Best:",medal:"奖牌"},en:{start:"START",hint:"Tap / click / Space to flap.<br>Thread the neon gates. One touch and it's over.<br>Best:",scoreL:"Score:",bestL:"Best:",medal:"Medal"}};
+var lang=(localStorage.getItem("np_lang")||"en").slice(0,2);
+var t=function(k){return(L[lang]||L.en)[k]||k};
 
 var skyFar=[],skyNear=[];
 (function(){
@@ -114,7 +127,9 @@ function update(){
     var p=pipes[i];p.x-=PSPD;
     if(p.x+PIPE_W<0){pipes.splice(i,1);addPipe(W+60);continue;}
     if(!p.passed&&p.x+PIPE_W<bird.x-bird.r){
-      p.passed=true;score++;scEl.textContent=score;
+      p.passed=true;score++;
+      scEl.textContent=score;scEl.classList.add('bump');
+      setTimeout(function(){scEl.classList.remove('bump');},180);
     }
     var inX=bird.x+bird.r>p.x&&bird.x-bird.r<p.x+PIPE_W;
     var inY=bird.y-bird.r<p.top||bird.y+bird.r>p.top+p.gap;
