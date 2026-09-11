@@ -183,24 +183,35 @@ def main():
                          s["screenPageViews"], s["sessions"], s["avgSessionDuration"], s["engagementRate"]))
     lines.append("")
 
-    pages = gsc_query(op, token, site, 7, "page", 100)
-    queries = gsc_query(op, token, site, 7, "query", 15)
-    per_game = gsc_by_game(pages.get("rows"))
-    summary["gsc"]["7d"] = {"per_game": per_game,
-                            "top_queries": [{"query": r["keys"][0], "clicks": r["clicks"],
-                                             "impressions": r["impressions"], "position": r["position"]}
-                                            for r in queries.get("rows", [])]}
-    lines.append("## GSC 近7天 按游戏")
-    lines.append("| 游戏 | 点击 | 曝光 | CTR |")
-    lines.append("|---|---|---|---|")
-    for g, s in sorted(per_game.items(), key=lambda kv: -kv[1]["clicks"]):
-        lines.append("| %s | %s | %s | %.1f%% |" % (g, s["clicks"], s["impressions"], s["ctr"] * 100))
-    lines.append("")
-    lines.append("## GSC 近7天 Top 查询")
-    lines.append("| 查询 | 点击 | 曝光 | 平均排名 |")
-    lines.append("|---|---|---|---|")
-    for q in summary["gsc"]["7d"]["top_queries"]:
-        lines.append("| %s | %s | %s | %.1f |" % (q["query"], q["clicks"], q["impressions"], q["position"]))
+    gsc_error = None
+    try:
+        pages = gsc_query(op, token, site, 7, "page", 100)
+        queries = gsc_query(op, token, site, 7, "query", 15)
+        per_game = gsc_by_game(pages.get("rows"))
+        summary["gsc"]["7d"] = {"per_game": per_game,
+                                "top_queries": [{"query": r["keys"][0], "clicks": r["clicks"],
+                                                 "impressions": r["impressions"], "position": r["position"]}
+                                                for r in queries.get("rows", [])]}
+    except SystemExit as e:
+        gsc_error = str(e)
+        summary["gsc"]["error"] = gsc_error
+    if gsc_error:
+        lines.append("## GSC：拉取失败（GA4 数据不受影响）")
+        lines.append("```")
+        lines.append(gsc_error[:400])
+        lines.append("```")
+    else:
+        lines.append("## GSC 近7天 按游戏")
+        lines.append("| 游戏 | 点击 | 曝光 | CTR |")
+        lines.append("|---|---|---|---|")
+        for g, s in sorted(per_game.items(), key=lambda kv: -kv[1]["clicks"]):
+            lines.append("| %s | %s | %s | %.1f%% |" % (g, s["clicks"], s["impressions"], s["ctr"] * 100))
+        lines.append("")
+        lines.append("## GSC 近7天 Top 查询")
+        lines.append("| 查询 | 点击 | 曝光 | 平均排名 |")
+        lines.append("|---|---|---|---|")
+        for q in summary["gsc"]["7d"]["top_queries"]:
+            lines.append("| %s | %s | %s | %.1f |" % (q["query"], q["clicks"], q["impressions"], q["position"]))
 
     os.makedirs(os.path.join(ROOT, "data"), exist_ok=True)
     with open(os.path.join(ROOT, "data", "analytics_summary.md"), "w", encoding="utf-8") as f:
