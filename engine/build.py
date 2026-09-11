@@ -209,6 +209,12 @@ def build_landing(cfg, gm, gms):
     faqs = "".join(f'<details class="faq"><summary>{esc(q)}</summary><p>{esc(a)}</p></details>'
                    for q, a in gm["faqs"])
     related = "".join(card(x, base) for x in gms if x["slug"] != slug)
+    variants_block = ""
+    if gm.get("variants"):
+        items = "".join(f'<li><a href="{base}{slug}/{x["kw_slug"]}/">{esc(x["title"])}</a></li>'
+                        for x in gm["variants"])
+        variants_block = (f'<section class="seo-block"><h2>More ways to play {esc(gm["h1"])}</h2>'
+                          f'<ul>{items}</ul></section>')
     sister = (cfg.get("sister_site") or {}).get("url", "#")
     doc = head(cfg, gm["title"], gm["desc"], canonical, "../style.css",
                [webapp_ld, faq_ld])
@@ -224,7 +230,7 @@ def build_landing(cfg, gm, gms):
 {ad_slot(cfg, cfg.get('ad_slot_mid', '2222222222'))}
 <section class="seo-block"><h2 data-i18n="land.howto">How to play</h2><ol class="howto">{howto}</ol></section>
 <section class="seo-block"><h2 data-i18n="land.faq">Frequently asked questions</h2>{faqs}</section>
-<section class="seo-block"><h2 data-i18n="land.more">More games</h2><div class="grid">{related}</div></section>
+{variants_block}<section class="seo-block"><h2 data-i18n="land.more">More games</h2><div class="grid">{related}</div></section>
 <section class="seo-block"><h2 data-i18n="land.tools">Free tools for work time</h2>
 <p data-i18n="land.tools.blurb">Between gaming sessions, our sister site <a href="{esc(sister)}">ToolTide</a> runs free online tools — percentage calculators, unit converters and live countdowns. No sign-up there either.</p></section>
 <nav class="crumbs"><a href="{base}">🎮 NeonPlay</a> › <span>{esc(gm['h1'])}</span></nav>
@@ -239,6 +245,57 @@ if(b&&f){b.addEventListener('click',function(){
 });}
 })();</script></body></html>"""
     write(f"{slug}/index.html", doc)
+
+
+def build_variant(cfg, gm, v, gms):
+    """Keyword-intent landing page (seo-longtail.md): same playable iframe,
+    unique intro copy + FAQs, cross-links to the main landing and siblings."""
+    base = cfg["base_url"]
+    slug = gm["slug"]
+    canonical = f"{base}{slug}/{v['kw_slug']}/"
+    webapp_ld = {"@type": "VideoGame", "name": gm["h1"], "url": canonical,
+                 "description": v["desc"], "genre": ["Arcade", "Casual"],
+                 "gamePlatform": "Web browser", "applicationCategory": "Game",
+                 "operatingSystem": "Any", "playMode": "SinglePlayer",
+                 "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}
+    faq_ld = {"@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+        for q, a in v["faqs"]]}
+    intro = "".join(f"<p>{esc(p)}</p>" for p in v["intro"])
+    faqs = "".join(f'<details class="faq"><summary>{esc(q)}</summary><p>{esc(a)}</p></details>'
+                   for q, a in v["faqs"])
+    related = "".join(card(x, base) for x in gms if x["slug"] != slug)
+    siblings = "".join(
+        f'<li><a href="{base}{slug}/{x["kw_slug"]}/">{esc(x["title"])}</a></li>'
+        for x in gm.get("variants", []) if x["kw_slug"] != v["kw_slug"])
+    doc = head(cfg, v["title"], v["desc"], canonical, "../../style.css",
+               [webapp_ld, faq_ld])
+    doc += nav(cfg)
+    doc += f"""<main class="wrap">
+<article>
+<div class="game-frame">
+  <iframe src="../{gm.get('play', 'play.html')}" title="{esc(gm['h1'])} — playable" allow="autoplay; fullscreen; gamepad" allowfullscreen></iframe>
+  <button id="fs-btn" type="button" title="Fullscreen">⛶</button>
+</div>
+<div class="title-row"><span class="title-emoji">{gm['emoji']}</span><h1>{esc(gm['h1'])}</h1><span class="controls-line">🎮 {esc(gm['controls'])}</span></div>
+<section class="seo-block">{intro}</section>
+{ad_slot(cfg, cfg.get('ad_slot_mid', '2222222222'))}
+<section class="seo-block"><h2>Frequently asked questions</h2>{faqs}</section>
+<section class="seo-block"><h2>More ways to play {esc(gm['h1'])}</h2>
+<ul><li><a href="{base}{slug}/">{esc(gm['h1'])} — the main game page</a></li>{siblings}</ul></section>
+<section class="seo-block"><h2>More games</h2><div class="grid">{related}</div></section>
+<nav class="crumbs"><a href="{base}">🎮 NeonPlay</a> › <a href="{base}{slug}/">{esc(gm['h1'])}</a> › <span>{esc(v['title'])}</span></nav>
+</article>
+</main>"""
+    doc += footer(cfg)
+    doc += """<script>(function(){
+var f=document.querySelector('.game-frame iframe'),b=document.getElementById('fs-btn');
+if(b&&f){b.addEventListener('click',function(){
+  if(document.fullscreenElement){document.exitFullscreen();}
+  else if(f.requestFullscreen){f.requestFullscreen();}
+});}
+})();</script></body></html>"""
+    write(f"{slug}/{v['kw_slug']}/index.html", doc)
 
 
 def copy_play(gm):
@@ -279,6 +336,8 @@ def main():
     build_hall(cfg, gms)
     for gm in gms:
         build_landing(cfg, gm, gms)
+        for v in gm.get("variants", []):
+            build_variant(cfg, gm, v, gms)
 
     for rel, (title, desc, body) in STATIC_PAGES.items():
         build_static(cfg, rel, title, desc, body)
@@ -297,8 +356,10 @@ def main():
         write("ads.txt", f"google.com, {pub}, DIRECT, f08c47fec0942fa0\n")
 
     urls = [base] + [base + gm["slug"] + "/" for gm in gms] + \
-           [base + s for s in ("about/", "privacy/", "contact/")]
-    sm = ['<?xml version="1.0" encoding="UTF-8">',
+           [base + s for s in ("about/", "privacy/", "contact/")] + \
+           [base + gm["slug"] + "/" + v["kw_slug"] + "/"
+            for gm in gms for v in gm.get("variants", [])]
+    sm = ['<?xml version="1.0" encoding="UTF-8"?>',
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for u in urls:
         sm.append(f"  <url><loc>{esc(u)}</loc><lastmod>{TODAY.isoformat()}</lastmod>"

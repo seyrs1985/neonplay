@@ -34,7 +34,7 @@ zh:{
  "404.body":"该页面不存在。返回游戏大厅继续游玩。",
  "about.body":"NeonPlay 是一个小而精的免费浏览器游戏合集——街机、益智与经典玩法。每款游戏均为我们自制或已获授权：没有换皮克隆、没有可疑跳转、也不强制注册。",
  "privacy.body":"NeonPlay 游戏完全在你的浏览器中本地运行。我们不需要账号，不在服务器上存储你的分数，你在游戏中的任何操作都不会被上传。"
-}},
+},
 es:{
  "nav.games":"🎮 Juegos", "nav.tools":"🧰 Herramientas ToolTide",
  "hall.title":"Juegos gratis, sin fricción",

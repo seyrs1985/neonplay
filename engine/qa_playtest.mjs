@@ -130,7 +130,8 @@ async function main() {
     if (msg.method === "Page.loadEventFired") loadFired = Date.now();
     if (msg.method === "Runtime.exceptionThrown") {
       const d = msg.params.exceptionDetails;
-      errors.push(d.exception?.description || d.text || "unknown");
+      const loc = d.url ? ` (${String(d.url).split("/").pop()}:${d.lineNumber + 1})` : "";
+      errors.push((d.exception?.description || d.text || "unknown") + loc);
     }
     if (msg.method === "Runtime.consoleAPICalled" && msg.params.type === "error")
       consoleErrs.push(msg.params.args?.map(a => a.value ?? a.description ?? "").join(" "));
@@ -178,6 +179,7 @@ async function main() {
       canvases: document.querySelectorAll("canvas").length,
       interactives: document.querySelectorAll("button, .blk, [role=button]").length,
       bodyLen: document.body ? document.body.innerHTML.length : 0,
+      hasGameFrame: !!document.querySelector(".game-frame iframe"),
       title: document.title,
     };
   })()`);
@@ -315,8 +317,11 @@ async function main() {
     reasons.push("no interactive game surface");
   // a passing scripted playtest performs real input and asserts the game
   // reacted — that is responsiveness evidence on its own (DOM games whose
-  // interactive surfaces are hidden from the generic poke)
-  if (!responsive && !(scripted && scripted.pass === true)) reasons.push("game did not respond to input (canvas/DOM unchanged)");
+  // interactive surfaces are hidden from the generic poke).
+  // Landing pages (static SEO content wrapping a playable iframe) are content
+  // pages: the poke can't reach into the iframe, so iframe presence satisfies
+  // the interaction criterion — the iframe itself is QA'd by its own --slug run.
+  if (!responsive && !(surface && surface.hasGameFrame) && !(scripted && scripted.pass === true)) reasons.push("game did not respond to input (canvas/DOM unchanged)");
   if (scripted && scripted.pass === false) reasons.push("scripted playtest failed: " + (scripted.detail || "see test"));
 
   const verdict = {

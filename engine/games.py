@@ -227,6 +227,62 @@ GAMES = [
              "Yes. Touch-drag to move the paddle, fully responsive canvas, no download or sign-up needed. Keyboard (arrow keys / AD) and mouse also supported on desktop."),
             ("What's the best upgrade strategy?",
              "Most players take Multiball first (each ball deals full damage), then Damage or Pierce. Keep your combo alive by hitting brick clusters quickly — the multiplier caps at 3×."),
+        ],
+        "variants": [
+            {
+                "kw_slug": "ball-x-pit-browser-alternative",
+                "title": "Ball x Pit Browser Alternative — Brickstorm (Free, No Download)",
+                "desc": "Looking for a Ball x Pit browser alternative? Brickstorm mixes survival breakout waves with roguelite level-up picks — free, no download, no account.",
+                "intro": [
+                    "Ball x Pit welded pinball-style ball physics to roguelite progression and became the game everyone wants to play one more run of. Brickstorm takes the same addictive skeleton — balls that keep hitting, bricks that keep coming, levels that let you stack power — and rebuilds it natively for the browser, so the run starts the second the page loads instead of the second your download finishes.",
+                    "The loop reads like a love letter to Ball x Pit fans: a relentless cascade of numbered brick waves pushes down toward your paddle, every broken brick drops XP orbs for you to catch, and each level-up deals a three-card choice — MULTIBALL to flood the screen, DAMAGE to punch through tanky rows, PIERCE to tunnel through clusters, PADDLE to widen your catch, SPEED to make everything reckless. A combo multiplier (up to 3×) rewards players who keep chains alive instead of sniping single bricks.",
+                    "Where Brickstorm differs is friction, not depth: there is nothing to install, nothing to launch, no account wall and no paywall — it is a single HTML page with the whole game in it. It runs on the same cheap laptop you have open for work, it supports touch and keyboard on the same screen, and the interface ships in English and Chinese. If your appetite for Ball x Pit outlived your patience for its install queues, this is the five-minute fix.",
+                ],
+                "faqs": [
+                    ("Is Brickstorm really free like Ball x Pit?",
+                     "Yes — completely free with no account, no download and no paywall. The whole game is one web page: open it, tap a mode and play. There are no energy systems or timers gating your runs."),
+                    ("How is Brickstorm different from Ball x Pit?",
+                     "Ball x Pit adds ball fusion and an inventory meta between runs; Brickstorm keeps the survival-breakout core — descending waves, XP orbs, three-card level-up picks, a combo multiplier — as a pure browser experience with zero install friction. Think of it as the same genre itch in a smaller, instant-loading package."),
+                    ("Does it work on a phone or a school laptop?",
+                     "Both. The game auto-scales to any screen, supports swipe and drag on touch, and because everything runs locally in the browser it performs fine on low-end hardware and locked-down machines with nothing but a browser installed."),
+                ],
+            },
+            {
+                "kw_slug": "games-like-ball-x-pit-free",
+                "title": "Games Like Ball x Pit (Free, In Your Browser) — Brickstorm & More",
+                "desc": "Free browser games like Ball x Pit: merge-driven Brickstorm, classic Breakout, merge-puzzle 2048 and the idle ball-builder Idle Neon Breaker — all instant-play.",
+                "intro": [
+                    "If Ball x Pit hooked you, what you actually fell for is a stack of three overlapping pleasures: balls that keep flying, numbers that keep growing, and builds that feel smarter every run. The good news is that a browser is enough to chase all three — no storefront, no download queue, no GPU requirement. Here is what to play, all free on this site.",
+                    "Brickstorm is the closest match: a survival breakout where waves descend and never stop, XP orbs drop from every break, and each level-up offers a three-card roguelite pick (multiball, pierce, damage, paddle width, ball speed). A combo multiplier up to 3× punishes passive play. Idle Neon Breaker takes the ball-builder fantasy in the opposite direction — balls bounce by themselves, bricks merge 2048-style and double on a timer, and your offline earnings accumulate at full rate with no cap while the tab is closed.",
+                    "For the number-growth side of Ball x Pit, the site 2048 is the reset-your-brain classic, and Breakout covers the pure paddle-and-ball ancestor. All four games run on the same engine philosophy: one page, instant load, English and Chinese, no accounts. Bookmark the hall page — new games are added regularly and land in the RSS feed the day they ship.",
+                ],
+                "faqs": [
+                    ("What games are similar to Ball x Pit but free?",
+                     "Brickstorm (survival breakout with roguelite upgrades) is the nearest free match here; Idle Neon Breaker covers the ball-builder side with 2048-style merges, and classic Breakout and 2048 round out the number-growth itch. Every one of them loads instantly in a browser tab."),
+                    ("Can I play without installing anything?",
+                     "Yes. Each game is a self-contained web page — there is no launcher, no download and no plug-in. You can close the tab mid-run on Brickstorm, or leave Idle Neon Breaker running to farm offline earnings."),
+                    ("Do these games work on mobile?",
+                     "They are built mobile-first: touch targets are sized for thumbs, the boards scale to the screen, and Brickstorm paddle follows your finger. Desktop keyboards work too — arrow keys steer every paddle game."),
+                ],
+            },
+            {
+                "kw_slug": "vampire-survivors-breakout-online",
+                "title": "Vampire Survivors-Style Breakout Online — Brickstorm Survival Waves",
+                "desc": "The auto-attack survival loop, rebuilt as a breakout: balls that never stop, descending waves, and a three-card build choice on every level-up. Free in your browser.",
+                "intro": [
+                    "Vampire Survivors defined a genre by automating the shooting and keeping only the decisions: steer your character, vacuum the XP, and pick the upgrade that turns your build monstrous. Brickstorm applies exactly that philosophy to a paddle game. Your ball is the auto-attack — it never stops moving and never asks you to press a fire button. Your paddle is the character — positioning is the entire skill expression. The descending brick waves are the swarm.",
+                    "The survival loop maps one-to-one: bricks shatter into glowing XP orbs that drift toward your paddle; catch enough and you level up, pausing the chaos for a three-card choice — flood the screen with MULTIBALL, punch through armor with DAMAGE, or thread clusters with PIERCE. Meanwhile a timer pushes new waves down every eight seconds, so the board steadily thickens like a survivors minute count climbing. A combo multiplier rewards the moment your build comes online and starts clearing screens instead of bricks.",
+                    "Runs are tuned for browser-sized sessions: three lives, an escalation that reaches dense multi-row waves, and a game-over screen that tracks your best wave and score against your own record. It is the survivors fantasy compressed into a tab that is already open — no download, English or Chinese, touch or keyboard.",
+                ],
+                "faqs": [
+                    ("Is Brickstorm really like Vampire Survivors?",
+                     "Structurally yes: automatic attacks (the bouncing ball), XP you collect for level-ups, three-choice upgrade drafting, escalating waves and a combo economy that rewards snowballing. The skill layer swaps character steering for paddle positioning."),
+                    ("How long is a run?",
+                     "Most runs last a few minutes — the wave pressure ends them quickly if your build falls behind. The HUD tracks your best wave and best score locally, so the natural loop is one more run to beat your own record."),
+                    ("What upgrades can I pick?",
+                     "Each level-up offers three of: MULTIBALL (extra ball), DAMAGE +1, SPEED +20%, PIERCE (hit through extra bricks), and PADDLE +25% width. Stacking them is where runs go from survival to screen-clearing."),
+                ],
+            },
         ],    },
     {
         "slug": "neon-block-jam",
