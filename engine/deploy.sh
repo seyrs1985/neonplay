@@ -39,6 +39,42 @@ if [ -z "$TOKEN" ]; then
   exit 2
 fi
 
+
+# ---- 多进程部署互斥锁(原子mkdir锁, 30分钟超时自动接管) ----
+LOCK_DIR=".deploy.lock"
+acquire_lock(){
+  if mkdir "$LOCK_DIR" 2>/dev/null; then echo "$$" > "$LOCK_DIR/pid"; return 0; fi
+  local mt
+  mt=$(stat -c %Y "$LOCK_DIR" 2>/dev/null || stat -f %m "$LOCK_DIR" 2>/dev/null || echo 0)
+  local age=$(( $(date +%s) - mt ))
+  if [ "$age" -gt 1800 ]; then
+    echo "   ⚠ 发现超时锁(${age}s), 判定为崩溃残留, 强制接管"
+    rm -rf "$LOCK_DIR"; mkdir "$LOCK_DIR" 2>/dev/null && { echo "$$" > "$LOCK_DIR/pid"; return 0; }
+  fi
+  return 1
+}
+release_lock(){
+  # 只释放自己持有的锁(跳过路径不得误删他人锁)
+  if [ -f "$LOCK_DIR/pid" ] && [ "$(cat "$LOCK_DIR/pid" 2>/dev/null)" = "$$" ]; then
+    rm -rf "$LOCK_DIR" 2>/dev/null
+  fi
+}
+trap 'release_lock' EXIT
+if ! acquire_lock; then
+  echo "   ⏳ 另一个部署进程持有锁, 等待最多3分钟..."
+  for i in $(seq 1 12); do
+    sleep 15
+    if acquire_lock; then ok=1; break; fi
+  done
+  if [ "${ok:-0}" != "1" ]; then
+    echo "   ⏭ 锁持续被占(>3分钟), 本轮部署跳过(内容已保留在本地, 下轮自动重试)"
+    exit 0
+  fi
+fi
+# ---- 同步远端(防止其他进程先推送) ----
+echo "== 0/6 同步远端 =="
+git -c credential.helper= pull --rebase "https://x-access-token:${TOKEN}@github.com/${OWNER}/${REPO}.git" main 2>/dev/null ||   git pull --rebase 2>/dev/null || echo "   (远端同步跳过)"
+
 echo "== 4/6 GitHub repo =="
 code="$(curl -s -o /tmp/np_repo.json -w '%{http_code}' -X POST "$API/user/repos" \
   -H "Authorization: token $TOKEN" -H 'Accept: application/vnd.github+json' \
@@ -51,6 +87,8 @@ case "$code" in
 esac
 
 echo "== 5/6 push =="
+git -c credential.helper= fetch -q "https://x-access-token:${TOKEN}@github.com/${OWNER}/${REPO}.git" main 2>/dev/null || true
+git -c core.hooksPath=/dev/null rebase --autostash FETCH_HEAD 2>/dev/null || { git rebase --abort 2>/dev/null || true; }
 git -c credential.helper= push -q "https://x-access-token:${TOKEN}@github.com/${OWNER}/${REPO}.git" main
 echo "   pushed main -> github.com/$OWNER/$REPO"
 
