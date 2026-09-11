@@ -145,7 +145,24 @@ def build_hall(cfg, gms):
     base = cfg["base_url"]
     desc = ("Play free browser games on NeonPlay: original arcade, puzzle and classic games. "
             "No download, no sign-up — instant play on desktop and mobile.")
-    cards = "".join(card(gm, base) for gm in gms)
+    # hall categories: slug -> section (17 games; keep in sync with games.py)
+    CATS = [
+        ("arcade", "🎮 Arcade & Action", "🎮 街机动作",
+         ["neon-tide", "snake", "flappy-dash", "breakout", "brickstorm", "neon-pop"]),
+        ("puzzle", "🧩 Puzzle & Brain", "🧩 益智解谜",
+         ["2048", "minesweeper", "memory-pairs", "neon-block-jam", "neon-block-blast", "neon-nonogram"]),
+        ("logic", "🐝 Word & Logic", "🐝 词与逻辑",
+         ["word-hive", "neon-alchemy", "tic-tac-toe", "connect-four"]),
+        ("idle", "💫 Idle & Chill", "💫 放置挂机",
+         ["idle-neon-breaker"]),
+    ]
+    by_slug = {gm["slug"]: gm for gm in gms}
+    sections = ""
+    for cid, en, zh, slugs in CATS:
+        cat_cards = "".join(card(by_slug[sl], base) for sl in slugs if sl in by_slug)
+        sections += (f'<section class="cat"><h2 class="cat-title" data-en="{esc(en)}" '
+                     f'data-zh="{esc(zh)}">{esc(en)}</h2><div class="grid">{cat_cards}</div></section>')
+    cards = sections
     doc = head(cfg, "NeonPlay — Play Free Online Games (Arcade, Puzzle & Classics)",
                desc, base, "style.css", [{
                    "@type": "WebSite", "name": "NeonPlay", "url": base, "description": desc}])
@@ -155,7 +172,7 @@ def build_hall(cfg, gms):
 <p data-i18n="hall.sub">Original games that load instantly and run in your browser — no downloads, no accounts, no interruptions. Built with care, played with joy.</p></section>
 {ad_slot(cfg, cfg.get('ad_slot_top', '1111111111'))}
 <div id="spotlight"></div>
-<section class="cat"><h2 data-i18n="hall.all">All games</h2><div class="grid">{cards}</div></section>
+{cards}
 <section class="cat" id="about"><h2 data-i18n="hall.originals">Our games are originals</h2>
 <p class="cat-blurb" data-i18n="hall.originals.blurb">Every game here is either built by us or properly licensed — no scraped clones, no sketchy redirects. They run 100% locally in your browser; nothing you do in a game is tracked or uploaded.</p>
 <p class="cat-blurb"><span data-i18n="hall.tools_promo.a">Need a tool instead? Our sister site</span> <a href="{esc((cfg.get('sister_site') or {}).get('url', '#'))}">ToolTide</a><span data-i18n="hall.tools_promo.b"> has free online calculators, converters and countdowns.</span></p></section>
@@ -177,6 +194,11 @@ def build_hall(cfg, gms):
     else streak=1;
     localStorage.setItem('np_streak',JSON.stringify({last:todayStr,n:streak}));
   }catch(e){streak=1;}
+  var langV=(function(){try{return localStorage.getItem('np_lang');}catch(e){return null;}})()||navigator.language||'en';
+  var zhMode=langV.indexOf('zh')===0;
+  document.querySelectorAll('.cat-title').forEach(function(h){
+    h.textContent=zhMode?h.dataset.zh:h.dataset.en;
+  });
   var TL=window.npT||function(k){return null;};
   var lbl=TL('spot.today')||"⚡ TODAY'S GAME";
   var ply=TL('spot.play')||'▶ PLAY NOW';
