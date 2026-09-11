@@ -43,7 +43,11 @@ cv.width=W*dpr;cv.height=H*dpr;ctx.scale(dpr,dpr);
 var COLS=8,ROWS=6,BRICK_W=52,BRICK_H=20,GAP=4,TOP=70;
 var ROW_COLORS=["#f472b6","#a78bfa","#22d3ee","#4ade80","#facc15","#fb923c"];
 var paddle,ball,bricks,score,lives,level,state,shake;
+var particles=[],floats=[];
 var keys={};
+var L={zh:{title:"🧱 霓虹打砖块",hint:"消灭所有砖块。用鼠标、手指或方向键移动挡板。<br>点击 / 触摸 / 空格键发射弹球。",play:"开始",winT:"🏆 全部消除!",overT:"游戏结束",scoreL:"得分",levelL:"到达关卡",retry:"再玩一次"},en:{title:"🧱 NEON BREAKOUT",hint:"Smash every brick. Move with mouse, finger or arrow keys.<br>Tap / click / Space to launch the ball.",play:"PLAY",winT:"🏆 ALL CLEAR!",overT:"GAME OVER",scoreL:"Score",levelL:"Level reached",retry:"PLAY"}};
+var lang=(localStorage.getItem("np_lang")||"en").slice(0,2);
+var t=function(k){return(L[lang]||L.en)[k]||k};
 
 function resetPaddle(){paddle={w:88,h:12,x:(W-88)/2,y:H-46};}
 function newBall(){ball={x:W/2,y:paddle.y-10,r:7,vx:0,vy:0,stuck:true,speed:4.6+level*0.5};}
@@ -68,13 +72,25 @@ function launch(){
 }
 function endGame(win){
   state=win?"win":"over";
-  ovT.textContent=win?"🏆 ALL CLEAR!":"GAME OVER";
-  ovX.innerHTML="Score: <b>"+score+"</b> · Level reached: <b>"+level+"</b><br>Tap PLAY to try again.";
-  ovB.textContent="PLAY";
+  ovT.textContent=win?"🏆 ALL CLEAR!":t("overT");
+  ovX.innerHTML=t("scoreL")+": <b>"+score+"</b> · "+t("levelL")+": <b>"+level+"</b><br>"+t("retry");
+  ovB.textContent=t("play");
   ov.classList.remove("hide");
 }
+function burst(x,y,c,n){
+  for(var i=0;i<n;i++){
+    var a=Math.random()*6.28,sp=1+Math.random()*3.5;
+    particles.push({x:x,y:y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:1,color:c});
+  }
+}
+function pop(x,y,txt,c){floats.push({x:x,y:y,txt:txt,color:c,life:1});}
 
 function update(){
+  particles=particles.filter(function(p){return p.life>0;});
+  particles.forEach(function(p){p.x+=p.vx;p.y+=p.vy;p.vy+=.06;p.life-=.035;});
+  floats=floats.filter(function(f){return f.life>0;});
+  floats.forEach(function(f){f.y-=.8;f.life-=.025;});
+  bricks.forEach(function(b){if(b.flash>0)b.flash-=1;});
   if(state!=="play")return;
   if(keys.left)paddle.x-=7;
   if(keys.right)paddle.x+=7;
@@ -102,7 +118,14 @@ function update(){
       var oy=Math.min(ball.y-b.y,b.y+BRICK_H-ball.y);
       if(ox<oy)ball.vx*=-1;else ball.vy*=-1;
       b.hp--;shake=4;
-      if(b.hp<=0){score+=b.pts;bricks.splice(i,1);}
+      if(b.hp<=0){
+        score+=b.pts;
+        burst(b.x+BRICK_W/2,b.y+BRICK_H/2,b.color,8);
+        pop(b.x+BRICK_W/2,b.y+BRICK_H/2,"+"+b.pts,"#facc15");
+        bricks.splice(i,1);
+      } else {
+        b.flash=6;
+      }
       break;
     }
   }
@@ -128,7 +151,23 @@ function draw(){
     ctx.fillRect(b.x,b.y,BRICK_W,BRICK_H);
     ctx.shadowBlur=0;ctx.globalAlpha=1;
     ctx.fillStyle="rgba(255,255,255,.25)";ctx.fillRect(b.x,b.y,BRICK_W,3);
+    if(b.flash>0){
+      ctx.fillStyle="rgba(255,255,255,"+(b.flash/6)+")";
+      ctx.fillRect(b.x,b.y,BRICK_W,BRICK_H);
+    }
   }
+  particles.forEach(function(p){
+    ctx.globalAlpha=Math.max(0,p.life);
+    ctx.fillStyle=p.color;ctx.fillRect(p.x-2,p.y-2,4,4);
+  });
+  ctx.globalAlpha=1;
+  floats.forEach(function(f){
+    ctx.globalAlpha=Math.max(0,f.life);
+    ctx.fillStyle=f.color;ctx.font="bold 14px system-ui";ctx.textAlign="center";
+    ctx.shadowColor=f.color;ctx.shadowBlur=6;
+    ctx.fillText(f.txt,f.x,f.y);
+  });
+  ctx.globalAlpha=1;
   // paddle
   ctx.fillStyle="#e2e8f0";ctx.shadowColor="#22d3ee";ctx.shadowBlur=12;
   ctx.fillRect(paddle.x,paddle.y,paddle.w,paddle.h);ctx.shadowBlur=0;
