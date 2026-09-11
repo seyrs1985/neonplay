@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Connect Four</title>
+<style>
+html,body{margin:0;padding:0;min-height:100%;background:radial-gradient(120% 90% at 50% 0%,#141d42 0%,#0a0a18 70%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:system-ui,sans-serif;color:#e2e8f0;user-select:none}
+#hud{display:flex;gap:14px;margin-bottom:10px}
+#hud .chip{background:rgba(20,26,53,.85);border:1px solid #2b3564;border-radius:999px;
+  padding:5px 16px;font-size:.92rem;display:flex;gap:5px;align-items:center}
+#hud .chip b{color:#22d3ee;text-shadow:0 0 8px rgba(34,211,238,.5)}
+#hud .chip b.pink{color:#f472b6;text-shadow:0 0 8px rgba(244,114,182,.5)}
+#board{position:relative;display:grid;grid-template-columns:repeat(7,1fr);gap:6px;
+  background:rgba(20,26,53,.9);padding:10px;border-radius:14px;
+  border:1px solid rgba(34,211,238,.2);box-shadow:0 0 28px rgba(34,211,238,.1),0 10px 40px rgba(0,0,0,.5);
+  width:min(92vw,434px)}
+.hole{aspect-ratio:1;border-radius:50%;background:#0a0a18;border:1px solid #1c2450;cursor:pointer;
+  transition:background .15s;display:flex;align-items:center;justify-content:center;min-height:44px}
+.hole:hover{background:#1a2345}
+.hole .disc{width:82%;height:82%;border-radius:50%;animation:drop .3s ease-in}
+.hole .disc.p1{background:radial-gradient(circle at 35% 35%,#67e8f9,#0891b2);box-shadow:0 0 10px rgba(34,211,238,.4)}
+.hole .disc.p2{background:radial-gradient(circle at 35% 35%,#f9a8d4,#db2777);box-shadow:0 0 10px rgba(244,114,182,.4)}
+.hole .disc.win{animation:winflash .6s ease-in-out infinite alternate}
+@keyframes drop{from{transform:translateY(-300%);opacity:.3}to{transform:translateY(0);opacity:1}}
+@keyframes winflash{from{box-shadow:0 0 8px rgba(250,204,21,.5)}to{box-shadow:0 0 20px rgba(250,204,21,.9)}}
+#msg{margin:10px 0 6px;font-size:1rem;min-height:1.4em;font-weight:600;text-align:center}
+#ctrl{display:flex;gap:10px;margin-bottom:8px}
+#ctrl button{font:inherit;font-size:.85rem;padding:8px 18px;border:1px solid #2b3564;
+  background:rgba(20,26,53,.85);color:#e2e8f0;border-radius:999px;cursor:pointer}
+#ctrl button.on{background:linear-gradient(135deg,#22d3ee,#a78bfa);border-color:transparent;color:#0b1020;font-weight:700}
+#ctrl button:hover{border-color:rgba(34,211,238,.4)}
+</style>
+</head>
+<body>
+<div id="hud">
+  <div class="chip">🔴 You <b id="s1">0</b></div>
+  <div class="chip">🤖 AI <b id="s2" class="pink">0</b></div>
+  <div class="chip">🏆 <b id="wt" class="gold">0</b></div>
+</div>
+<div id="board"></div>
+<div id="msg">Your turn — tap a column</div>
+<div id="ctrl">
+  <button id="vsai" class="on">🤖 vs AI</button>
+  <button id="vs2p">👥 2P</button>
+  <button id="newgame">↻ New game</button>
+</div>
+<script>
+'use strict';
+var L={zh:{yourTurn:"你的回合 — 点一列落子",aiTurn:"AI 思考中…",aiWin:"AI 赢了 🤖",youWin:"你赢了！🎉",p1Win:"🔴 红方赢！",p2Win:"🔵 蓝方赢！",draw:"平局 🤝",newGame:"新游戏"},en:{yourTurn:"Your turn — tap a column",aiTurn:"AI thinking…",aiWin:"AI wins 🤖",youWin:"You win! 🎉",p1Win:"🔴 Red wins!",p2Win:"🔵 Blue wins!",draw:"Draw 🤝",newGame:"New game"}};
+var _lang=(localStorage.getItem("np_lang")||"en").slice(0,2);
+var _t=function(k){return(L[_lang]||L.en)[k]||k};
+var C=7,R=6;
+var board,cur,over,mode="ai",scores={p1:0,p2:0};
+var boardEl=document.getElementById("board"),msgEl=document.getElementById("msg");
+
+function build(){
+  boardEl.innerHTML="";board=Array.from({length:R},()=>Array(C).fill(0));
+  cur=1;over=false;
+  for(var r=0;r<R;r++)for(var c=0;c<C;c++){
+    var h=document.createElement("div");h.className="hole";h.dataset.c=c;
+    h.addEventListener("click",function(){if(!over)drop(+this.dataset.c,1);}.bind(h));
+    boardEl.appendChild(h);
+  }
+  msgEl.textContent=_t("yourTurn");
+}
+function drop(c,p){
+  for(var r=R-1;r>=0;r--){
+    if(!board[r][c]){board[r][c]=p;renderDisc(r,c,p);return r;}
+  }
+  return -1;
+}
+function renderDisc(r,c,p){
+  var idx=r*C+c,hole=boardEl.children[idx];
+  var d=document.createElement("div");d.className="disc p"+p;
+  hole.appendChild(d);hole.style.cursor="default";
+}
+function check4(p){
+  for(var r=0;r<R;r++)for(var c=0;c<C;c++){
+    if(!board[r][c]||board[r][c]!==p)continue;
+    // H
+    if(c+3<C&&board[r][c+1]===p&&board[r][c+2]===p&&board[r][c+3]===p)return[[r,c],[r,c+1],[r,c+2],[r,c+3]];
+    // V
+    if(r+3<R&&board[r+1][c]===p&&board[r+2][c]===p&&board[r+3][c]===p)return[[r,c],[r+1,c],[r+2,c],[r+3,c]];
+    // D↘
+    if(r+3<R&&c+3<C&&board[r+1][c+1]===p&&board[r+2][c+2]===p&&board[r+3][c+3]===p)return[[r,c],[r+1,c+1],[r+2,c+2],[r+3,c+3]];
+    // D↗
+    if(r-3>=0&&c+3<C&&board[r-1][c+1]===p&&board[r-2][c+2]===p&&board[r-3][c+3]===p)return[[r,c],[r-1,c+1],[r-2,c+2],[r-3,c+3]];
+  }
+  return null;
+}
+function full(){return board[0].every(v=>v);}
+function aiCol(){
+  // 1: win, 2: block, 3: center, 4: random
+  for(var p=2;p>=1;p--){
+    for(var c=0;c<C;c++){
+      var r=dropRow(c);if(r<0)continue;
+      board[r][c]=p;
+      var w=check4(p);board[r][c]=0;
+      if(w)return c;
+    }
+  }
+  var pref=[3,2,4,1,5,0,6],free=pref.filter(c=>!board[0][c]);
+  return free.length?free[(Math.random()*free.length)|0]:-1;
+}
+function dropRow(c){for(var r=R-1;r>=0;r--)if(!board[r][c])return r;return -1;}
+function drop(c,p){
+  var r=dropRow(c);if(r<0)return;
+  board[r][c]=p;renderDisc(r,c,p);
+  var w=check4(p);
+  if(w){
+    over=true;
+    w.forEach(function(rc){var i=rc[0]*C+rc[1];boardEl.children[i].querySelector(".disc").classList.add("win");});
+    var key=p===1?"p1":"p2";scores[key]++;
+    document.getElementById("s1").textContent=scores.p1;
+    document.getElementById("s2").textContent=scores.p2;
+    msgEl.textContent=(mode==="ai")?(p===1?_t("youWin"):_t("aiWin")):(p===1?_t("p1Win"):_t("p2Win"));
+    return;
+  }
+  if(full()){over=true;msgEl.textContent=_t("draw");return;}
+  cur=cur===1?2:1;
+  msgEl.textContent=(mode==="ai")?((cur===2)?_t("aiTurn"):_t("yourTurn")):(cur===1?_t("p1Turn"):_t("p2Turn"));
+  if(mode==="ai"&&cur===2){setTimeout(aiMove2,500);}
+}
+function aiMove2(){
+  if(over)return;
+  var c=aiCol();
+  if(c>=0)drop(c,2);
+}
+msgEl.addEventListener("click",function(){});
+document.getElementById("vsai").addEventListener("click",function(){
+  mode="ai";this.classList.add("on");document.getElementById("vs2p").classList.remove("on");build();
+});
+document.getElementById("vs2p").addEventListener("click",function(){
+  mode="2p";this.classList.add("on");document.getElementById("vsai").classList.remove("on");build();
+});
+document.getElementById("newgame").addEventListener("click",function(){build();});
+boardEl.addEventListener("click",function(e){
+  var hole=e.target.closest(".hole");if(!hole)return;
+  var c=+hole.dataset.c;
+  if(mode==="ai"&&cur===2)return;
+  if(over)return;
+  drop(c,cur);
+  if(!over&&mode==="ai"&&cur===2)setTimeout(aiMove2,500);
+  if(!over)cur=cur===1?2:1;
+});
+build();
+</script>
+</body>
+</html>

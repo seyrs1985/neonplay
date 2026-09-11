@@ -252,4 +252,29 @@ GAMES = [
              "Finish at or under par moves. Tip: clear the blocks that block other blocks' gates first, and keep the center of the board open as long as possible."),
         ],
     },
+
+    {
+        "slug": "connect-four",
+        "title": "Play Connect Four Online — Free Strategy Board Game vs AI",
+        "h1": "Connect Four",
+        "tagline": "Drop discs, build a line of four, block your opponent — the classic strategy game reimagined with neon visuals and a built-in AI.",
+        "desc": "Play Connect Four free online against a smart AI or a friend. Drop discs to build four in a row — horizontal, vertical or diagonal. No download, instant play.",
+        "emoji": "🔴",
+        "howto": [
+            "Click any column to drop your disc — red discs are yours, the AI plays pink.",
+            "Build a line of four (horizontal, vertical or diagonal) before the AI does.",
+            "Block the AI's attempts while building your own threat — think two moves ahead.",
+        ],
+        "controls": "Click / tap a column to drop your disc. The AI responds instantly.",
+        "faqs": [
+            ("Is Connect Four free to play here?",
+             "Yes — it runs entirely in your browser with no download, account or payment. Play against our built-in AI or pass-and-play with a friend."),
+            ("How does the AI work?",
+             "Our AI checks for immediate wins and blocks your threats, with a touch of randomness to keep games interesting. It plays a strong but beatable game."),
+            ("Can I play with a friend?",
+             "Yes — switch to 2-player mode to pass and play on the same screen. Red and blue discs alternate turns."),
+            ("What's the best opening move?",
+             "The center column is statistically the strongest — it participates in more potential lines than any other column."),
+        ],
+    },
 ]
