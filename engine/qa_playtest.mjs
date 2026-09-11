@@ -33,6 +33,7 @@ const playPath = slug === "neon-tide" ? "play/" : "play.html";
 const url = argOf("--url", null) || (BASE.replace(/\/$/, "/") + (BASE.endsWith("/") ? "" : "/") + slug + "/" + playPath);
 const SHOT_DIR = join(ROOT, "data", "qa");
 const BUDGET = parseInt(argOf("--budget", "25000"), 10);
+const TOUCH = args.includes("--touch");
 
 /* ---- locate a Chromium ---- */
 import { existsSync } from "node:fs";
@@ -139,6 +140,10 @@ async function main() {
   };
 
   await cdp.send("Page.navigate", { url });
+  if (TOUCH) {
+    await cdp.send("Emulation.setDeviceMetricsOverride", { width: 375, height: 667, deviceScaleFactor: 2, mobile: true });
+    await cdp.send("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 5 });
+  }
   const t0 = Date.now();
   while (!loadFired && Date.now() - t0 < BUDGET) await sleep(100);
   if (!loadFired) throw new Error("page load timeout: " + url);
@@ -169,13 +174,43 @@ async function main() {
 
   /* generic interaction: click center, drag across, some keys */
   const mouse = (type, x, y, extra = {}) => cdp.send("Input.dispatchMouseEvent", { type, x, y, button: "left", clickCount: 1, ...extra });
-  const cx = 400, cy = 300;
-  await mouse("mousePressed", cx, cy);
-  for (let s = 1; s <= 6; s++) await mouse("mouseMoved", cx + s * 20, cy);
-  await mouse("mouseReleased", cx + 120, cy);
-  await sleep(300);
-  await mouse("mousePressed", cx, cy);
-  await mouse("mouseReleased", cx, cy);
+  const cx = TOUCH ? 187 : 400, cy = 300;
+  if (TOUCH) {
+    // real touch sequence aimed at an interactive element: touchStart → touchMoves → touchEnd
+    await evaluate(`(() => {
+      window.__pt = [];
+      ["pointerdown","pointermove","pointerup","pointercancel","touchstart","touchmove","touchend","click"].forEach(t =>
+        document.addEventListener(t, e => window.__pt.push(t + ":" + (e.pointerType || "touch")), { passive: true }));
+    })()`);
+    const tgt = await evaluate(`(() => {
+      // priority: game surface (canvas/blocks) over HUD buttons — query separately, not by document order
+      const sels = [".blk", "canvas", "[role=button]", "button"];
+      for (const s of sels) {
+        const e = document.querySelector(s);
+        if (e) { const r = e.getBoundingClientRect();
+          const p = { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height / 2) };
+          window.__qaTouch = p; return p; }
+      }
+      return null;
+    })()`);
+    const tx = tgt ? Math.min(tgt.x, 370) : cx, ty = tgt ? Math.min(tgt.y, 660) : cy;
+    await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: tx, y: ty, id: 1 }] });
+    for (let s = 1; s <= 6; s++) {
+      await cdp.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: tx + s * 20, y: ty, id: 1 }] });
+      await sleep(60);
+    }
+    await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    await sleep(300);
+    await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: tx, y: ty, id: 1 }] });
+    await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  } else {
+    await mouse("mousePressed", cx, cy);
+    for (let s = 1; s <= 6; s++) await mouse("mouseMoved", cx + s * 20, cy);
+    await mouse("mouseReleased", cx + 120, cy);
+    await sleep(300);
+    await mouse("mousePressed", cx, cy);
+    await mouse("mouseReleased", cx, cy);
+  }
   const key = (k, code, vk) => cdp.send("Input.dispatchKeyEvent", { type: "rawKeyDown", key: k, code, windowsVirtualKeyCode: vk })
     .then(() => cdp.send("Input.dispatchKeyEvent", { type: "keyUp", key: k, code, windowsVirtualKeyCode: vk }));
   for (const [k, c, v] of [["ArrowRight", "ArrowRight", 39], ["ArrowLeft", "ArrowLeft", 37], [" ", "Space", 32], ["Enter", "Enter", 13]]) {
@@ -186,6 +221,16 @@ async function main() {
 
   const sigAfter = await canvasSig();
   const mutAfter = await mutCount();
+  const pointerTrace = await evaluate("window.__pt || []").catch(() => []);
+  const touchDiag = await evaluate(`(() => {
+    const t = window.__qaTouch || {};
+    const e = document.elementFromPoint(t.x || 0, t.y || 0);
+    return {
+      touchAt: t, hit: e ? (e.tagName + "." + e.className + " text=" + (e.textContent || "").slice(0, 8)) : "nothing",
+      selIdx: (typeof selIdx !== "undefined") ? selIdx : "?",
+      moves: (typeof moves !== "undefined") ? moves : "?",
+    };
+  })()`).catch(e => ({ err: e.message }));
 
   /* per-game scripted playtest (optional) */
   let scripted = null;
@@ -247,6 +292,8 @@ async function main() {
     surface,
     canvasChanged: sigBefore !== "no-canvas" ? sigBefore !== sigAfter : null,
     domMutations: (mutAfter ?? 0) - (mutBefore ?? 0),
+    pointerTrace,
+    touchDiag,
     scripted,
     shotPath,
   };
