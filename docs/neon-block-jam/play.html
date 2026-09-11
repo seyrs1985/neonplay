@@ -76,6 +76,46 @@ html,body{margin:0;padding:0;min-height:100%;background:radial-gradient(120% 90%
 </div>
 <script>
 "use strict";
+/* procedural sound (Neon Tide audio.js pattern): synthesized, zero files, lazily resumed on first gesture */
+const Sound = (() => {
+  let ctx = null, master = null, muted = false;
+  try { muted = localStorage.getItem("nbj_mute") === "1"; } catch (e) {}
+  function ensure() {
+    if (ctx) return true;
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return false;
+    ctx = new AC();
+    master = ctx.createGain();
+    master.gain.value = muted ? 0 : 0.5;
+    master.connect(ctx.destination);
+    return true;
+  }
+  function resume() { if (ensure() && ctx.state === "suspended") ctx.resume(); }
+  function tone(f0, f1, dur, type, vol) {
+    if (!ctx || muted) return;
+    try {
+      const t = ctx.currentTime;
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = type;
+      o.frequency.setValueAtTime(f0, t);
+      o.frequency.exponentialRampToValueAtTime(Math.max(1, f1), t + dur);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(vol, t + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.connect(g); g.connect(master);
+      o.start(t); o.stop(t + dur + 0.05);
+    } catch (e) {}
+  }
+  return {
+    resume,
+    isMuted: () => muted,
+    toggleMute() { muted = !muted; try { localStorage.setItem("nbj_mute", muted ? "1" : "0"); } catch (e) {} if (master) master.gain.value = muted ? 0 : 0.5; return muted; },
+    slide()  { tone(300, 380, 0.07, "triangle", 0.25); },
+    bad()    { tone(160, 110, 0.12, "sawtooth", 0.18); },
+    vanish() { tone(520, 1040, 0.18, "sine", 0.3); },
+    win()    { [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => tone(f, f, 0.16, "triangle", 0.3), i * 110)); },
+  };
+})();
 const N=6;
 /* blocks: [color, col, row, w, h] · doors: side T/B/L/R + lane index · 1 move = 1 slide gesture */
 const LEVELS=[
@@ -178,6 +218,7 @@ function select(i){selIdx=i;render();}
 function startDrag(e,i){
   var blk=blocks[i];
   if(!blk||blk.vanishing||pendingVanish)return;
+  Sound.resume();
   var startX=e.clientX,startY=e.clientY;
   var counted=false,done=false,myGen=gen;
   var preSnap=JSON.stringify(blocks);
@@ -192,8 +233,8 @@ function startDrag(e,i){
     var dr=horiz?0:(steps>0?1:-1),dc=horiz?(steps>0?1:-1):0;
     var movedAny=false,vanished=false;
     for(var k=0;k<Math.abs(steps);k++){
-      if(!canMove(blk,dr,dc))break;
-      if(!counted){moves++;counted=true;undoStack.push(preSnap);if(undoStack.length>50)undoStack.shift();}
+      if(!canMove(blk,dr,dc)){if(k===0)Sound.bad();break;}
+      if(!counted){moves++;counted=true;undoStack.push(preSnap);if(undoStack.length>50)undoStack.shift();Sound.slide();}
       blk.col+=dc;blk.row+=dr;movedAny=true;
       if(checkVanish()){vanished=true;break;}
     }
@@ -201,7 +242,7 @@ function startDrag(e,i){
       document.getElementById("mv").textContent=moves;
       selIdx=blocks.indexOf(blk);
     }
-    if(vanished){done=true;selIdx=-1;pendingVanish=true;}
+    if(vanished){done=true;selIdx=-1;pendingVanish=true;Sound.vanish();}
     if(movedAny||vanished)render();
     if(movedAny){startX=ev.clientX;startY=ev.clientY;}
     if(vanished){
@@ -219,6 +260,7 @@ function postVanish(g){
   pendingVanish=false;
   render();
   if(blocks.length===0){
+    Sound.win();
     var par=LEVELS[curLv].par;
     var st=moves<=par?3:moves<=par+2?2:1;
     progress.stars[curLv]=Math.max(progress.stars[curLv]||0,st);
@@ -251,12 +293,12 @@ document.addEventListener("keydown",function(e){
   var blk=blocks[selIdx];
   if(!blk||blk.vanishing)return;
   e.preventDefault();
-  if(!canMove(blk,dir[0],dir[1]))return;
+  if(!canMove(blk,dir[0],dir[1])){Sound.bad();return;}
   undoStack.push(JSON.stringify(blocks));if(undoStack.length>50)undoStack.shift();
-  moves++;blk.col+=dir[1];blk.row+=dir[0];
+  moves++;blk.col+=dir[1];blk.row+=dir[0];Sound.slide();
   var v=checkVanish();
   document.getElementById("mv").textContent=moves;
-  if(v){selIdx=-1;pendingVanish=true;var g=gen;render();setTimeout(function(){postVanish(g);},350);}
+  if(v){selIdx=-1;pendingVanish=true;Sound.vanish();var g=gen;render();setTimeout(function(){postVanish(g);},350);}
   else render();
 });
 function loadLevel(n){
@@ -298,6 +340,8 @@ document.getElementById("board").addEventListener("click",function(e){
 loadProgress();
 loadLevel(Math.min(progress.maxLv,LEVELS.length-1));
 renderLevelSel();
+/* QA hook (GAME_STANDARD §四) */
+window.__qaState = function(){ return { level: curLv+1, moves: moves, blocksLeft: blocks.length, winShown: document.getElementById("win").style.display === "flex" }; };
 </script>
 </body>
 </html>
