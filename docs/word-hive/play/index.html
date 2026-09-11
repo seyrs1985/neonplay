@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Word Hive</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="stage">
+  <div id="topbar">
+    <button id="tab-daily" class="tab on"></button>
+    <button id="tab-lib" class="tab"></button>
+    <button id="tab-zen" class="tab"></button>
+  </div>
+  <div id="hud">
+    <div id="lives" title="lives"></div>
+    <button id="hintBtn" class="pill"></button>
+    <button id="shuffleBtn" class="pill">⇄ Shuffle</button>
+    <div id="libSel" class="chip hide"></div>
+  </div>
+  <div id="solvedBanners"></div>
+  <div id="grid"></div>
+  <div id="msg"></div>
+  <div id="actions">
+    <button id="deselect" class="act"></button>
+    <button id="submit" class="act primary"></button>
+  </div>
+</div>
+<div id="endPanel" class="overlay hide">
+  <div class="panel">
+    <h2 id="epTitle"></h2>
+    <div id="epRows"></div>
+    <p id="epNote"></p>
+    <button id="epShare"></button>
+    <button id="epRetry"></button>
+  </div>
+</div>
+<script src="np_core.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
