@@ -133,4 +133,28 @@ GAMES = [
              "Completely. The game runs in your browser with no sign-up, no ads inside the board, and nothing is uploaded — scores reset when you leave."),
         ],
     },
+    {
+        "slug": "breakout",
+        "title": "Play Breakout Online — Free Brick Breaker Game",
+        "h1": "Breakout",
+        "tagline": "One ball, one paddle, a wall of glowing bricks — the arcade classic that never gets old.",
+        "desc": "Play Breakout free online: smash every neon brick with one ball and a paddle you control by mouse, touch or keyboard. Level up, chase high scores, no download or sign-up.",
+        "emoji": "🧱",
+        "howto": [
+            "Move the paddle with your mouse, finger or arrow keys — keep the ball alive.",
+            "Launch with a tap, click or Space, then clear all six rows of bricks to advance.",
+            "Each cleared wall starts a faster level; you get three lives per run, so aim carefully.",
+        ],
+        "controls": "Mouse / touch to move the paddle, tap or click to launch. Keyboard: arrow keys + Space.",
+        "faqs": [
+            ("Is Breakout free to play here?",
+             "Yes — it runs entirely in your browser, no download, no account and no payment. It is an original NeonPlay implementation of the arcade classic."),
+            ("Does Breakout work on a phone?",
+             "Yes. Drag anywhere on the screen to slide the paddle and tap to launch — the board scales to any screen size in portrait or landscape."),
+            ("What happens when I clear all the bricks?",
+             "You advance to the next level: the ball gets faster and the wall resets. Your score carries over, and tougher two-hit bricks stay at the top rows."),
+            ("How is my score calculated?",
+             "Each brick is worth more in higher rows — up to 60 points per brick. Three lives per run, and your best runs come from keeping the ball angle steep and controlled."),
+        ],
+    },
 ]
