@@ -204,3 +204,20 @@ article>.title-emoji{font-size:1.5rem}
 .faq{margin:8px 0}
 .faq summary{font-weight:700;cursor:pointer;padding:6px 0}
 .faq p{margin:6px 0;padding-left:12px;border-left:2px solid rgba(34,211,238,.2);line-height:1.5}
+
+/* ---- UX detail polish ---- */
+html{scroll-behavior:smooth}
+.cat-blurb{line-height:1.65;opacity:.82;max-width:560px;margin:4px auto 0}
+.hero h1{letter-spacing:.5px;text-shadow:0 0 40px rgba(34,211,238,.15)}
+.card{border:1px solid rgba(255,255,255,.06)}
+.card:hover{border-color:rgba(34,211,238,.3)}
+.controls-line{opacity:.7;font-size:.85rem;margin-top:8px}
+.spot-label{letter-spacing:1.5px;text-transform:uppercase}
+.spot-card::after{content:'';position:absolute;top:0;right:0;width:80px;height:80px;
+  background:radial-gradient(circle at top right,rgba(167,139,250,.08),transparent 70%);pointer-events:none}
+.game-frame iframe{border-radius:8px}
+@media (max-width:640px){
+  .hero h1{font-size:clamp(1.4rem,5.5vw,1.8rem)}
+  .cat h2{font-size:1rem}
+  .game-frame iframe{height:min(56vh,480px)}
+}
