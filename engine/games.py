@@ -157,4 +157,28 @@ GAMES = [
              "Each brick is worth more in higher rows — up to 60 points per brick. Three lives per run, and your best runs come from keeping the ball angle steep and controlled."),
         ],
     },
+    {
+        "slug": "minesweeper",
+        "title": "Play Minesweeper Online — Free Classic Mine Game",
+        "h1": "Minesweeper",
+        "tagline": "Ten mines, ninety-one tiles, zero room for luck. The logic puzzle that ate the 90s — reborn for your phone.",
+        "desc": "Play the classic Minesweeper free online: 9x9 board with 10 mines, first click is always safe, tap to reveal and long-press to flag. No download, works on desktop and mobile.",
+        "emoji": "💣",
+        "howto": [
+            "Tap a tile to reveal it — the first tap is always safe, and numbers show how many mines touch that tile.",
+            "Long-press a tile (or right-click, or turn on flag mode) to mark mines you have deduced.",
+            "Reveal every safe tile to win; hitting a single mine ends the run, so let logic lead.",
+        ],
+        "controls": "Tap / click to reveal, long-press or right-click to flag. Flag-mode button for precision play.",
+        "faqs": [
+            ("Is the first click in Minesweeper always safe?",
+             "Yes — mines are placed after your first reveal, and the first tap plus its neighbors are guaranteed mine-free, so every game starts with a real opening."),
+            ("How do I flag a mine on mobile?",
+             "Press and hold a tile for about half a second, or tap the flag-mode button above the board and then tap tiles — both mark or unmark a suspected mine."),
+            ("What do the numbers mean in Minesweeper?",
+             "A number tells you exactly how many of the eight surrounding tiles hide a mine. Cross-referencing overlapping numbers is how you deduce which tiles are safe."),
+            ("Is this Minesweeper free and private?",
+             "Completely free with no sign-up. Everything runs locally in your browser — your games, times and flags never leave your device."),
+        ],
+    },
 ]

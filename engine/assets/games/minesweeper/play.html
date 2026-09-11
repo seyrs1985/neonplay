@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Minesweeper</title>
+<style>
+  html,body{margin:0;padding:0;min-height:100%;background:#0b1020;color:#e2e8f0;
+    font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  #hud{display:flex;gap:18px;align-items:center;margin:10px 0;font-size:15px;font-weight:700}
+  #hud .box{background:#141a35;border:1px solid #2b3564;border-radius:8px;padding:6px 12px;min-width:64px;text-align:center}
+  #flagBtn{background:#141a35;border:1px solid #2b3564;border-radius:8px;color:#e2e8f0;
+    font-size:15px;font-weight:700;padding:6px 14px;cursor:pointer}
+  #flagBtn.on{background:#7c3aed;border-color:#a78bfa;color:#fff}
+  #grid{display:grid;grid-template-columns:repeat(9,1fr);gap:3px;background:#141a35;
+    padding:8px;border-radius:10px;border:1px solid #2b3564;width:min(92vw,396px)}
+  .cell{aspect-ratio:1;border:0;border-radius:5px;background:#232b52;color:#e2e8f0;
+    font-size:clamp(13px,3.4vw,17px);font-weight:800;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;user-select:none;padding:0}
+  .cell:hover{background:#2d3768}
+  .cell.open{background:#101532;cursor:default;border:1px solid #1c2450}
+  .cell.mine{background:#7f1d1d}
+  .cell.boom{background:#dc2626}
+  .cell.flag{background:#3b2f7a}
+  .n1{color:#7dd3fc}.n2{color:#4ade80}.n3{color:#fca5a5}.n4{color:#c4b5fd}
+  .n5{color:#fbbf24}.n6{color:#67e8f9}.n7{color:#f472b6}.n8{color:#e2e8f0}
+  #msg{min-height:22px;margin:10px 0;font-size:14px}
+  #again{padding:9px 24px;font-size:14px;font-weight:700;border:0;border-radius:8px;
+    background:linear-gradient(135deg,#22d3ee,#a78bfa);color:#0b1020;cursor:pointer;
+    margin-bottom:12px;visibility:hidden}
+</style>
+</head>
+<body>
+<div id="hud">
+  <div class="box">💣 <span id="mines">10</span></div>
+  <button id="flagBtn">🚩 旗标:关</button>
+  <div class="box">⏱ <span id="time">0</span>s</div>
+</div>
+<div id="grid"></div>
+<div id="msg"></div>
+<button id="again">↻再来一局</button>
+<script>
+(function(){
+"use strict";
+var N=9,MINES=10;
+var gridEl=document.getElementById("grid"),minesEl=document.getElementById("mines"),
+    timeEl=document.getElementById("time"),msgEl=document.getElementById("msg"),
+    againB=document.getElementById("again"),flagB=document.getElementById("flagBtn");
+var cells,mineSet,state,timer,sec,flagMode,opened,placed;
+
+function idx(r,c){return r*N+c;}
+function neighbors(i){
+  var r=Math.floor(i/N),c=i%N,out=[];
+  for(var dr=-1;dr<=1;dr++)for(var dc=-1;dc<=1;dc++){
+    if(!dr&&!dc)continue;
+    var nr=r+dr,nc=c+dc;
+    if(nr>=0&&nr<N&&nc>=0&&nc<N)out.push(idx(nr,nc));
+  }
+  return out;
+}
+function reset(){
+  cells=[];mineSet={};state="idle";sec=0;flagMode=false;opened=0;placed=false;
+  flagB.classList.remove("on");flagB.textContent="🚩 旗标:关";
+  minesEl.textContent=MINES;timeEl.textContent="0";msgEl.textContent="";
+  againB.style.visibility="hidden";
+  if(timer){clearInterval(timer);timer=null;}
+  gridEl.innerHTML="";
+  for(var i=0;i<N*N;i++){
+    cells.push({mine:false,open:false,flag:false,n:0});
+    var d=document.createElement("button");
+    d.className="cell";d.setAttribute("data-i",i);
+    gridEl.appendChild(d);
+  }
+}
+function placeMines(safe){
+  var pool=[];
+  for(var i=0;i<N*N;i++)if(i!==safe&&!neighbors(safe).includes(i))pool.push(i);
+  pool.sort(function(){return Math.random()-0.5;});
+  for(var m=0;m<MINES;m++){
+    mineSet[pool[m]]=true;
+    cells[pool[m]].mine=true;
+    neighbors(pool[m]).forEach(function(j){cells[j].n++;});
+  }
+  placed=true;
+  timer=setInterval(function(){sec++;timeEl.textContent=sec;},1000);
+}
+function paint(i){
+  var d=gridEl.children[i],c=cells[i];
+  d.textContent="";
+  d.classList.toggle("open",c.open);
+  d.classList.toggle("flag",c.flag&&!c.open);
+  if(c.open&&!c.mine&&c.n>0){
+    d.textContent=c.n;d.classList.add("n"+c.n);
+  }
+}
+function reveal(i){
+  var c=cells[i];
+  if(c.open||c.flag)return;
+  if(state==="idle"){placeMines(i);state="play";}
+  if(c.mine){lose(i);return;}
+  var stack=[i];
+  while(stack.length){
+    var j=stack.pop(),cj=cells[j];
+    if(cj.open||cj.flag||cj.mine)continue;
+    cj.open=true;opened++;paint(j);
+    if(cj.n===0)neighbors(j).forEach(function(k){if(!cells[k].open&&!cells[k].flag)stack.push(k);});
+  }
+  checkWin();
+}
+function toggleFlag(i){
+  if(state==="play"||state==="idle"){
+    var c=cells[i];
+    if(c.open)return;
+    c.flag=!c.flag;paint(i);
+    var f=cells.filter(function(x){return x.flag;}).length;
+    minesEl.textContent=Math.max(0,MINES-f);
+  }
+}
+function lose(boom){
+  state="over";
+  if(timer)clearInterval(timer);
+  for(var i=0;i<N*N;i++){
+    if(cells[i].mine){
+      cells[i].open=true;paint(i);
+      gridEl.children[i].classList.add(i===boom?"boom":"mine");
+      gridEl.children[i].textContent="💣";
+    }
+  }
+  msgEl.textContent="💥 踩雷了！点再来一局。";
+  againB.style.visibility="visible";
+}
+function checkWin(){
+  if(opened===N*N-MINES){
+    state="won";
+    if(timer)clearInterval(timer);
+    msgEl.textContent="🏆 扫雷成功！用时 "+sec+" 秒。";
+    againB.style.visibility="visible";
+  }
+}
+gridEl.addEventListener("click",function(e){
+  var t=e.target.closest(".cell");if(!t)return;
+  var i=+t.getAttribute("data-i");
+  if(flagMode)toggleFlag(i);else reveal(i);
+});
+gridEl.addEventListener("contextmenu",function(e){
+  e.preventDefault();
+  var t=e.target.closest(".cell");if(!t)return;
+  toggleFlag(+t.getAttribute("data-i"));
+});
+var pressT=null;
+gridEl.addEventListener("pointerdown",function(e){
+  var t=e.target.closest(".cell");if(!t)return;
+  var i=+t.getAttribute("data-i");
+  pressT=setTimeout(function(){toggleFlag(i);pressT="flagged";},450);
+});
+gridEl.addEventListener("pointerup",function(){if(pressT){clearTimeout(pressT);pressT=null;}});
+gridEl.addEventListener("pointerleave",function(){if(pressT&&pressT!=="flagged")clearTimeout(pressT);});
+flagB.addEventListener("click",function(){
+  flagMode=!flagMode;
+  flagB.classList.toggle("on",flagMode);
+  flagB.textContent=flagMode?"🚩 旗标:开":"🚩 旗标:关";
+});
+againB.addEventListener("click",reset);
+reset();
+})();
+</script>
+</body>
+</html>
