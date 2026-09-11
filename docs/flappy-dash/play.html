@@ -121,6 +121,7 @@ function update(){
   stars.forEach(function(s){s.x-=0.25;if(s.x<0)s.x=W;});
   if(state!=="play")return;
   bird.v+=G;bird.y+=bird.v;
+  if(frame%3===0)particles.push({x:bird.x-10,y:bird.y,vx:-.5,vy:0,life:.5,color:"rgba(250,204,21,.5)"});
   bird.wing*=0.82;
   if(bird.y+bird.r>H-52||bird.y-bird.r<0){die();return;}
   for(var i=pipes.length-1;i>=0;i--){
@@ -128,6 +129,11 @@ function update(){
     if(p.x+PIPE_W<0){pipes.splice(i,1);addPipe(W+60);continue;}
     if(!p.passed&&p.x+PIPE_W<bird.x-bird.r){
       p.passed=true;score++;
+      for(var pi=0;pi<6;pi++){
+        var pa=Math.random()*6.28,pv=1+Math.random()*2;
+        particles.push({x:bird.x,y:bird.y,vx:Math.cos(pa)*pv,vy:Math.sin(pa)*pv,life:1,
+          color:"#22d3ee"});
+      }
       scEl.textContent=score;scEl.classList.add('bump');
       setTimeout(function(){scEl.classList.remove('bump');},180);
     }
@@ -153,10 +159,15 @@ function draw(){
   // 城市剪影(两层视差, 平滑循环)
   drawSkyline(skyFar , 0.4, "rgba(124,58,237,.16)", 40, 110, 52);
   drawSkyline(skyNear, 0.9, "rgba(34,211,238,.10)", 26,  82, 44);
-  // 地面
+  // 地面(滚动线条)
   ctx.fillStyle="#1a1038";ctx.fillRect(0,H-52,W,52);
   ctx.strokeStyle="rgba(167,139,250,.5)";ctx.lineWidth=2;
   ctx.beginPath();ctx.moveTo(0,H-52);ctx.lineTo(W,H-52);ctx.stroke();
+  ctx.strokeStyle="rgba(167,139,250,.18)";ctx.lineWidth=1;
+  for(var gx=0;gx<W+40;gx+=40){
+    var sx=gx-(frame*PSPD)%40;
+    ctx.beginPath();ctx.moveTo(sx,H-40);ctx.lineTo(sx-14,H-14);ctx.stroke();
+  }
   // 管道(霓虹渐变门)
   pipes.forEach(function(p){
     var pg=ctx.createLinearGradient(p.x,0,p.x+PIPE_W,0);
