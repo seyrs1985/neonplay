@@ -46,6 +46,8 @@ def ad_slot(cfg, slot_id):
 
 
 def head(cfg, title, desc, canonical, csspath, extra_ld=()):
+    i18npath = ("i18n.js" if csspath == "style.css" else
+                csspath.replace("style.css", "i18n.js"))
     ga = (cfg.get("ga4_id") or "").strip()
     gsc = (cfg.get("gsc_verification") or "").strip()
     ads = (cfg.get("adsense_client") or "").strip()
@@ -66,6 +68,7 @@ def head(cfg, title, desc, canonical, csspath, extra_ld=()):
 {f'<meta name="google-site-verification" content="{esc(gsc)}">' if gsc else ''}
 <script type="application/ld+json">{ld}</script>
 <link rel="stylesheet" href="{csspath}">
+<script src="{i18npath}"></script>
 {f'<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={esc(ads)}" crossorigin="anonymous"></script>' if ads else ''}
 {f'<script async src="https://www.googletagmanager.com/gtag/js?id={esc(ga)}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag("js",new Date());gtag("config","{esc(ga)}");</script>' if ga else ''}
 </head>
@@ -77,7 +80,7 @@ def nav(cfg):
     sister = (cfg.get("sister_site") or {}).get("url", "#")
     return f"""<header class="site-head"><div class="wrap nav-row">
 <a class="logo" href="{base}">🎮 NeonPlay</a>
-<nav><a href="{esc(sister)}" title="Sister site: free online tools">🧰 ToolTide tools</a></nav>
+<nav><a href="{esc(sister)}" title="Sister site: free online tools" data-i18n="nav.tools">🧰 ToolTide tools</a></nav>
 </div></header>"""
 
 
@@ -147,13 +150,13 @@ def build_hall(cfg, gms):
                    "@type": "WebSite", "name": "NeonPlay", "url": base, "description": desc}])
     doc += nav(cfg)
     doc += f"""<main class="wrap">
-<section class="hero"><h1>Free games, zero friction</h1>
-<p>Original games that load instantly and run in your browser — no downloads, no accounts, no interruptions. Built with care, played with joy.</p></section>
+<section class="hero"><h1 data-i18n="hall.title">Free games, zero friction</h1>
+<p data-i18n="hall.sub">Original games that load instantly and run in your browser — no downloads, no accounts, no interruptions. Built with care, played with joy.</p></section>
 {ad_slot(cfg, cfg.get('ad_slot_top', '1111111111'))}
-<section class="cat"><h2>All games</h2><div class="grid">{cards}</div></section>
-<section class="cat" id="about"><h2>Our games are originals</h2>
-<p class="cat-blurb">Every game here is either built by us or properly licensed — no scraped clones, no sketchy redirects. They run 100% locally in your browser; nothing you do in a game is tracked or uploaded.</p>
-<p class="cat-blurb">Need a tool instead? Our sister site <a href="{esc((cfg.get('sister_site') or {}).get('url', '#'))}">ToolTide</a> has free online calculators, converters and countdowns.</p></section>
+<section class="cat"><h2 data-i18n="hall.all">All games</h2><div class="grid">{cards}</div></section>
+<section class="cat" id="about"><h2 data-i18n="hall.originals">Our games are originals</h2>
+<p class="cat-blurb" data-i18n="hall.originals.blurb">Every game here is either built by us or properly licensed — no scraped clones, no sketchy redirects. They run 100% locally in your browser; nothing you do in a game is tracked or uploaded.</p>
+<p class="cat-blurb" data-i18n="hall.tools_promo">Need a tool instead? Our sister site <a href="{esc((cfg.get('sister_site') or {}).get('url', '#'))}">ToolTide</a> has free online calculators, converters and countdowns.</p></section>
 </main>"""
     doc += footer(cfg) + "</body></html>"
     write("index.html", doc)
@@ -188,11 +191,11 @@ def build_landing(cfg, gm, gms):
 <div class="title-row"><span class="title-emoji">{gm['emoji']}</span><h1>{esc(gm['h1'])}</h1><span class="controls-line">🎮 {esc(gm['controls'])}</span></div>
 <p class="cat-blurb">{esc(gm['tagline'])}</p>
 {ad_slot(cfg, cfg.get('ad_slot_mid', '2222222222'))}
-<section class="seo-block"><h2>How to play</h2><ol class="howto">{howto}</ol></section>
-<section class="seo-block"><h2>Frequently asked questions</h2>{faqs}</section>
-<section class="seo-block"><h2>More games</h2><div class="grid">{related}</div></section>
-<section class="seo-block"><h2>Free tools for work time</h2>
-<p>Between gaming sessions, our sister site <a href="{esc(sister)}">ToolTide</a> runs free online tools — percentage calculators, unit converters and live countdowns. No sign-up there either.</p></section>
+<section class="seo-block"><h2 data-i18n="land.howto">How to play</h2><ol class="howto">{howto}</ol></section>
+<section class="seo-block"><h2 data-i18n="land.faq">Frequently asked questions</h2>{faqs}</section>
+<section class="seo-block"><h2 data-i18n="land.more">More games</h2><div class="grid">{related}</div></section>
+<section class="seo-block"><h2 data-i18n="land.tools">Free tools for work time</h2>
+<p data-i18n="land.tools.blurb">Between gaming sessions, our sister site <a href="{esc(sister)}">ToolTide</a> runs free online tools — percentage calculators, unit converters and live countdowns. No sign-up there either.</p></section>
 <nav class="crumbs"><a href="{base}">🎮 NeonPlay</a> › <span>{esc(gm['h1'])}</span></nav>
 </article>
 </main>"""
@@ -229,6 +232,7 @@ def main():
 
     os.makedirs(DOCS, exist_ok=True)
     shutil.copy2(os.path.join(ASSETS, "style.css"), os.path.join(DOCS, "style.css"))
+    shutil.copy2(os.path.join(ASSETS, "i18n.js"), os.path.join(DOCS, "i18n.js"))
     print("  style.css")
 
     for gm in gms:
