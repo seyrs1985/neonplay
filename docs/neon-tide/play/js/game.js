@@ -2,6 +2,17 @@
    Logical space 720x1280, letterboxed; all art drawn in code (fake glow, no shadowBlur). */
 'use strict';
 
+// ---- i18n (np_lang persisted by site switcher; zh default from browser) ----
+const NP_L = {
+  en: { dive: 'TAP  TO  DIVE', howto: 'hold to rise · release to dive', credit: 'an AI-built arcade · v1.0',
+        best: 'BEST', paused: 'PAUSED', resume: 'RESUME', quit: 'QUIT', score: 'score', over: 'WIPED OUT',
+        pearls: 'pearls', newbest: '★ NEW BEST ★', retry: 'TAP TO RETRY', menu: 'MENU' },
+  zh: { dive: '点按 开始下潜', howto: '按住上浮 · 松开下潜', credit: 'AI 打造的街机 · v1.0',
+        best: '最高', paused: '已暂停', resume: '继续', quit: '退出', score: '得分', over: '触礁了',
+        pearls: '珍珠', newbest: '★ 新纪录 ★', retry: '点按重试', menu: '菜单' }
+};
+const T = (k) => NP_L[((localStorage.getItem('np_lang') || navigator.language || 'en').slice(0, 2) === 'zh') ? 'zh' : 'en'][k];
+
 const W = 720, H = 1280;
 const GRAVITY = 2500;
 const THRUST = 5300;
@@ -506,15 +517,15 @@ function drawTitle(ctx) {
   ctx.restore();
 
   const best = G.best > 0;
-  if (best) drawText(ctx, `BEST  ${G.best}`, W / 2, ly + 268, 40, COL.gold, 'center', 800, 0.95);
+  if (best) drawText(ctx, `${T('best')}  ${G.best}`, W / 2, ly + 268, 40, COL.gold, 'center', 800, 0.95);
 
   const pulse = 0.55 + Math.sin(G.time * 4.4) * 0.45;
-  drawText(ctx, 'TAP  TO  DIVE', W / 2, 900, 46, COL.white, 'center', 800, pulse);
-  drawText(ctx, 'hold to rise · release to dive', W / 2, 965, 28, COL.aqua, 'center', 600, 0.85);
+  drawText(ctx, T('dive'), W / 2, 900, 46, COL.white, 'center', 800, pulse);
+  drawText(ctx, T('howto'), W / 2, 965, 28, COL.aqua, 'center', 600, 0.85);
 
   // sound toggle + credit
   btn(ctx, 'snd', W - 92, 60, 56, 56, Sound.isMuted() ? '🔇' : '🔊', 30);
-  drawText(ctx, 'an AI-built arcade · v1.0', W / 2, H - 46, 22, hexA(COL.aqua, 0.75), 'center', 500, 0.8);
+  drawText(ctx, T('credit'), W / 2, H - 46, 22, hexA(COL.aqua, 0.75), 'center', 500, 0.8);
 
   drawParticles(ctx);
 }
@@ -527,7 +538,7 @@ function drawPlay(ctx) {
 
   // HUD
   drawText(ctx, String(G.score), W / 2, 90, 76, COL.white, 'center', 900);
-  drawText(ctx, `BEST ${G.best}`, W / 2, 152, 28, COL.gold, 'center', 700, 0.9);
+  drawText(ctx, `${T('best')} ${G.best}`, W / 2, 152, 28, COL.gold, 'center', 700, 0.9);
   btn(ctx, 'pause', W - 92, 52, 56, 56, '❚❚', 24);
 
   // floaties
@@ -576,10 +587,10 @@ function dim(ctx, a) {
 function drawPause(ctx) {
   drawPlay(ctx);
   dim(ctx, 0.62);
-  drawText(ctx, 'PAUSED', W / 2, 430, 84, COL.white, 'center', 900);
-  btn(ctx, 'resume', W / 2 - 160, 560, 320, 92, 'RESUME', 38);
-  btn(ctx, 'quit', W / 2 - 160, 690, 320, 92, 'QUIT', 38);
-  drawText(ctx, 'score ' + G.score, W / 2, 850, 34, COL.aqua, 'center', 700);
+  drawText(ctx, T('paused'), W / 2, 430, 84, COL.white, 'center', 900);
+  btn(ctx, 'resume', W / 2 - 160, 560, 320, 92, T('resume'), 38);
+  btn(ctx, 'quit', W / 2 - 160, 690, 320, 92, T('quit'), 38);
+  drawText(ctx, T('score') + ' ' + G.score, W / 2, 850, 34, COL.aqua, 'center', 700);
 }
 
 function drawOver(ctx) {
@@ -589,17 +600,17 @@ function drawOver(ctx) {
   const ease = 1 - Math.pow(1 - t, 3);
   ctx.save();
   ctx.translate(0, (1 - ease) * 120);
-  drawText(ctx, 'WIPED OUT', W / 2, 400, 84, COL.mine, 'center', 900, ease);
+  drawText(ctx, T('over'), W / 2, 400, 84, COL.mine, 'center', 900, ease);
   drawText(ctx, String(G.score), W / 2, 540, 120, COL.white, 'center', 900, ease);
-  drawText(ctx, `pearls ${G.pearls}   ·   best ${G.best}`, W / 2, 650, 34, COL.aqua, 'center', 700, ease);
+  drawText(ctx, `${T('pearls')} ${G.pearls}   ·   ${T('best')} ${G.best}`, W / 2, 650, 34, COL.aqua, 'center', 700, ease);
   if (G.newBest) {
     const p = 0.7 + Math.sin(G.time * 6) * 0.3;
-    drawText(ctx, '★ NEW BEST ★', W / 2, 730, 44, COL.gold, 'center', 900, p * ease);
+    drawText(ctx, T('newbest'), W / 2, 730, 44, COL.gold, 'center', 900, p * ease);
   }
   if (t > 0.55) {
     const p2 = 0.55 + Math.sin(G.time * 4.4) * 0.45;
-    drawText(ctx, 'TAP TO RETRY', W / 2, 880, 44, COL.white, 'center', 800, p2);
-    btn(ctx, 'menu', W / 2 - 130, 950, 260, 78, 'MENU', 32);
+    drawText(ctx, T('retry'), W / 2, 880, 44, COL.white, 'center', 800, p2);
+    btn(ctx, 'menu', W / 2 - 130, 950, 260, 78, T('menu'), 32);
   }
   ctx.restore();
 }
