@@ -7,31 +7,50 @@
 <style>
 html,body{margin:0;min-height:100%;background:radial-gradient(120% 90% at 50% 0%,#141d42 0%,#0b1020 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:system-ui,sans-serif;color:#e2e8f0;touch-action:none;user-select:none}
 #top{display:flex;gap:12px;align-items:center;margin-bottom:12px}
-#top .chip{background:rgba(20,26,53,.85);border:1px solid #2b3564;border-radius:999px;padding:6px 16px;font-size:.95rem;display:flex;gap:6px;align-items:center;position:relative}
+#top .chip{background:rgba(20,26,53,.85);border:1px solid #2b3564;border-radius:999px;padding:6px 16px;font-size:.95rem;display:flex;gap:6px;align-items:center;position:relative;transition:transform .15s}
 #top .chip b{color:#facc15;text-shadow:0 0 8px rgba(250,204,21,.5)}
-#again{font:inherit;font-weight:700;padding:8px 18px;border:0;border-radius:999px;background:linear-gradient(135deg,#22d3ee,#a78bfa);color:#0b1020;cursor:pointer}
+#top .chip.bump{transform:scale(1.12)}
+#again{font:inherit;font-weight:700;min-height:44px;padding:8px 18px;border:0;border-radius:999px;background:linear-gradient(135deg,#22d3ee,#a78bfa);color:#0b1020;cursor:pointer;box-shadow:0 0 14px rgba(34,211,238,.3)}
 #gain{position:absolute;left:50%;top:-6px;transform:translateX(-50%);color:#4ade80;font-weight:800;
   text-shadow:0 0 8px rgba(74,222,128,.7);pointer-events:none;opacity:0}
 #gain.show{animation:rise .7s ease-out}
 @keyframes rise{0%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-26px)}}
 #grid{position:relative;background:rgba(20,26,53,.85);border:1px solid rgba(34,211,238,.25);
   box-shadow:0 0 28px rgba(34,211,238,.12),0 10px 40px rgba(0,0,0,.5);
-  border-radius:14px;padding:8px;display:grid;grid-template:repeat(4,1fr)/repeat(4,1fr);gap:8px;width:min(92vw,420px);aspect-ratio:1;box-sizing:border-box}
-.cell{background:#1b2547;border-radius:9px;display:flex;align-items:center;justify-content:center;
+  border-radius:14px;padding:8px;display:grid;grid-template:repeat(4,1fr)/repeat(4,1fr);gap:8px;width:min(92vw,420px);aspect-ratio:1;box-sizing:border-box;
+  transition:filter .6s ease}
+#grid.dead{filter:grayscale(.75) brightness(.8)}
+.cell{position:relative;background:#1b2547;border-radius:9px;display:flex;align-items:center;justify-content:center;
   font-weight:800;font-size:clamp(1.1rem,5vw,2rem);text-shadow:0 1px 3px rgba(0,0,0,.45)}
 .cell.spawn{animation:spawn .18s ease-out}
 @keyframes spawn{from{transform:scale(0)}to{transform:scale(1)}}
 .cell.pop{animation:pop .24s ease-out}
 @keyframes pop{0%{transform:scale(1)}45%{transform:scale(1.16)}100%{transform:scale(1)}}
+/* 合并爆花: 金色冲击环 + 六向火花 */
+.cell.pop::after{content:'';position:absolute;inset:-2px;border-radius:11px;pointer-events:none;
+  border:3px solid rgba(250,204,21,.9);animation:ring .45s ease-out forwards}
+@keyframes ring{0%{transform:scale(.6);opacity:1}100%{transform:scale(1.55);opacity:0}}
+.cell.pop .spark{position:absolute;left:50%;top:50%;width:5px;height:5px;margin:-2.5px;border-radius:50%;
+  background:#fde047;box-shadow:0 0 6px #facc15;pointer-events:none;
+  animation:spark .5s ease-out forwards}
+@keyframes spark{0%{transform:translate(0,0) scale(1);opacity:1}
+  100%{transform:translate(var(--dx),var(--dy)) scale(.2);opacity:0}}
 #over{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;
-  background:rgba(8,10,25,.86);backdrop-filter:blur(3px);border-radius:14px;text-align:center;gap:6px;z-index:5}
+  background:rgba(8,10,25,.86);backdrop-filter:blur(3px);border-radius:14px;text-align:center;gap:6px;z-index:5;
+  animation:fadein .5s ease-out}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
 #over h2{margin:0;font-size:1.5rem;background:linear-gradient(135deg,#22d3ee,#f472b6);
-  -webkit-background-clip:text;background-clip:text;color:transparent}
-#over p{margin:0 0 10px;color:#94a3b8}
-#over button{font:inherit;font-weight:700;padding:11px 26px;border:0;border-radius:10px;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:drop .55s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes drop{from{transform:translateY(-40px) scale(.7);opacity:0}to{transform:none;opacity:1}}
+#over p{margin:0 0 10px;color:#94a3b8;animation:fadein .5s .25s ease-out both}
+#over button{font:inherit;font-weight:700;min-height:44px;padding:11px 26px;border:0;border-radius:10px;
   background:linear-gradient(135deg,#22d3ee,#a78bfa);color:#0b1020;cursor:pointer;
-  box-shadow:0 0 16px rgba(34,211,238,.4)}
-#msg{margin-top:12px;font-size:.85rem;color:#7c8db5;letter-spacing:.4px}
+  box-shadow:0 0 16px rgba(34,211,238,.4);animation:fadein .5s .4s ease-out both}
+#msg{margin-top:12px;font-size:.85rem;color:#7c8db5;letter-spacing:.4px;text-align:center;padding:0 10px}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
+}
 .t2{background:#1f2c50;color:#c7d4ff}.t4{background:#1c3a55;color:#a5e3ff}
 .t8{background:linear-gradient(135deg,#155e75,#0891b2);color:#fff}
 .t16{background:linear-gradient(135deg,#0891b2,#22d3ee);color:#062a33}
@@ -47,17 +66,30 @@ html,body{margin:0;min-height:100%;background:radial-gradient(120% 90% at 50% 0%
 </head>
 <body>
 <div id="top">
-  <div class="chip">SCORE <b id="sc">0</b><span id="gain"></span></div>
-  <div class="chip">BEST <b id="bs">0</b></div>
-  <button id="again">↻ New game</button>
+  <div class="chip" id="chipSc"><span id="lb-sc">SCORE</span> <b id="sc">0</b><span id="gain"></span></div>
+  <div class="chip"><span id="lb-bs">BEST</span> <b id="bs">0</b></div>
+  <button id="again">↻ <span id="lb-again">New game</span></button>
 </div>
 <div id="grid"></div>
 <div id="msg">arrow keys / WASD — swipe on mobile · merge to 2048</div>
 <script>
 'use strict';
-let grid,score,dead,best=0,lastGain=0;
+/* i18n — np_lang 与站点切换器共用 */
+var L={zh:{score:"得分",best:"最佳",again:"新游戏",msg:"方向键 / WASD — 手机滑动方块 · 合成 2048",
+  over:"无路可走了",overP:function(s,m){return "得分 "+s+" · 最大方块 "+m;}},
+  en:{score:"SCORE",best:"BEST",again:"New game",msg:"arrow keys / WASD — swipe on mobile · merge to 2048",
+  over:"No moves left",overP:function(s,m){return "score "+s+" · best tile "+m;}}};
+var lang=(localStorage.getItem("np_lang")||"en").slice(0,2);
+var t=function(k){return (L[lang]||L.en)[k]||k};
+document.getElementById('lb-sc').textContent=t('score');
+document.getElementById('lb-bs').textContent=t('best');
+document.getElementById('lb-again').textContent=t('again');
+document.getElementById('msg').textContent=t('msg');
+
+let grid,score,dead,best=parseInt(localStorage.getItem("np_2048_best")||"0",10)||0,lastGain=0;
 const g=document.getElementById('grid');
-function reset(){grid=Array.from({length:4},()=>[0,0,0,0]);score=0;dead=false;
+function reset(){grid=Array.from({length:4},()=>[0,0,0,0]);score=0;dead=false;g.classList.remove('dead');
+  const old=g.querySelector('#over');if(old)old.remove();
   const a=add(),b=add();render([],b||a);}
 function add(){
   const empty=[];grid.forEach((r,i)=>r.forEach((v,j)=>{if(!v)empty.push([i,j]);}));
@@ -66,22 +98,35 @@ function add(){
   grid[i][j]=Math.random()<0.9?2:4;
   return [i,j];
 }
+/* 合并格爆花: 6 粒金色火花随机方向 */
+function sparks(d){
+  for(let i=0;i<6;i++){
+    const s=document.createElement('span');s.className='spark';
+    const a=Math.random()*6.28,r=18+Math.random()*16;
+    s.style.setProperty('--dx',(Math.cos(a)*r).toFixed(1)+'px');
+    s.style.setProperty('--dy',(Math.sin(a)*r).toFixed(1)+'px');
+    d.appendChild(s);setTimeout(function(){s.remove();},560);
+  }
+}
 function render(merges,spawn){
   g.querySelectorAll('.cell').forEach(c=>c.remove());
   grid.forEach((r,i)=>r.forEach((v,j)=>{
     const d=document.createElement('div');d.className='cell';
     if(v){
       const c='t'+(v>2048?'big':v);d.classList.add(c.includes(' ')?'tbig':c);d.textContent=v;
-      if(merges&&merges.some(m=>m[0]===i&&m[1]===j))d.classList.add('pop');
+      if(merges&&merges.some(m=>m[0]===i&&m[1]===j)){d.classList.add('pop');sparks(d);}
       if(spawn&&spawn[0]===i&&spawn[1]===j)d.classList.add('spawn');
     }
     g.appendChild(d);
   }));
-  document.getElementById('sc').textContent=score;
+  const sc=document.getElementById('sc');
+  sc.textContent=score;
   document.getElementById('bs').textContent=best;
   if(lastGain>0){
     const el=document.getElementById('gain');
     el.textContent='+'+lastGain;el.classList.remove('show');void el.offsetWidth;el.classList.add('show');
+    const chip=document.getElementById('chipSc');
+    chip.classList.add('bump');setTimeout(function(){chip.classList.remove('bump');},160);
     lastGain=0;
   }
 }
@@ -129,25 +174,27 @@ function canMove(){
   }
   return false;
 }
-function gameOver(){dead=true;
+function saveBest(){try{localStorage.setItem("np_2048_best",String(best));}catch(e){}}
+function gameOver(){dead=true;saveBest();
+  g.classList.add('dead');
   const o=document.createElement('div');o.id='over';
-  var _zh=(localStorage.getItem("np_lang")||"").indexOf("zh")===0;
-  o.innerHTML=_zh
-    ?`<h2>无路可走了</h2><p>得分 ${score} · 最大方块 ${Math.max(...grid.flat())}</p><button onclick="location.reload()">再来一局</button>`
-    :`<h2>No moves left</h2><p>score ${score} · best tile ${Math.max(...grid.flat())}</p><button onclick="location.reload()">Play again</button>`;
+  o.innerHTML=`<h2>${t('over')}</h2><p>${t('overP')(score,Math.max(...grid.flat()))}</p><button onclick="location.reload()">${t('again')}</button>`;
   g.appendChild(o);o.style.display='flex';
 }
 const K={ArrowLeft:'l',ArrowRight:'r',ArrowUp:'u',ArrowDown:'d',a:'l',d:'r',w:'u',s:'d'};
 addEventListener('keydown',e=>{const k=K[e.key]||K[e.key.toLowerCase&&e.key.toLowerCase()];if(k){e.preventDefault();move(k);}});
-let tx=null,ty=null;
-addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
-addEventListener('touchend',e=>{
-  if(tx===null)return;
-  const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;
+/* 统一 pointer 滑动(鼠标+触屏), pointercancel 复位 */
+let px0=null,py0=null;
+addEventListener('pointerdown',e=>{px0=e.clientX;py0=e.clientY;},{passive:true});
+addEventListener('pointerup',e=>{
+  if(px0===null)return;
+  const dx=e.clientX-px0,dy=e.clientY-py0;px0=null;
   if(Math.abs(dx)<20&&Math.abs(dy)<20)return;
-  move(Math.abs(dx)>Math.abs(dy)?(dx>0?'r':'l'):(dy>0?'d':'u'));tx=null;
+  move(Math.abs(dx)>Math.abs(dy)?(dx>0?'r':'l'):(dy>0?'d':'u'));
 },{passive:true});
+addEventListener('pointercancel',()=>{px0=null;py0=null;},{passive:true});
 document.getElementById('again').addEventListener('click',reset);
+addEventListener('beforeunload',saveBest);
 reset();
 </script>
 </body>
