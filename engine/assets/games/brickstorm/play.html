@@ -195,7 +195,7 @@ function gameLoop(t){
   var steps=Math.floor(acc);acc-=steps;
   for(var s=0;s<steps;s++)step();
   waveTimer+=dt;
-  if(waveTimer>=8*60){waveTimer=0;wave++;spawnWave();hud();}
+  if(waveTimer>=8*60){waveTimer=0;wave++;spawnWave();pushDown();hud();}
   if(comboT>0){comboT-=dt;if(comboT<=0)combo=1;}
   // particles
   particles=particles.filter(function(p){return p.life>0;});
@@ -270,8 +270,7 @@ function step(){
       }
     }
   }
-  // brick pushdown check (every 8 seconds worth of frames)
-  if(waveTimer%480<1&&bricks.length)pushDown();
+  // brick pushdown 由波次推进触发(gameLoop), 避免首帧 waveTimer=0 误触发破坏每日同题
 }
 function burst(x,y,c,n){
   for(var i=0;i<n;i++){
