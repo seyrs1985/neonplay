@@ -48,6 +48,11 @@ html,body{margin:0;min-height:100%;background:radial-gradient(120% 90% at 50% 0%
   background:linear-gradient(135deg,#22d3ee,#a78bfa);color:#0b1020;cursor:pointer;
   box-shadow:0 0 16px rgba(34,211,238,.4);animation:fadein .5s .4s ease-out both}
 #msg{margin-top:12px;font-size:.85rem;color:#7c8db5;letter-spacing:.4px;text-align:center;padding:0 10px}
+/* 达成 2048 彩带 */
+.cf{position:fixed;top:-4%;width:8px;height:12px;border-radius:2px;pointer-events:none;z-index:30;
+  animation:cfall 1.2s ease-in forwards}
+@keyframes cfall{0%{transform:translate(0,0) rotate(0);opacity:1}
+  100%{transform:translate(var(--dx),58vh) rotate(540deg);opacity:0}}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
 }
@@ -86,7 +91,19 @@ document.getElementById('lb-bs').textContent=t('best');
 document.getElementById('lb-again').textContent=t('again');
 document.getElementById('msg').textContent=t('msg');
 
-let grid,score,dead,best=parseInt(localStorage.getItem("np_2048_best")||"0",10)||0,lastGain=0;
+let grid,score,dead,best=parseInt(localStorage.getItem("np_2048_best")||"0",10)||0,lastGain=0,reached2048=false;
+function confettiBurst(){
+  var cols=["#facc15","#f472b6","#22d3ee","#a78bfa"];
+  for(var i=0;i<34;i++){
+    var f=document.createElement("span");f.className="cf";
+    f.style.left=(Math.random()*100)+"%";
+    f.style.background=cols[(Math.random()*cols.length)|0];
+    f.style.setProperty("--dx",((Math.random()-.5)*90).toFixed(0)+"px");
+    f.style.animationDelay=(Math.random()*.4).toFixed(2)+"s";
+    document.body.appendChild(f);
+    (function(el){setTimeout(function(){el.remove();},1800);})(f);
+  }
+}
 const g=document.getElementById('grid');
 function reset(){grid=Array.from({length:4},()=>[0,0,0,0]);score=0;dead=false;g.classList.remove('dead');
   const old=g.querySelector('#over');if(old)old.remove();
@@ -136,7 +153,8 @@ function slide(row){
     if(a[i]===a[i+1]){
       merged.push(out.length);
       lastGain+=a[i]*2;
-      out.push(a[i]*2);score+=a[i]*2;if(a[i]*2>best)best=a[i]*2;i++;
+      out.push(a[i]*2);score+=a[i]*2;if(a[i]*2>best)best=a[i]*2;
+      if(a[i]*2>=2048&&!reached2048){reached2048=true;confettiBurst();}i++;
     }
     else out.push(a[i]);
   }
