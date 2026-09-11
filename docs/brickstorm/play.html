@@ -27,6 +27,10 @@ canvas{width:100%;height:100%;display:block;border-radius:8px;touch-action:none}
 .upbtn .un{font-weight:800;font-size:.95rem}
 .upbtn .ud{font-size:.78rem;opacity:.65;margin-top:2px}
 .upbtn .ui{margin-right:8px}
+.modebtn{min-height:48px;padding:13px 14px;text-align:center}
+.modebtn.daily{border-color:#ffd54a;background:rgba(64,52,10,.55)}
+.modebtn.daily:hover{border-color:#ffd54a;background:rgba(255,213,74,.16)}
+.modebtn .tag{display:block;font-size:.72rem;opacity:.65;margin-top:2px;font-weight:400}
 </style>
 </head>
 <body>
@@ -34,28 +38,55 @@ canvas{width:100%;height:100%;display:block;border-radius:8px;touch-action:none}
 <canvas id="cv"></canvas>
 <div id="hud"><span id="h-score">0</span><span id="h-wave">W1</span><span id="h-lives">♥♥♥</span></div>
 <div id="xpbar"><div id="xpfill"></div></div>
+<div class="panel" id="startpanel">
+  <h2>🧱 BRICKSTORM</h2>
+  <p class="sub" id="startsub">Tap to start</p>
+  <button class="upbtn modebtn" id="btnClassic"><span class="un" id="lbClassic">CLASSIC</span><span class="tag" id="tagClassic"></span></button>
+  <button class="upbtn modebtn daily" id="btnDaily"><span class="un" style="color:#ffd54a" id="lbDaily">DAILY</span><span class="tag" id="tagDaily"></span></button>
+</div>
 <div class="panel" id="lvpanel">
-  <h2>⬆ LEVEL UP</h2><p class="sub">Choose one upgrade</p>
+  <h2 id="lvTitle">⬆ LEVEL UP</h2><p class="sub" id="lvSub">Choose one upgrade</p>
   <div id="upbtns"></div>
 </div>
 <div class="panel" id="govpanel">
-  <h2>💀 GAME OVER</h2>
+  <h2 id="govTitle">💀 GAME OVER</h2>
   <p class="sub" id="govstats"></p>
-  <button class="upbtn" id="retry" style="text-align:center"><span class="un">↻ RETRY</span></button>
+  <button class="upbtn modebtn" id="retry"><span class="un">↻ <span id="lbRetry">RETRY</span></span></button>
 </div>
 </div>
 <script>
 "use strict";
 var W=480,H=720;
+
+// ---- i18n (np_lang 与站点切换器共用) ----
+var L={
+ en:{classic:"CLASSIC",tagClassic:"endless waves",daily:"DAILY",tagDaily:"same board for everyone today",
+   tapStart:"pick a mode to start",lvl:"⬆ LEVEL UP",choose:"Choose one upgrade",over:"💀 GAME OVER",
+   score:"Score",wave:"Wave",best:"Best",todayBest:"Today's Best",
+   comeBack:"Come back tomorrow for a new board",retry:"RETRY"},
+ zh:{classic:"经典模式",tagClassic:"无尽波次",daily:"每日挑战",tagDaily:"今日全球同题",
+   tapStart:"选择模式开始",lvl:"⬆ 升级！",choose:"选择一个强化",over:"💀 游戏结束",
+   score:"得分",wave:"波次",best:"最佳",todayBest:"今日最佳",
+   comeBack:"明天再来挑战新棋盘吧",retry:"再来一局"}
+};
+var lang=(localStorage.getItem("np_lang")||"en").slice(0,2);
+var t=function(k){return (L[lang]||L.en)[k]||k;};
+
+// ---- daily seed: mulberry32 + FNV-1a(YYYY-MM-DD) ----
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var x=Math.imul(a^a>>>15,1|a);x=x+Math.imul(x^x>>>7,61|x)^x;return((x^x>>>14)>>>0)/4294967296;};}
+function hashStr(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+function todayStr(){var d=new Date();return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2);}
+
 var cv=document.getElementById("cv"),ctx=cv.getContext("2d");
 var dpr=Math.min(devicePixelRatio||1,2);
 cv.width=W*dpr;cv.height=H*dpr;
 
 // ---- state ----
 var state="title"; // title|play|levelup|over
+var dailyMode=false,dailyRng=null;
 var paddle,balls,bricks,orbs,particles,floats,wave,waveTimer,
     score,combo,comboT,lives,xp,xpNeed,xpLvl,dmg,pierce,paddleW,
-    bestS=0,bestW=0,keys={};
+    bestS=0,bestW=0,keys={},shake=0,flash=0;
 try{bestS=+localStorage.bs||0;bestW=+localStorage.bw||0;}catch(e){}
 
 var UPGRADES=[
@@ -72,6 +103,8 @@ function initRun(){
   paddle={x:(W-paddleW)/2,y:H-52,w:paddleW,h:12};
   balls=[];spawnBall(W/2,H-80);
   bricks=[];orbs=[];particles=[];floats=[];
+  // 每次开局重置种子流: 同一天两次 DAILY, 波次序列完全一致
+  dailyRng=dailyMode?mulberry32(hashStr(todayStr())):null;
   wave=1;waveTimer=0;score=0;combo=1;comboT=0;lives=3;
   xp=0;xpNeed=xpCurve(1);xpLvl=1;dmg=1;pierce=0;
   spawnWave();
@@ -85,8 +118,13 @@ function spawnWave(){
   var rows=Math.min(2+Math.floor((wave-1)/3),6);
   var hpBase=Math.min(1+Math.floor((wave-1)/2),9);
   var cols=8,bw=(W-20)/cols,bh=26;
+  // DAILY: 种子只注入波次生成器(空位稀疏化+HP±1浮动), 同日同题; CLASSIC 保持原样
+  var rng=(dailyMode&&dailyRng)?dailyRng:null;
   for(var r=0;r<rows;r++)for(var c=0;c<cols;c++){
-    var hp=hpBase-(r<2?1:0);if(hp<1)hp=1;
+    if(rng&&rng()<0.18)continue;
+    var hp=hpBase-(r<2?1:0);
+    if(rng)hp+=Math.floor(rng()*3)-1;
+    if(hp<1)hp=1;
     var col=hp<=2?"#ff2d95":hp<=4?"#7c4dff":"#ffd54a";
     bricks.push({x:10+c*bw,y:-rows*bh+r*bh+60,w:bw-4,h:bh-4,hp:hp,maxHp:hpBase,color:col,pts:hp*10});
   }
@@ -124,15 +162,26 @@ function showUpgrades(){
 function hidePanels(){document.querySelectorAll(".panel").forEach(function(p){p.classList.remove("show");});}
 function gameOver(){
   state="over";
-  bestS=Math.max(bestS,score);bestW=Math.max(bestW,wave);
-  try{localStorage.bs=bestS;localStorage.bw=bestW;}catch(e){}
-  document.getElementById("govstats").innerHTML=
-    "Score <b style='color:#facc15'>"+score+"</b> · Wave <b style='color:#22d3ee'>"+wave+"</b><br>Best: "+bestS+" (W"+bestW+")";
+  var stats;
+  if(dailyMode){
+    var tk="brickstorm_daily_best_"+todayStr();
+    var prev=0;try{prev=+localStorage.getItem(tk)||0;}catch(e){}
+    var db=Math.max(prev,score);
+    try{localStorage.setItem(tk,String(db));}catch(e){}
+    stats=t("score")+" <b style='color:#facc15'>"+score+"</b> · "+t("wave")+" <b style='color:#22d3ee'>"+wave+"</b><br>"+
+      t("todayBest")+": "+db+"<br><span style='color:#ffd54a;font-size:.8rem'>"+t("comeBack")+"</span>";
+  }else{
+    bestS=Math.max(bestS,score);bestW=Math.max(bestW,wave);
+    try{localStorage.bs=bestS;localStorage.bw=bestW;}catch(e){}
+    stats=t("score")+" <b style='color:#facc15'>"+score+"</b> · "+t("wave")+" <b style='color:#22d3ee'>"+wave+"</b><br>"+
+      t("best")+": "+bestS+" (W"+bestW+")";
+  }
+  document.getElementById("govstats").innerHTML=stats;
   document.getElementById("govpanel").classList.add("show");
 }
 function hud(){
-  document.getElementById("h-score").textContent="Score "+score+(combo>1?" ×"+combo.toFixed(1):"");
-  document.getElementById("h-wave").textContent="W"+wave;
+  document.getElementById("h-score").textContent=t("score")+" "+score+(combo>1?" ×"+combo.toFixed(1):"");
+  document.getElementById("h-wave").textContent=(dailyMode?"D":"W")+wave;
   document.getElementById("h-lives").textContent="♥".repeat(Math.max(0,lives));
 }
 
@@ -141,7 +190,7 @@ var acc=0,lastT=0;
 function gameLoop(t){
   requestAnimationFrame(gameLoop);
   var dt=Math.min((t-lastT)/16.67,3);lastT=t;
-  if(state!=="play")return;
+  if(state!=="play"){if(bricks)draw(t);return;}
   acc+=dt;
   var steps=Math.floor(acc);acc-=steps;
   for(var s=0;s<steps;s++)step();
@@ -161,6 +210,7 @@ function gameLoop(t){
     else o.y+=1.8;
     if(d<16){o.got=true;addXp(1);score+=2;}
   });
+  draw(t);
 }
 function step(){
   // paddle keys
@@ -294,16 +344,32 @@ function draw(t){
   ctx.restore();
 }
 
-function hud(){
-  document.getElementById("h-score").textContent="Score "+score+(combo>1?" ×"+combo.toFixed(1):"");
-  document.getElementById("h-wave").textContent="W"+wave;
-  document.getElementById("h-lives").textContent="♥".repeat(Math.max(0,lives));
-}
-
 // ---- boot ----
-var started=false;
-function boot(){if(!started){started=true;initRun();state="play";}}
+function startRun(daily){
+  dailyMode=daily;
+  hidePanels();initRun();state="play";
+}
+// 初始面板与文案(i18n)
+(function initStartPanel(){
+  document.getElementById("lbClassic").textContent=t("classic");
+  document.getElementById("tagClassic").textContent=t("tagClassic");
+  document.getElementById("lbDaily").textContent=t("daily")+" · "+todayStr();
+  document.getElementById("tagDaily").textContent=t("tagDaily");
+  document.getElementById("startsub").textContent=t("tapStart");
+  document.getElementById("lvTitle").textContent=t("lvl");
+  document.getElementById("lvSub").textContent=t("choose");
+  document.getElementById("govTitle").textContent=t("over");
+  document.getElementById("lbRetry").textContent=t("retry");
+  document.getElementById("startpanel").classList.add("show");
+})();
+document.getElementById("btnClassic").addEventListener("click",function(e){e.stopPropagation();startRun(false);});
+document.getElementById("btnDaily").addEventListener("click",function(e){e.stopPropagation();startRun(true);});
 document.addEventListener("keydown",function(e){
+  if(state==="title"){
+    if(e.code==="KeyC")startRun(false);
+    if(e.code==="KeyD")startRun(true);
+    return;
+  }
   if(e.code==="ArrowLeft"||e.code==="KeyA")keys.l=true;
   if(e.code==="ArrowRight"||e.code==="KeyD")keys.r=true;
   if(e.code==="KeyP"||e.code==="Escape"){
@@ -322,7 +388,7 @@ function movePaddle(clientX){
   paddle.x=Math.max(2,Math.min(W-paddle.w-2,paddle.x));
 }
 cv.addEventListener("pointermove",function(e){if(state==="play")movePaddle(e.clientX);});
-cv.addEventListener("pointerdown",function(e){boot();if(state==="play")movePaddle(e.clientX);});
+cv.addEventListener("pointerdown",function(e){if(state==="play")movePaddle(e.clientX);});
 document.getElementById("retry").addEventListener("click",function(e){
   e.stopPropagation();hidePanels();initRun();state="play";
 });
@@ -331,15 +397,8 @@ var wrapEl=document.getElementById("wrap")||cv.parentElement;
 // draw title screen initially
 ctx.setTransform(dpr,0,0,dpr,0,0);
 ctx.fillStyle="#0a0a18";ctx.fillRect(0,0,W,H);
-ctx.fillStyle="#22d3ee";ctx.font="bold 28px system-ui";ctx.textAlign="center";
-ctx.fillText("🧱 BRICKSTORM",W/2,H/2-20);
-ctx.fillStyle="#94a3b8";ctx.font="14px system-ui";
-ctx.fillText("Tap to start",W/2,H/2+16);
-requestAnimationFrame(function loop(t){
-  if(state==="play"){gameLoop(t);}
-  else draw(t);
-  requestAnimationFrame(loop);
-});
+// 单一 rAF 链: gameLoop 自续, play 态步进+绘制, 其余态仅绘制
+requestAnimationFrame(gameLoop);
 </script>
 </body>
 </html>

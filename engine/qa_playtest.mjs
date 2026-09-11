@@ -132,6 +132,17 @@ async function main() {
   await cdp.send("Page.enable");
   await cdp.send("Runtime.enable");
   await cdp.send("Log.enable");
+  // Headless rAF shim: new-headless may never fire requestAnimationFrame,
+  // which freezes every canvas game loop and breaks responsiveness checks.
+  // QA-only: drive rAF callbacks via a ~60fps setTimeout pump.
+  await cdp.send("Page.addScriptToEvaluateOnNewDocument", { source: `
+    (function () {
+      if (window.__qaRafShim) return; window.__qaRafShim = true;
+      window.requestAnimationFrame = function (cb) {
+        return setTimeout(function () { cb(performance.now()); }, 16);
+      };
+      window.cancelAnimationFrame = function (id) { clearTimeout(id); };
+    })();` });
 
   const evaluate = async expr => {
     const r = await cdp.send("Runtime.evaluate", { expression: expr, returnByValue: true, awaitPromise: true });
