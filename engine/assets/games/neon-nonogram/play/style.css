@@ -1,0 +1,81 @@
+html,body{margin:0;padding:0;min-height:100%;background:radial-gradient(120% 90% at 50% 0%,#141d42 0%,#0a0a18 70%);
+  color:#e2e8f0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  display:flex;flex-direction:column;align-items:center;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#stage{width:min(96vw,560px);display:flex;flex-direction:column;align-items:center}
+#topbar{display:flex;gap:8px;align-items:center;margin:10px 0 8px;flex-wrap:wrap;justify-content:center}
+.tab{font:inherit;font-size:.88rem;font-weight:700;min-height:44px;padding:8px 16px;border:1px solid #2b3564;
+  background:rgba(20,26,53,.85);color:#94a3b8;border-radius:999px;cursor:pointer;transition:all .2s}
+.tab.on{background:linear-gradient(135deg,#22d3ee,#a78bfa);border-color:transparent;color:#0b1020;
+  box-shadow:0 0 14px rgba(34,211,238,.35)}
+.chip{background:rgba(20,26,53,.85);border:1px solid #2b3564;border-radius:999px;padding:6px 14px;font-size:.88rem;font-weight:700}
+.chip b{color:#22d3ee}
+/* 每日金框卡 */
+#dailyCard{display:none;align-items:center;gap:10px;width:min(92vw,520px);box-sizing:border-box;
+  background:rgba(64,52,10,.35);border:1px solid rgba(250,204,21,.5);border-radius:12px;
+  padding:9px 16px;margin-bottom:8px;box-shadow:0 0 16px rgba(250,204,21,.15)}
+#dailyCard.show{display:flex}
+#dailyCard.show.already{border-color:#39ff88;box-shadow:0 0 12px rgba(57,255,136,.2)}
+#dEmoji{font-size:1.5rem}
+#dName{font-weight:800}
+#dTag{font-size:.72rem;opacity:.65;margin-left:auto}
+/* 棋盘（6×6 表格：0 行/列为线索表头） */
+#boardwrap{overflow-x:auto;max-width:96vw}
+#board{border-collapse:separate;border-spacing:3px;background:rgba(20,26,53,.85);
+  border:1px solid rgba(34,211,238,.2);border-radius:14px;padding:8px;
+  box-shadow:0 0 28px rgba(34,211,238,.1),0 10px 40px rgba(0,0,0,.5)}
+#board td{width:38px;height:38px;min-width:38px;border-radius:7px;text-align:center;vertical-align:middle;
+  font-weight:800;font-size:.8rem;color:#00e5ff;font-family:ui-monospace,Consolas,monospace;
+  text-shadow:0 0 6px rgba(0,229,255,.5);white-space:nowrap}
+#board td.clue{background:transparent;cursor:default}
+#board td.clue.dim{opacity:.3;text-shadow:none}
+#board td.cell{background:rgba(255,255,255,.05);border:1px solid #1e2a4a;cursor:pointer;
+  transition:background .12s,transform .1s;font-size:1rem}
+#board td.cell:hover{background:rgba(34,211,238,.12)}
+#board td.cell.fill{background:var(--c,#00e5ff);border-color:transparent;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 0 8px var(--c,#00e5ff);animation:fillin .18s ease-out}
+#board td.cell.mark{background:rgba(255,45,149,.16);color:rgba(255,45,149,.8);text-shadow:none}
+#board td.cell.err{animation:errflash .5s ease 2}
+@keyframes fillin{from{transform:scale(.5)}60%{transform:scale(1.15)}to{transform:scale(1)}}
+@keyframes errflash{0%,100%{background:rgba(255,45,149,.16)}50%{background:rgba(255,45,149,.65);color:#fff}}
+#board.corner{background:transparent;border:none;box-shadow:none}
+#msg{min-height:22px;margin:8px 0;font-size:.9rem;text-align:center;font-weight:600}
+#ctrl{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;justify-content:center}
+.act{font:inherit;font-weight:800;min-height:44px;padding:10px 20px;border-radius:10px;cursor:pointer;
+  border:1px solid #2b3564;background:rgba(20,26,53,.85);color:#94a3b8}
+.act.primary{background:linear-gradient(135deg,#22d3ee,#a78bfa);color:#0b1020;border-color:transparent;
+  box-shadow:0 0 14px rgba(34,211,238,.35)}
+.act.danger{color:#ff8fb3}
+.act.danger:hover{border-color:#ff2d95}
+#wallTitle{width:min(92vw,520px);font-weight:800;font-size:.9rem;opacity:.85;margin:6px 0}
+#wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px;width:min(92vw,520px);margin-bottom:24px}
+.gcell{border-radius:10px;background:rgba(20,26,53,.7);border:1px solid #1c2450;padding:8px 4px;text-align:center;min-height:76px}
+.gcell .em{font-size:1.5rem;display:block}
+.gcell .nm{font-size:.62rem;opacity:.8}
+.gcell.locked{opacity:.35;font-size:1.1rem}
+.gcell.fresh{animation:gpop .5s cubic-bezier(.2,1.5,.4,1)}
+@keyframes gpop{from{transform:scale(.5)}to{transform:scale(1)}}
+#wall.complete{border:2px solid #ffd54a;border-radius:14px;padding:8px;
+  box-shadow:0 0 24px rgba(250,204,21,.4)}
+/* 完成面板 */
+.overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  background:rgba(5,5,20,.88);backdrop-filter:blur(4px);z-index:20}
+.overlay.hide{display:none}
+.panel{background:rgba(20,26,53,.95);border:1px solid rgba(34,211,238,.4);border-radius:16px;
+  padding:26px 34px;text-align:center;animation:panelin .45s cubic-bezier(.2,1.4,.4,1)}
+@keyframes panelin{from{transform:translateY(30px) scale(.8);opacity:0}to{transform:none;opacity:1}}
+.panel h2{margin:0 0 10px;font-size:1.4rem;background:linear-gradient(135deg,#22d3ee,#a78bfa);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+#uPix{display:grid;grid-template-columns:repeat(5,16px);gap:2px;justify-content:center;margin:8px 0 12px}
+#uPix i{width:16px;height:16px;border-radius:3px;background:#1c2450;animation:pixin .3s ease-out both}
+@keyframes pixin{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+#uName{font-weight:800;font-size:1.05rem;margin:0 0 12px}
+.panel button{font:inherit;font-weight:800;min-height:44px;padding:10px 30px;border:0;border-radius:10px;
+  background:linear-gradient(135deg,#22d3ee,#a78bfa);color:#0b1020;cursor:pointer;
+  box-shadow:0 0 14px rgba(34,211,238,.35)}
+.cf{position:fixed;top:-4%;width:8px;height:12px;border-radius:2px;pointer-events:none;z-index:21;
+  animation:cfall 1.2s ease-in forwards}
+@keyframes cfall{0%{transform:translate(0,0) rotate(0);opacity:1}
+  100%{transform:translate(var(--dx),58vh) rotate(540deg);opacity:0}}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
+}

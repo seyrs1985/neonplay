@@ -462,12 +462,30 @@ GAMES = [
              "No. Everything runs 100% locally in your browser; your best score never leaves your device."),
         ],
     },
+    {
+        "slug": "neon-nonogram",
+        "play": "play/",
+        "title": "Neon Nonogram — Free Online Picture Logic Puzzle (No Ads, No Guessing, Daily Puzzle)",
+        "h1": "Neon Nonogram",
+        "tagline": "Use the row and column number clues to fill cells and reveal hidden neon pixel art — 12 solver-verified puzzles you can finish by pure logic, plus a daily board.",
+        "desc": "Free online nonogram (picross) puzzle: zero guessing, no ads, no timer. Fill cells by pure logic using row and column clues, reveal neon pixel art, collect all 12 gallery pictures and come back for the daily board.",
+        "emoji": "🕶️",
+        "howto": [
+            "Numbers beside each row and column tell you the runs of filled cells — '2 1' means a block of 2, then a gap, then a single.",
+            "Tap a cell to fill it, tap again to mark a cross (definitely empty), tap again to clear.",
+            "Fill every correct cell to reveal the hidden pixel art — wrong cells flash red on check and can be fixed.",
+            "Solve puzzles to grow your gallery, and come back daily for the featured board — same picture for everyone.",
+        ],
+        "controls": "Tap cells to cycle fill / cross / clear. Keyboard: arrows + Space cycle, X marks a cross, Enter checks.",
+        "faqs": [
+            ("What is Neon Nonogram?",
+             "A free picture-logic puzzle: use the row and column number clues to fill cells and reveal hidden neon pixel art. No download, no account, plays in any browser."),
+            ("Do I ever need to guess?",
+             "Never. All 12 puzzles are solver-verified to be solvable by pure logic, step by step — a fairness promise most nonogram apps can't make."),
+            ("Is it really ad-free?",
+             "Yes. No interstitials, no energy systems, no paywalls; your gallery progress saves automatically in your browser."),
+            ("Can I play on mobile?",
+             "Yes: big touch-friendly cells, three-tap marking (fill / cross / clear), full keyboard support on desktop, and a new daily picture every day."),
+        ],
+    },
 ]
-# Slugs with translated how-to/FAQ prose in engine/_i18n_prose.json (kept in
-# sync by the i18n audit). Landing pages emit data-i18n only for these.
-try:
-    import json as _json, os as _os
-    with open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "_i18n_prose.json"), encoding="utf-8") as _f:
-        PROSE_SLUGS = set(_json.load(_f).keys())
-except Exception:
-    PROSE_SLUGS = set()

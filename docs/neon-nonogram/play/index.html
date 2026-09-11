@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Neon Nonogram</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="stage">
+  <div id="topbar">
+    <button id="tab-lib" class="tab on"></button>
+    <button id="tab-daily" class="tab"></button>
+    <div id="progress" class="chip">0/12</div>
+  </div>
+  <div id="dailyCard" class="hide"><span id="dEmoji"></span><span id="dName"></span><span id="dTag"></span></div>
+  <div id="boardwrap">
+    <table id="board"></table>
+  </div>
+  <div id="msg"></div>
+  <div id="ctrl">
+    <button id="checkBtn" class="act primary"></button>
+    <button id="wallBtn" class="act"></button>
+    <button id="resetBtn" class="act danger"></button>
+  </div>
+  <div id="wallTitle"></div>
+  <div id="wall"></div>
+</div>
+<div id="unlock" class="overlay hide">
+  <div class="panel">
+    <h2 id="uTitle">PICTURE UNLOCKED</h2>
+    <div id="uPix"></div>
+    <p id="uName"></p>
+    <button id="uClose"></button>
+  </div>
+</div>
+<script src="np_core.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
