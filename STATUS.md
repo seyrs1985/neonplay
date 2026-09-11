@@ -44,3 +44,4 @@
 - 2026-09-11-1750 · i18n轮:Memory Pairs 游戏内文案中文化(HUD MOVES/PAIRS/TIME标签+np_lang联动站点切换器);JS语法OK。
 - 2026-09-11-1800 · 美术升级轮:全站CSS细节打磨——smooth scroll/hero辉光文字/卡片hover浮起+emoji放大/SEO块玻璃底/FAQ左边线/移动端字号适配;全站10页受益;线上 200。
 - 2026-09-11-1815 · i18n轮:Tic Tac Toe 游戏内文案中文化(HUD状态/计分标签/模式按钮 np_lang 联动);JS语法OK,线上 200。
+- 2026-09-11-1910 · 美术升级轮:Minesweeper CSS修复——清理孤立CSS/合并hover/恢复flex居中;线上 play.html 200,radial-gradient+hover确认。
