@@ -131,7 +131,10 @@ function canMove(){
 }
 function gameOver(){dead=true;
   const o=document.createElement('div');o.id='over';
-  o.innerHTML=`<h2>No moves left</h2><p>score ${score} · best tile ${Math.max(...grid.flat())}</p><button onclick="location.reload()">Play again</button>`;
+  var _zh=(localStorage.getItem("np_lang")||"").indexOf("zh")===0;
+  o.innerHTML=_zh
+    ?`<h2>无路可走了</h2><p>得分 ${score} · 最大方块 ${Math.max(...grid.flat())}</p><button onclick="location.reload()">再来一局</button>`
+    :`<h2>No moves left</h2><p>score ${score} · best tile ${Math.max(...grid.flat())}</p><button onclick="location.reload()">Play again</button>`;
   g.appendChild(o);o.style.display='flex';
 }
 const K={ArrowLeft:'l',ArrowRight:'r',ArrowUp:'u',ArrowDown:'d',a:'l',d:'r',w:'u',s:'d'};
