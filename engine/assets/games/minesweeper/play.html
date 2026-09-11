@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 <title>Minesweeper</title>
 <style>
-  html,body{margin:0;padding:0;min-height:100%;background:#0b1020;color:#e2e8f0;
+  html,body{margin:0;padding:0;min-height:100%;background:radial-gradient(120% 90% at 50% 0%,#141d42 0%,#0a0a18 70%);color:#e2e8f0;
     font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
     touch-action:manipulation;-webkit-tap-highlight-color:transparent}
@@ -14,10 +14,16 @@
   #flagBtn{background:#141a35;border:1px solid #2b3564;border-radius:8px;color:#e2e8f0;
     font-size:15px;font-weight:700;padding:6px 14px;cursor:pointer}
   #flagBtn.on{background:#7c3aed;border-color:#a78bfa;color:#fff}
-  #grid{display:grid;grid-template-columns:repeat(9,1fr);gap:3px;background:#141a35;
-    padding:8px;border-radius:10px;border:1px solid #2b3564;width:min(92vw,396px)}
+  #grid{display:grid;grid-template-columns:repeat(9,1fr);gap:3px;background:rgba(20,26,53,.85);
+    padding:8px;border-radius:12px;border:1px solid rgba(34,211,238,.2);
+    box-shadow:0 0 28px rgba(34,211,238,.1),0 10px 40px rgba(0,0,0,.5);width:min(92vw,396px)}
   .cell{aspect-ratio:1;border:0;border-radius:5px;background:#232b52;color:#e2e8f0;
     font-size:clamp(13px,3.4vw,17px);font-weight:800;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;user-select:none;padding:0;
+    transition:background .15s,transform .1s}
+  .cell:hover:not(.open){background:#2d3768;transform:scale(1.05)}
+  .cell.open{animation:reveal .18s ease-out}
+  @keyframes reveal{from{transform:scale(.8);opacity:.4}to{transform:scale(1);opacity:1}}
     display:flex;align-items:center;justify-content:center;user-select:none;padding:0}
   .cell:hover{background:#2d3768}
   .cell.open{background:#101532;cursor:default;border:1px solid #1c2450}
