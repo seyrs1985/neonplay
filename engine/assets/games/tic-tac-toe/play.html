@@ -57,9 +57,12 @@ html,body{margin:0;min-height:100%;background:radial-gradient(120% 90% at 50% 0%
   <div class="chip">⭕ <b id="wo" class="pink">0</b></div>
   <div class="chip">🏆 <b id="wt" class="gold">0</b></div>
 </div>
-<button id="reset">↻ New round</button>
+<button id="reset">↻ 新回合</button>
 <script>
 'use strict';
+var L={zh:{yourTurn:"你的回合 — 你是 X",cpuThinking:"电脑思考中…",cpuWins:"电脑赢了 🤖",xWins:"X 赢了！🎉",oWins:"O 赢了！🎉",draw:"平局 🤝",oMove:"O 回合",newRound:"↻ 新回合"},en:{yourTurn:"Your turn — you are X",cpuThinking:"Computer thinking…",cpuWins:"Computer wins 🤖",xWins:"X wins! 🎉",oWins:"O wins! 🎉",draw:"It's a draw 🤝",oMove:"O to move",newRound:"↻ New round"}};
+var _lang=(localStorage.getItem("np_lang")||"en").slice(0,2);
+var _t=function(k){return(L[_lang]||L.en)[k]||k};
 const WINS=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
 let b,turn,over,aiMode=true,tally={x:0,o:0,d:0},streak=0;
 const g=document.getElementById('board'),st=document.getElementById('status');
@@ -120,7 +123,7 @@ function win(w,p){
   streak++;tally[p.toLowerCase()]++;tallyOut();
   st.textContent=(aiMode&&p==='O')?'Computer wins 🤖':(p+' wins! 🔥'+streak);
 }
-function drawEnd(){over=true;tally.d++;streak=0;tallyOut();st.textContent="It's a draw 🤝";}
+function drawEnd(){over=true;tally.d++;streak=0;tallyOut();st.textContent=_t('draw');}
 function tallyOut(){
   document.getElementById('wx').textContent=tally.x;
   document.getElementById('wo').textContent=tally.o;
