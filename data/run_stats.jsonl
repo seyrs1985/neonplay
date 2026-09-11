@@ -22,3 +22,4 @@
 {"time": "2026-09-11T18:20:54+08:00", "agent": "neonplay", "ok": true, "did": "全站CSS视觉打磨(hero渐变/卡片hover/FAQ样式/游戏站10页)", "minutes": 4, "mobile_check": "pass"}
 {"time": "2026-09-11T18:31:39+0800", "agent": "ops", "ok": true, "did": "修复neon-block-jam致命bug(出口崩溃/胜利失效/计步错误)+LESSONS补玩法验证红线与bug通道", "minutes": 55}
 {"time": "2026-09-11T18:34:23+0800", "agent": "design", "ok": false, "did": "跳过：工作树不洁（开发Agent在途：daily-game.md pending→done 未提交），不产出避免交叉污染", "minutes": 2}
+{"time": "2026-09-11T18:35:46+08:00", "agent": "neonplay", "ok": true, "did": "RSS 2.0 feed上线(10游戏+站点描述)", "minutes": 3, "mobile_check": "pass"}
