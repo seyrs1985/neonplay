@@ -33,3 +33,4 @@
 {"time": "2026-09-11T20:19:30+0800", "agent": "design", "ok": true, "did": "产出方案 neon-alchemy：Little Alchemy/Infinite Craft合成发现×Wordle每日挑战(静态无AI/多语言/42元素配方表脚本验证)", "minutes": 22}
 {"time": "2026-09-11T20:19:41+0800", "agent": "ops", "ok": true, "did": "GAME_STANDARD.md(Neon Tide工作流提炼)+NBJ音效复刻+触屏QA模式", "minutes": 40}
 {"time": "2026-09-11T20:25:32+0800", "agent": "design", "ok": true, "did": "跳过常规挖掘（队列已满6份）；独立质检 connect-four：PASS（初检FAIL系质检器交互目标缺陷已修正，人工复核游戏正常）；QA PASS", "minutes": 18}
+{"time":"2026-09-11T12:58:00Z","agent":"neonplay","ok":true,"did":"art-round: 2048 merge-burst sparks+score-bump+over-animation+pointer/pointercancel+best-persist+i18n; QA PASS; live 200","minutes":11,"mobile_check":"pass"}

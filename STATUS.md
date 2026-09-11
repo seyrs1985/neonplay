@@ -48,3 +48,4 @@
 - 2026-09-11-1920 · 新增游戏轮:第11款游戏 Connect Four 四子棋——7×6棋盘/vs AI/双人/连线检测/霓虹圆盘;CDN延迟后已确认在线,线上 /connect-four/ 200,IndexNow 16 URL。
 - 2026-09-11-1925 · 美术升级轮:微交互打磨——聚光灯卡hover边框/背景强化、cat-blurb行高与透明度优化、prefers-reduced-motion无障碍适配;线上 200。
 - 2026-09-11-2010 · i18n轮:Neon Tide 画布UI中文化——新增 NP_L 字典+T()助手,标题/HUD/暂停/结算共14处文案随 np_lang 切换;JS语法OK,CDN延迟后线上 game.js 已含中文串,play 200。
+- 2026-09-11-2055 · 美术升级轮:2048手感升级——合并金环冲击波+六向金色火花/得分chip弹跳/结束画面标题坠落入场+棋盘灰化/触摸改统一pointer事件含pointercancel复位(GAME_STANDARD合规)/最高分localStorage持久化(np_2048_best)/UI文案i18n字典补齐(得分/最佳/新游戏/结束屏);prefers-reduced-motion适配;QA PASS(exit 0),375×667截图确认首屏全可见,线上 200。
