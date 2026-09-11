@@ -47,3 +47,4 @@
 - 2026-09-11-1910 · 美术升级轮:Minesweeper CSS修复——清理孤立CSS/合并hover/恢复flex居中;线上 play.html 200,radial-gradient+hover确认。
 - 2026-09-11-1920 · 新增游戏轮:第11款游戏 Connect Four 四子棋——7×6棋盘/vs AI/双人/连线检测/霓虹圆盘;CDN延迟后已确认在线,线上 /connect-four/ 200,IndexNow 16 URL。
 - 2026-09-11-1925 · 美术升级轮:微交互打磨——聚光灯卡hover边框/背景强化、cat-blurb行高与透明度优化、prefers-reduced-motion无障碍适配;线上 200。
+- 2026-09-11-2010 · i18n轮:Neon Tide 画布UI中文化——新增 NP_L 字典+T()助手,标题/HUD/暂停/结算共14处文案随 np_lang 切换;JS语法OK,CDN延迟后线上 game.js 已含中文串,play 200。
