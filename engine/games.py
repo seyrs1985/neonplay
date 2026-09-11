@@ -205,4 +205,28 @@ GAMES = [
              "Your best score is kept for the session so you can chase it immediately. Nothing is stored on our servers — gameplay stays on your device."),
         ],
     },
+    {
+        "slug": "brickstorm",
+        "title": "Play Brickstorm — Free Neon Brick Breaker Roguelite with Upgrades",
+        "h1": "Brickstorm",
+        "tagline": "Catch balls, smash brick waves, pick upgrades — Breakout meets Vampire Survivors in this neon roguelite.",
+        "desc": "Play Brickstorm free online: a neon brick-breaker roguelite with upgrade builds, infinite waves and combo scoring. One-tap controls on desktop and mobile, no download.",
+        "emoji": "🧱",
+        "howto": [
+            "Move the paddle left and right to catch falling balls — they auto-launch upward.",
+            "Smash the advancing brick wall to earn XP; bricks glow brighter as their HP increases.",
+            "Collect XP orbs to level up and choose one of three random upgrades that stack for the run.",
+        ],
+        "controls": "Drag / arrow keys / AD to move the paddle. Balls auto-launch — just position and survive.",
+        "faqs": [
+            ("What is Brickstorm?",
+             "A free browser roguelite that fuses brick-breaker physics with Vampire-Survivors-style upgrade builds. Catch balls, smash waves of neon bricks, and pick from three random upgrades each level."),
+            ("How do upgrades work?",
+             "Destroyed bricks drop XP orbs that auto-attract to your paddle. Fill the XP bar and the game pauses, offering three random upgrades — multiball, damage, speed, pierce or wider paddle — that stack for the rest of the run."),
+            ("Can I play Brickstorm on mobile?",
+             "Yes. Touch-drag to move the paddle, fully responsive canvas, no download or sign-up needed. Keyboard (arrow keys / AD) and mouse also supported on desktop."),
+            ("What's the best upgrade strategy?",
+             "Most players take Multiball first (each ball deals full damage), then Damage or Pierce. Keep your combo alive by hitting brick clusters quickly — the multiplier caps at 3×."),
+        ],
+    },
 ]
