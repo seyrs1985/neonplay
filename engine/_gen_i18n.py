@@ -8,6 +8,11 @@ ORDER = ["zh", "es", "pt", "ru", "ja", "ko", "de", "fr", "id"]
 
 with open(os.path.join(HERE, "_i18n_tables.json"), encoding="utf-8") as f:
     TABS = json.load(f)
+try:
+    with open(os.path.join(HERE, "_i18n_prose.json"), encoding="utf-8") as f:
+        PROSE = json.load(f)
+except FileNotFoundError:
+    PROSE = {}
 
 HEADER = '''/* NeonPlay i18n — site-wide runtime language switcher.
    Priority: ?lang= > localStorage(np_lang) > navigator.language > en
@@ -131,6 +136,9 @@ for li, lang in enumerate(ORDER):
         entries.append(("game.%s.title" % slug, title))
         entries.append(("game.%s.tag" % slug, tag))
         entries.append(("game.%s.controls" % slug, ct))
+        pr = PROSE.get(slug, {}).get(lang, {})
+        for k, v in sorted(pr.items()):
+            entries.append(("game.%s.%s" % (slug, k), v))
     parts.append(lang + ":{\n")
     for ki, (k, v) in enumerate(entries):
         comma = "," if ki < len(entries) - 1 else ""

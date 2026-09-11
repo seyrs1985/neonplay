@@ -463,3 +463,11 @@ GAMES = [
         ],
     },
 ]
+# Slugs with translated how-to/FAQ prose in engine/_i18n_prose.json (kept in
+# sync by the i18n audit). Landing pages emit data-i18n only for these.
+try:
+    import json as _json, os as _os
+    with open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "_i18n_prose.json"), encoding="utf-8") as _f:
+        PROSE_SLUGS = set(_json.load(_f).keys())
+except Exception:
+    PROSE_SLUGS = set()

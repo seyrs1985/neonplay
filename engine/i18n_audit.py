@@ -45,6 +45,24 @@ for l in LANGS:
     if keys != game_keys:
         err("game table parity %s" % l)
 
+try:
+    with open(os.path.join(HERE, "_i18n_prose.json"), encoding="utf-8") as f:
+        PROSE = json.load(f)
+    for slug, langs in PROSE.items():
+        for l, kv in langs.items():
+            for k, v in kv.items():
+                games.setdefault(l, {})["game.%s.%s" % (slug, k)] = v
+                game_keys.add("game.%s.%s" % (slug, k))
+except FileNotFoundError:
+    pass
+
+for slug, langs in PROSE.items():
+    for l in LANGS:
+        keys = set(langs.get(l, {}).keys())
+        need = {"h1", "h2", "h3", "q1", "q2", "q3", "q4", "a1", "a2", "a3", "a4"}
+        if not need.issubset(keys):
+            err("prose %s/%s incomplete: %s" % (slug, l, sorted(need - keys)))
+
 # 2. every game shipped in games.py must be fully translated
 sys.path.insert(0, HERE)
 import games as games_mod  # noqa: E402

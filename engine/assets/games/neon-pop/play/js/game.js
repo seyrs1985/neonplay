@@ -766,11 +766,12 @@ function loadStorage() {
   const mode = q.get('shot');
   const autotest = q.get('autotest');
   window.__qaState = () => {
+    const full = G.grid.length === ROWS;   // callable in ANY state (TITLE has no board yet)
     let blocks = 0;
-    for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) if (G.grid[r] && G.grid[r][c] >= 0) blocks++;
+    if (full) for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) if (G.grid[r][c] >= 0) blocks++;
     return {
       state: G.state, score: G.score, best: G.best, chain: G.chain,
-      blocks, moves: hasAnyMove(), maxPop: G.maxPop, maxChain: G.maxChain,
+      blocks, moves: full ? hasAnyMove() : false, maxPop: G.maxPop, maxChain: G.maxChain,
     };
   };
 

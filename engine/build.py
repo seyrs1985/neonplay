@@ -210,9 +210,22 @@ def build_landing(cfg, gm, gms):
     faq_ld = {"@type": "FAQPage", "mainEntity": [
         {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
         for q, a in gm["faqs"]]}
-    howto = "".join(f"<li>{esc(s)}</li>" for s in gm["howto"])
-    faqs = "".join(f'<details class="faq"><summary>{esc(q)}</summary><p>{esc(a)}</p></details>'
-                   for q, a in gm["faqs"])
+    # howto/faq prose gets data-i18n keys only for games whose translations
+    # exist in _i18n_prose.json (generator bakes them into i18n.js)
+    has_prose = slug in getattr(games_mod, "PROSE_SLUGS", set())
+    howto_items = []
+    for i, s_ in enumerate(gm["howto"], start=1):
+        key = f' data-i18n="game.{slug}.h{i}"' if has_prose else ""
+        howto_items.append(f"<li{key}>{esc(s_)}</li>")
+    howto = "".join(howto_items)
+    faq_items = []
+    for i, (q, a) in enumerate(gm["faqs"], start=1):
+        if has_prose:
+            faq_items.append(f'<details class="faq"><summary data-i18n="game.{slug}.q{i}">{esc(q)}</summary>'
+                             f'<p data-i18n="game.{slug}.a{i}">{esc(a)}</p></details>')
+        else:
+            faq_items.append(f'<details class="faq"><summary>{esc(q)}</summary><p>{esc(a)}</p></details>')
+    faqs = "".join(faq_items)
     related = "".join(card(x, base) for x in gms if x["slug"] != slug)
     variants_block = ""
     if gm.get("variants"):
