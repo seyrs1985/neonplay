@@ -300,6 +300,26 @@ def main():
     write("sitemap.xml", "\n".join(sm) + "\n")
     write("robots.txt", f"User-agent: *\nAllow: /\n\nSitemap: {base}sitemap.xml\n")
 
+    # RSS 2.0 feed
+    from email.utils import format_datetime
+    now_dt = datetime.datetime.now(datetime.timezone.utc)
+    pub_date = format_datetime(now_dt)
+    feed = ['<?xml version="1.0" encoding="UTF-8"?>',
+            '<rss version="2.0"><channel>',
+            '<title>NeonPlay — Free Online Games</title>',
+            '<link>' + base + '</link>',
+            '<description>Free browser games: arcade, puzzle and classics.</description>',
+            '<language>en</language>']
+    for gm in gms:
+        feed.append('<item><title>' + gm['h1'] + ' — ' + gm['tagline'][:60] + '</title>'
+                    '<link>' + base + gm['slug'] + '/</link>'
+                    '<description>' + gm['desc'][:200] + '</description>'
+                    '<pubDate>' + pub_date + '</pubDate>'
+                    '<guid>' + base + gm['slug'] + '/</guid></item>')
+    feed.append('</channel></rss>')
+    write("feed.xml", chr(10).join(feed))
+    print("  feed.xml (" + str(len(gms)) + " games)")
+
     print(f"NeonPlay built: {len(gms)} games + 3 site pages → docs/  ({base})")
 
 
