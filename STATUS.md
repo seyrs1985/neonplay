@@ -42,3 +42,4 @@
 - 2026-09-11-1700 · 美术升级轮:全站CSS统一打磨——hero渐变标题、卡片hover浮起+emoji放大、分类标题底边线、SEO块玻璃底、FAQ左边线、游戏站10页全部受益;线上 200。
 - 2026-09-11-1730 · 基建轮:RSS 2.0 feed上线(docs/feed.xml,10游戏+站点更新),首页head加RSS alternate link,footer加RSS入口;线上feed.xml 200,合法XML 10条目;IndexNow 15 URL 200。
 - 2026-09-11-1750 · i18n轮:Memory Pairs 游戏内文案中文化(HUD MOVES/PAIRS/TIME标签+np_lang联动站点切换器);JS语法OK。
+- 2026-09-11-1800 · 美术升级轮:全站CSS细节打磨——smooth scroll/hero辉光文字/卡片hover浮起+emoji放大/SEO块玻璃底/FAQ左边线/移动端字号适配;全站10页受益;线上 200。
