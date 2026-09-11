@@ -172,7 +172,7 @@ async function main() {
   const sigBefore = await canvasSig();
   const mutBefore = await mutCount();
 
-  /* generic interaction: click center, drag across, some keys */
+  /* generic interaction: element-targeted click/drag + some keys */
   const mouse = (type, x, y, extra = {}) => cdp.send("Input.dispatchMouseEvent", { type, x, y, button: "left", clickCount: 1, ...extra });
   const cx = TOUCH ? 187 : 400, cy = 300;
   if (TOUCH) {
@@ -204,12 +204,25 @@ async function main() {
     await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: tx, y: ty, id: 1 }] });
     await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
   } else {
-    await mouse("mousePressed", cx, cy);
-    for (let s = 1; s <= 6; s++) await mouse("mouseMoved", cx + s * 20, cy);
-    await mouse("mouseReleased", cx + 120, cy);
+    // target the game surface, not fixed coords (selector priority = game elements over HUD)
+    const tgt = await evaluate(`(() => {
+      const sels = [".blk", "canvas", ".hole", ".cell", "[role=button]", "button"];
+      for (const s of sels) {
+        const e = document.querySelector(s);
+        if (e) { const r = e.getBoundingClientRect();
+          const p = { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height / 2) };
+          window.__qaTouch = p; return p; }
+      }
+      return { x: cx, y: cy };
+    })()`).catch(() => ({ x: cx, y: cy }));
+    const tx = tgt.x || cx, ty = tgt.y || cy;
+    await mouse("mousePressed", tx, ty);
+    for (let s = 1; s <= 6; s++) await mouse("mouseMoved", tx + s * 20, ty);
+    await mouse("mouseReleased", tx + 120, ty);
     await sleep(300);
-    await mouse("mousePressed", cx, cy);
-    await mouse("mouseReleased", cx, cy);
+    // clean tap at game surface (press+release same point = real click)
+    await mouse("mousePressed", tx, ty);
+    await mouse("mouseReleased", tx, ty);
   }
   const key = (k, code, vk) => cdp.send("Input.dispatchKeyEvent", { type: "rawKeyDown", key: k, code, windowsVirtualKeyCode: vk })
     .then(() => cdp.send("Input.dispatchKeyEvent", { type: "keyUp", key: k, code, windowsVirtualKeyCode: vk }));
