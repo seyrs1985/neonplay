@@ -181,4 +181,28 @@ GAMES = [
              "Completely free with no sign-up. Everything runs locally in your browser — your games, times and flags never leave your device."),
         ],
     },
+    {
+        "slug": "flappy-dash",
+        "title": "Play Flappy Dash Online — Free One-Tap Flying Game",
+        "h1": "Flappy Dash",
+        "tagline": "One tap to fly, one touch to die. Thread the neon gates and chase your best through a synthwave skyline.",
+        "desc": "Play Flappy Dash free online: a one-tap neon flying arcade game. Guide your glider through endless gates with perfect timing. Instant play on desktop and mobile, no download.",
+        "emoji": "🚀",
+        "howto": [
+            "Tap the screen, click, or press Space to flap — each tap gives one upward boost against gravity.",
+            "Thread the glowing gates: every gate you pass is one point, and gaps tighten as your score climbs.",
+            "One touch of a gate or the ground ends the run — find your rhythm and chase your best score.",
+        ],
+        "controls": "Tap / click / Space to flap. That's the whole game — mastery is timing.",
+        "faqs": [
+            ("Is Flappy Dash free?",
+             "Yes — it runs entirely in your browser with no download, account or payment. It is an original NeonPlay arcade game with procedurally drawn neon visuals."),
+            ("Why is Flappy Dash so hard?",
+             "By design: gravity is constant and each tap is a fixed boost, so success is pure rhythm. Gaps shrink as your score rises, keeping every run tense."),
+            ("Does it work on mobile?",
+             "Yes — tap anywhere on the screen to flap. The game scales to any screen and runs at full speed on modern phones."),
+            ("Is my best score saved?",
+             "Your best score is kept for the session so you can chase it immediately. Nothing is stored on our servers — gameplay stays on your device."),
+        ],
+    },
 ]

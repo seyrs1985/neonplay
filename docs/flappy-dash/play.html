@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Flappy Dash</title>
+<style>
+  html,body{margin:0;padding:0;height:100%;background:#0b1020;overflow:hidden;
+    font-family:system-ui,-apple-system,"Segoe UI",sans-serif;touch-action:none;
+    display:flex;align-items:center;justify-content:center}
+  #wrap{position:relative;width:100%;max-width:420px;aspect-ratio:9/14;max-height:100%}
+  canvas{width:100%;height:100%;display:block;border-radius:10px;touch-action:none}
+  #overlay{position:absolute;inset:0;display:flex;flex-direction:column;gap:12px;
+    align-items:center;justify-content:center;background:rgba(8,10,25,.84);color:#e2e8f0;
+    text-align:center;padding:18px;box-sizing:border-box}
+  #overlay h1{margin:0;font-size:24px;background:linear-gradient(135deg,#22d3ee,#f472b6);
+    -webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:1px}
+  #overlay p{margin:0;font-size:13px;opacity:.85;line-height:1.6}
+  #overlay p b{color:#facc15}
+  #overlay button{margin-top:4px;padding:12px 30px;font-size:15px;font-weight:700;border:0;
+    border-radius:10px;background:linear-gradient(135deg,#22d3ee,#a78bfa);color:#0b1020;cursor:pointer;
+    box-shadow:0 0 18px rgba(34,211,238,.4)}
+  .hide{display:none!important}
+  #score{position:absolute;top:14px;left:0;right:0;text-align:center;font-size:34px;font-weight:800;
+    color:#fff;text-shadow:0 0 14px rgba(34,211,238,.9),0 2px 6px rgba(0,0,0,.6);pointer-events:none}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="cv"></canvas>
+  <div id="score">0</div>
+  <div id="overlay">
+    <h1>FLAPPY DASH</h1>
+    <p>Tap / click / Space to flap.<br>Thread the neon gates. One touch and it's over.<br>Best: <b id="hb">0</b></p>
+    <button id="btn">START</button>
+  </div>
+</div>
+<script>
+(function(){
+"use strict";
+var W=360,H=560;
+var cv=document.getElementById("cv"),ctx=cv.getContext("2d");
+var dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=H*dpr;
+var ov=document.getElementById("overlay"),btn=document.getElementById("btn"),
+    scEl=document.getElementById("score"),hbEl=document.getElementById("hb");
+var G=0.28,FLAP=-6.4,PIPE_W=64,GAP0=170,GAPMIN=128,PSPD=2.4;
+var bird,pipes,score,state,frame,shake,stars=[];
+for(var i=0;i<34;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.4,tw:Math.random()*6.28});
+
+function reset(){
+  bird={x:W*0.3,y:H/2,v:0,r:12,wing:0};
+  pipes=[];score=0;frame=0;shake=0;
+  scEl.textContent="0";
+  for(var i=0;i<3;i++)addPipe(W+120+i*190);
+}
+function addPipe(x){
+  var gap=Math.max(GAPMIN,GAP0-score*2);
+  var top=40+Math.random()*(H-gap-160);
+  pipes.push({x:x,top:top,gap:gap,passed:false});
+}
+function flap(){
+  if(state!=="play")return;
+  bird.v=FLAP;bird.wing=1;
+}
+function start(){
+  reset();state="play";
+  ov.classList.add("hide");
+}
+function die(){
+  state="over";shake=16;
+  boom(bird.x,bird.y);
+  if(score>best){best=score;hbEl.textContent=best;}
+  document.getElementById("overlay").querySelector("p").innerHTML=
+    "Score: <b>"+score+"</b> · Best: <b>"+best+"</b><br>Tap START for another run.";
+  btn.textContent="START";
+  setTimeout(function(){ov.classList.remove("hide");},420);
+}
+function boom(x,y){
+  for(var i=0;i<24;i++){
+    var a=Math.random()*6.28,sp=1+Math.random()*3.4;
+    particles.push({x:x,y:y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:1,
+      color:["#22d3ee","#f472b6","#facc15"][i%3]});
+  }
+}
+var best=0,particles=[];
+
+var skyFar=[],skyNear=[];
+(function(){
+  function mk(arr,n,wMin,wH,hMin,hMax){
+    var x=0;
+    while(x<W+wH){var w=wMin+Math.random()*(wH-wMin),h=hMin+Math.random()*(hMax-hMin);
+      arr.push({x:x,w:w,h:h});x+=w+6+Math.random()*10;}
+  }
+  mk(skyFar,0,40,80,40,110);mk(skyNear,0,34,70,26,82);
+})();
+function drawSkyline(arr,spd,color,hMin,hMax,base){
+  ctx.fillStyle=color;
+  arr.forEach(function(b){
+    var x=((b.x-frame*spd)%(W+b.w));
+    if(x<0)x+=W+b.w;
+    ctx.fillRect(x-b.w,base-b.h,b.w,b.h);
+  });
+}
+
+function update(){
+  frame++;
+  stars.forEach(function(s){s.x-=0.25;if(s.x<0)s.x=W;});
+  if(state!=="play")return;
+  bird.v+=G;bird.y+=bird.v;
+  bird.wing*=0.82;
+  if(bird.y+bird.r>H-52||bird.y-bird.r<0){die();return;}
+  for(var i=pipes.length-1;i>=0;i--){
+    var p=pipes[i];p.x-=PSPD;
+    if(p.x+PIPE_W<0){pipes.splice(i,1);addPipe(W+60);continue;}
+    if(!p.passed&&p.x+PIPE_W<bird.x-bird.r){
+      p.passed=true;score++;scEl.textContent=score;
+    }
+    var inX=bird.x+bird.r>p.x&&bird.x-bird.r<p.x+PIPE_W;
+    var inY=bird.y-bird.r<p.top||bird.y+bird.r>p.top+p.gap;
+    if(inX&&inY&&state==="play"){die();return;}
+  }
+}
+function draw(){
+  var t=frame/60;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.save();
+  if(shake>0){ctx.translate((Math.random()-.5)*shake,(Math.random()-.5)*shake);shake*=.86;if(shake<.3)shake=0;}
+  var g=ctx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,"#131c42");g.addColorStop(.6,"#0d1230");g.addColorStop(1,"#1a1038");
+  ctx.fillStyle=g;ctx.fillRect(-8,-8,W+16,H+16);
+  ctx.fillStyle="#c7d4ff";
+  stars.forEach(function(s){
+    ctx.globalAlpha=.3+.3*Math.sin(t*1.6+s.tw);
+    ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,7);ctx.fill();
+  });
+  ctx.globalAlpha=1;
+  // 城市剪影(两层视差, 平滑循环)
+  drawSkyline(skyFar , 0.4, "rgba(124,58,237,.16)", 40, 110, 52);
+  drawSkyline(skyNear, 0.9, "rgba(34,211,238,.10)", 26,  82, 44);
+  // 地面
+  ctx.fillStyle="#1a1038";ctx.fillRect(0,H-52,W,52);
+  ctx.strokeStyle="rgba(167,139,250,.5)";ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(0,H-52);ctx.lineTo(W,H-52);ctx.stroke();
+  // 管道(霓虹渐变门)
+  pipes.forEach(function(p){
+    var pg=ctx.createLinearGradient(p.x,0,p.x+PIPE_W,0);
+    pg.addColorStop(0,"#0e7490");pg.addColorStop(.5,"#22d3ee");pg.addColorStop(1,"#0e7490");
+    ctx.fillStyle=pg;ctx.shadowColor="#22d3ee";ctx.shadowBlur=12;
+    ctx.fillRect(p.x,0,PIPE_W,p.top);
+    ctx.fillRect(p.x,p.top+p.gap,PIPE_W,H-52-(p.top+p.gap));
+    ctx.shadowBlur=0;
+    ctx.fillStyle="#a78bfa";
+    ctx.fillRect(p.x-3,p.top-14,PIPE_W+6,14);
+    ctx.fillRect(p.x-3,p.top+p.gap,PIPE_W+6,14);
+  });
+  // 鸟(发光圆体+翅膀扇动)
+  if(state==="play"||state==="over"){
+    ctx.save();
+    ctx.translate(bird.x,bird.y);
+    ctx.rotate(Math.max(-0.5,Math.min(1.1,bird.v*0.06)));
+    ctx.shadowColor="#facc15";ctx.shadowBlur=16;
+    ctx.fillStyle="#facc15";ctx.beginPath();ctx.arc(0,0,bird.r,0,7);ctx.fill();
+    ctx.shadowBlur=0;
+    ctx.fillStyle="#fb923c";
+    var wy=Math.sin(frame*0.4)*6*(0.5+bird.wing);
+    ctx.beginPath();ctx.ellipse(-4,2,8,4+bird.wing*4,-0.4,0,7);ctx.fill();
+    ctx.fillStyle="#0b1020";ctx.beginPath();ctx.arc(5,-4,2.2,0,7);ctx.fill();
+    ctx.fillStyle="#f97316";ctx.beginPath();ctx.moveTo(bird.r-2,-2);ctx.lineTo(bird.r+7,0);ctx.lineTo(bird.r-2,3);ctx.fill();
+    ctx.restore();
+  }
+  // 粒子
+  particles=particles.filter(function(p){return p.life>0;});
+  particles.forEach(function(p){
+    p.x+=p.vx;p.y+=p.vy;p.vy+=.08;p.life-=.028;
+    ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.color;
+    ctx.fillRect(p.x-2,p.y-2,4,4);
+  });
+  ctx.globalAlpha=1;
+  ctx.restore();
+}
+function loop(){update();draw();requestAnimationFrame(loop);}
+requestAnimationFrame(loop);
+
+cv.addEventListener("pointerdown",function(e){e.preventDefault();if(state==="play")flap();});
+window.addEventListener("keydown",function(e){
+  if(e.code==="Space"){
+    e.preventDefault();
+    if(state==="play")flap();
+  }
+});
+btn.addEventListener("click",function(e){e.stopPropagation();start();});
+})();
+</script>
+</body>
+</html>
