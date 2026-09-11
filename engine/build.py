@@ -90,37 +90,37 @@ def footer(cfg):
     sister = (cfg.get("sister_site") or {})
     year = TODAY.year
     return f"""<footer class="site-foot"><div class="wrap">
-<nav><a href="{base}about/">About</a><a href="{base}privacy/">Privacy</a><a href="{base}contact/">Contact</a><a href="{base}feed.xml" title="New games RSS feed">RSS</a><a href="{esc(sister.get('url', '#'))}">🧰 Free online tools on ToolTide</a></nav>
-<p>© {year} NeonPlay · Free games that run in your browser. Sister site: {esc(sister.get('name', ''))} — {esc(sister.get('note', ''))}.</p>
+<nav><a href="{base}about/" data-i18n="foot.about">About</a><a href="{base}privacy/" data-i18n="foot.privacy">Privacy</a><a href="{base}contact/" data-i18n="foot.contact">Contact</a><a href="{base}feed.xml" title="New games RSS feed" data-i18n="foot.rss">RSS</a><a href="{esc(sister.get('url', '#'))}" data-i18n="foot.tools">🧰 Free online tools on ToolTide</a></nav>
+<p data-i18n="foot.tag">© {year} NeonPlay · Free games that run in your browser. Sister site: {esc(sister.get('name', ''))} — {esc(sister.get('note', ''))}.</p>
 </div></footer>"""
 
 
 def card(gm, base):
     return (f'<a class="card" href="{base}{gm["slug"]}/">'
             f'<span class="card-emoji">{gm["emoji"]}</span>'
-            f'<span class="card-title">{esc(gm["h1"])}</span>'
-            f'<span class="card-desc">{esc(gm["tagline"][:110])}</span></a>')
+            f'<span class="card-title" data-i18n="game.{gm["slug"]}.title">{esc(gm["h1"])}</span>'
+            f'<span class="card-desc" data-i18n="game.{gm["slug"]}.tag">{esc(gm["tagline"][:110])}</span></a>')
 
 
 STATIC_PAGES = {
     "about/index.html": ("About — NeonPlay",
                          "About NeonPlay: free original browser games, built to load instantly and respect your privacy.",
-                         """<h1>About NeonPlay</h1>
-<p>NeonPlay is a small collection of free browser games — arcade, puzzle and classics. Every game here is either built by us or properly licensed: no scraped clones, no sketchy redirects, no forced sign-ups.</p>
-<p>Games run 100% locally in your browser. Scores never leave your device, and we do not track your gameplay.</p>
-<p>Need a five-minute break at your desk? Our sister site <a href="{sister}">ToolTide</a> offers free online tools — calculators, converters and countdowns that run just as fast.</p>"""),
+                         """<h1 data-i18n="about.h1">About NeonPlay</h1>
+<p data-i18n="about.p1">NeonPlay is a small collection of free browser games — arcade, puzzle and classics. Every game here is either built by us or properly licensed: no scraped clones, no sketchy redirects, no forced sign-ups.</p>
+<p data-i18n="about.p2">Games run 100% locally in your browser. Scores never leave your device, and we do not track your gameplay.</p>
+<p><span data-i18n="about.p3a">Need a five-minute break at your desk? Our sister site</span> <a href="{sister}">ToolTide</a><span data-i18n="about.p3b"> offers free online tools — calculators, converters and countdowns that run just as fast.</span></p>"""),
     "privacy/index.html": ("Privacy Policy — NeonPlay",
                            "NeonPlay privacy policy: games run locally in your browser; no accounts, no gameplay tracking.",
-                           """<h1>Privacy Policy</h1>
-<p>Last updated: {today}</p>
-<p>NeonPlay games run entirely in your browser. We do not require accounts, we do not store your scores on our servers, and nothing you do inside a game is uploaded.</p>
-<p>If analytics or advertising scripts are enabled, they may collect anonymised usage data as described here. You can block them with any ad blocker without breaking the games.</p>
-<p>Questions? Use the <a href="{base}contact/">contact page</a>.</p>"""),
+                           """<h1 data-i18n="priv.h1">Privacy Policy</h1>
+<p><em data-i18n="priv.upd">Last updated:</em> {today}</p>
+<p data-i18n="priv.p1">NeonPlay games run entirely in your browser. We do not require accounts, we do not store your scores on our servers, and nothing you do inside a game is uploaded.</p>
+<p data-i18n="priv.p2">If analytics or advertising scripts are enabled, they may collect anonymised usage data as described here. You can block them with any ad blocker without breaking the games.</p>
+<p><span data-i18n="priv.p3a">Questions? Use the</span> <a href="{base}contact/"><span data-i18n="priv.contact_link">contact page</span></a><span data-i18n="priv.p3b">.</span></p>"""),
     "contact/index.html": ("Contact — NeonPlay",
                            "Contact the NeonPlay team: bug reports, game ideas and business questions.",
-                           """<h1>Contact</h1>
-<p>Bug reports, game ideas, business questions — write to <a href="mailto:{email}">{email}</a> and we will get back to you.</p>
-<p>Looking for free online tools instead? Visit our sister site <a href="{sister}">ToolTide</a>.</p>"""),
+                           """<h1 data-i18n="cont.h1">Contact</h1>
+<p><span data-i18n="cont.p1a">Bug reports, game ideas, business questions — write to</span> <a href="mailto:{email}">{email}</a><span data-i18n="cont.p1b"> and we will get back to you.</span></p>
+<p><span data-i18n="cont.p2a">Looking for free online tools instead? Visit our sister site</span> <a href="{sister}">ToolTide</a><span data-i18n="cont.p2b">.</span></p>"""),
 }
 
 
@@ -158,7 +158,7 @@ def build_hall(cfg, gms):
 <section class="cat"><h2 data-i18n="hall.all">All games</h2><div class="grid">{cards}</div></section>
 <section class="cat" id="about"><h2 data-i18n="hall.originals">Our games are originals</h2>
 <p class="cat-blurb" data-i18n="hall.originals.blurb">Every game here is either built by us or properly licensed — no scraped clones, no sketchy redirects. They run 100% locally in your browser; nothing you do in a game is tracked or uploaded.</p>
-<p class="cat-blurb" data-i18n="hall.tools_promo">Need a tool instead? Our sister site <a href="{esc((cfg.get('sister_site') or {}).get('url', '#'))}">ToolTide</a> has free online calculators, converters and countdowns.</p></section>
+<p class="cat-blurb"><span data-i18n="hall.tools_promo.a">Need a tool instead? Our sister site</span> <a href="{esc((cfg.get('sister_site') or {}).get('url', '#'))}">ToolTide</a><span data-i18n="hall.tools_promo.b"> has free online calculators, converters and countdowns.</span></p></section>
 </main>"""
     games_json = json.dumps([{"slug":gm["slug"],"emoji":gm["emoji"],"title":gm["h1"],"tag":gm["tagline"][:80]} for gm in gms], ensure_ascii=False)
     doc += """<script>
@@ -177,16 +177,20 @@ def build_hall(cfg, gms):
     else streak=1;
     localStorage.setItem('np_streak',JSON.stringify({last:todayStr,n:streak}));
   }catch(e){streak=1;}
-  var isZh=(localStorage.getItem('np_lang')||'').indexOf('zh')===0;
+  var TL=window.npT||function(k){return null;};
+  var lbl=TL('spot.today')||"⚡ TODAY'S GAME";
+  var ply=TL('spot.play')||'▶ PLAY NOW';
+  var tTitle=TL('game.'+today.slug+'.title')||today.title;
+  var tTag=TL('game.'+today.slug+'.tag')||today.tag;
   var html='<section class="cat spotlight-cat" style="margin-top:0"><div class="spot-card">';
-  html+='<div class="spot-label">'+(isZh?'⚡ 今日推荐':"⚡ TODAY'S GAME")+(streak>1?' · 🔥'+streak:'')+'</div>';
+  html+='<div class="spot-label">'+lbl+(streak>1?' · 🔥'+streak:'')+'</div>';
   html+='<a href="'+base+today.slug+'/" class="spot-link" style="text-decoration:none">';
   html+='<span class="card-emoji" style="font-size:2.2rem">'+today.emoji+'</span>';
-  html+='<span class="card-title" style="font-size:1.15rem">'+today.title+'</span>';
-  html+='<span class="card-desc">'+today.tag+'</span>';
+  html+='<span class="card-title" style="font-size:1.15rem">'+tTitle+'</span>';
+  html+='<span class="card-desc">'+tTag+'</span>';
   html+='<span class="spot-play" style="display:inline-block;margin-top:6px;padding:6px 18px;border-radius:8px;';
   html+='background:linear-gradient(135deg,#22d3ee,#a78bfa);color:#0b1020;font-weight:700;font-size:.85rem">';
-  html+=(isZh?'▶ 立即玩':'▶ PLAY NOW')+'</span></a></div></section>';
+  html+=ply+'</span></a></div></section>';
   box.innerHTML=html;
 })();
 </script>"""
@@ -214,7 +218,8 @@ def build_landing(cfg, gm, gms):
     if gm.get("variants"):
         items = "".join(f'<li><a href="{base}{slug}/{x["kw_slug"]}/">{esc(x["title"])}</a></li>'
                         for x in gm["variants"])
-        variants_block = (f'<section class="seo-block"><h2>More ways to play {esc(gm["h1"])}</h2>'
+        variants_block = (f'<section class="seo-block"><h2 data-i18n="land.variants" '
+                          f'data-i18n-game="{esc(gm["h1"])}">More ways to play {esc(gm["h1"])}</h2>'
                           f'<ul>{items}</ul></section>')
     sister = (cfg.get("sister_site") or {}).get("url", "#")
     doc = head(cfg, gm["title"], gm["desc"], canonical, "../style.css",
@@ -224,17 +229,17 @@ def build_landing(cfg, gm, gms):
 <article>
 <div class="game-frame">
   <iframe src="{gm.get('play', 'play.html')}" title="{esc(gm['h1'])} — playable" allow="autoplay; fullscreen; gamepad" allowfullscreen></iframe>
-  <button id="fs-btn" type="button" title="Fullscreen">⛶</button>
+  <button id="fs-btn" type="button" title="Fullscreen" data-i18n-title="ui.fullscreen">⛶</button>
 </div>
-<div class="title-row"><span class="title-emoji">{gm['emoji']}</span><h1>{esc(gm['h1'])}</h1><span class="controls-line">🎮 {esc(gm['controls'])}</span></div>
-<p class="cat-blurb">{esc(gm['tagline'])}</p>
+<div class="title-row"><span class="title-emoji">{gm['emoji']}</span><h1 data-i18n="game.{slug}.title">{esc(gm['h1'])}</h1><span class="controls-line">🎮 <span data-i18n="game.{slug}.controls">{esc(gm['controls'])}</span></span></div>
+<p class="cat-blurb" data-i18n="game.{slug}.tag">{esc(gm['tagline'])}</p>
 {ad_slot(cfg, cfg.get('ad_slot_mid', '2222222222'))}
 <section class="seo-block"><h2 data-i18n="land.howto">How to play</h2><ol class="howto">{howto}</ol></section>
 <section class="seo-block"><h2 data-i18n="land.faq">Frequently asked questions</h2>{faqs}</section>
 {variants_block}<section class="seo-block"><h2 data-i18n="land.more">More games</h2><div class="grid">{related}</div></section>
 <section class="seo-block"><h2 data-i18n="land.tools">Free tools for work time</h2>
-<p data-i18n="land.tools.blurb">Between gaming sessions, our sister site <a href="{esc(sister)}">ToolTide</a> runs free online tools — percentage calculators, unit converters and live countdowns. No sign-up there either.</p></section>
-<nav class="crumbs"><a href="{base}">🎮 NeonPlay</a> › <span>{esc(gm['h1'])}</span></nav>
+<p><span data-i18n="land.tools.blurb.a">Between gaming sessions, our sister site</span> <a href="{esc(sister)}">ToolTide</a><span data-i18n="land.tools.blurb.b"> runs free online tools — percentage calculators, unit converters and live countdowns. No sign-up there either.</span></p></section>
+<nav class="crumbs"><a href="{base}">🎮 NeonPlay</a> › <span data-i18n="game.{slug}.title">{esc(gm['h1'])}</span></nav>
 </article>
 </main>"""
     doc += footer(cfg)
@@ -276,16 +281,16 @@ def build_variant(cfg, gm, v, gms):
 <article>
 <div class="game-frame">
   <iframe src="../{gm.get('play', 'play.html')}" title="{esc(gm['h1'])} — playable" allow="autoplay; fullscreen; gamepad" allowfullscreen></iframe>
-  <button id="fs-btn" type="button" title="Fullscreen">⛶</button>
+  <button id="fs-btn" type="button" title="Fullscreen" data-i18n-title="ui.fullscreen">⛶</button>
 </div>
-<div class="title-row"><span class="title-emoji">{gm['emoji']}</span><h1>{esc(gm['h1'])}</h1><span class="controls-line">🎮 {esc(gm['controls'])}</span></div>
+<div class="title-row"><span class="title-emoji">{gm['emoji']}</span><h1 data-i18n="game.{slug}.title">{esc(gm['h1'])}</h1><span class="controls-line">🎮 <span data-i18n="game.{slug}.controls">{esc(gm['controls'])}</span></span></div>
 <section class="seo-block">{intro}</section>
 {ad_slot(cfg, cfg.get('ad_slot_mid', '2222222222'))}
-<section class="seo-block"><h2>Frequently asked questions</h2>{faqs}</section>
-<section class="seo-block"><h2>More ways to play {esc(gm['h1'])}</h2>
-<ul><li><a href="{base}{slug}/">{esc(gm['h1'])} — the main game page</a></li>{siblings}</ul></section>
-<section class="seo-block"><h2>More games</h2><div class="grid">{related}</div></section>
-<nav class="crumbs"><a href="{base}">🎮 NeonPlay</a> › <a href="{base}{slug}/">{esc(gm['h1'])}</a> › <span>{esc(v['title'])}</span></nav>
+<section class="seo-block"><h2 data-i18n="land.faq">Frequently asked questions</h2>{faqs}</section>
+<section class="seo-block"><h2 data-i18n="land.variants" data-i18n-game="{esc(gm['h1'])}">More ways to play {esc(gm['h1'])}</h2>
+<ul><li><a href="{base}{slug}/"><span data-i18n="game.{slug}.title">{esc(gm['h1'])}</span> — the main game page</a></li>{siblings}</ul></section>
+<section class="seo-block"><h2 data-i18n="land.more">More games</h2><div class="grid">{related}</div></section>
+<nav class="crumbs"><a href="{base}">🎮 NeonPlay</a> › <a href="{base}{slug}/"><span data-i18n="game.{slug}.title">{esc(gm['h1'])}</span></a> › <span>{esc(v['title'])}</span></nav>
 </article>
 </main>"""
     doc += footer(cfg)
@@ -347,8 +352,8 @@ def main():
           head(cfg, "Page not found — NeonPlay", "Page not found on NeonPlay.",
                base + "404.html", "style.css")
           + nav(cfg)
-          + '<main class="wrap"><article style="max-width:640px"><h1>404 — page not found</h1>'
-            f'<p>That page does not exist. Head back to the <a href="{esc(base)}">game hall</a>.</p></article></main>'
+          + '<main class="wrap"><article style="max-width:640px"><h1 data-i18n="e404.h1">404 — page not found</h1>'
+            f'<p><span data-i18n="e404.a">That page does not exist. Head back to the</span> <a href="{esc(base)}"><span data-i18n="e404.link">game hall</span></a><span data-i18n="e404.b">.</span></p></article></main>'
           + footer(cfg) + "</body></html>")
 
     ads = (cfg.get("adsense_client") or "").strip()
