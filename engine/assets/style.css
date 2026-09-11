@@ -183,3 +183,24 @@ article>.title-emoji{font-size:1.5rem}
 .spot-play{transition:transform .15s}
 .spot-link:hover .spot-play{transform:scale(1.05)}
 @media (max-width:640px){.spot-card{padding:12px 14px}.spot-card .card-emoji{font-size:1.6rem}}
+
+/* ---- 全站视觉统一 polish ---- */
+.hero{padding:28px 0 16px}
+.hero h1{font-size:clamp(1.6rem,5vw,2.2rem);letter-spacing:.5px;
+  background:linear-gradient(135deg,#22d3ee,#a78bfa,#f472b6);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{font-size:.95rem;opacity:.75;max-width:520px;margin:4px auto 0}
+.cat{margin:20px 0}
+.cat h2{font-size:1.15rem;letter-spacing:.3px;margin-bottom:10px;
+  padding-bottom:6px;border-bottom:1px solid rgba(34,211,238,.15)}
+.card{transition:transform .18s ease-out,box-shadow .18s ease-out,border-color .18s}
+.card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(34,211,238,.12)}
+.card-emoji{transition:transform .2s ease-out}
+.card:hover .card-emoji{transform:scale(1.15)}
+.seo-block{margin:18px 0;padding:14px 16px;border-radius:12px;
+  background:rgba(20,26,53,.5);border:1px solid rgba(255,255,255,.06)}
+.seo-block h2{font-size:1.05rem;margin:0 0 8px}
+.howto li{margin:6px 0;line-height:1.5}
+.faq{margin:8px 0}
+.faq summary{font-weight:700;cursor:pointer;padding:6px 0}
+.faq p{margin:6px 0;padding-left:12px;border-left:2px solid rgba(34,211,238,.2);line-height:1.5}
