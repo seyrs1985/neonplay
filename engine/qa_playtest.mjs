@@ -195,9 +195,10 @@ async function main() {
     })()`);
     const tgt = await evaluate(`(() => {
       // priority: game surface (canvas/blocks) over HUD buttons — query separately, not by document order
+      const vis = e => !!(e.offsetWidth || e.offsetHeight || e.getClientRects().length);
       const sels = [".blk", "canvas", "[role=button]", "button"];
       for (const s of sels) {
-        const e = document.querySelector(s);
+        const e = [...document.querySelectorAll(s)].find(vis);
         if (e) { const r = e.getBoundingClientRect();
           const p = { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height / 2) };
           window.__qaTouch = p; return p; }
@@ -217,9 +218,10 @@ async function main() {
   } else {
     // target the game surface, not fixed coords (selector priority = game elements over HUD)
     const tgt = await evaluate(`(() => {
+      const vis = e => !!(e.offsetWidth || e.offsetHeight || e.getClientRects().length);
       const sels = [".blk", "canvas", ".hole", ".cell", "[role=button]", "button"];
       for (const s of sels) {
-        const e = document.querySelector(s);
+        const e = [...document.querySelectorAll(s)].find(vis);
         if (e) { const r = e.getBoundingClientRect();
           const p = { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height / 2) };
           window.__qaTouch = p; return p; }
@@ -302,7 +304,10 @@ async function main() {
   if (consoleErrs.length) reasons.push(consoleErrs.length + " console.error: " + consoleErrs[0].slice(0, 120));
   if (!surface || (surface.canvases === 0 && surface.interactives === 0 && surface.bodyLen < 200))
     reasons.push("no interactive game surface");
-  if (!responsive) reasons.push("game did not respond to input (canvas/DOM unchanged)");
+  // a passing scripted playtest performs real input and asserts the game
+  // reacted — that is responsiveness evidence on its own (DOM games whose
+  // interactive surfaces are hidden from the generic poke)
+  if (!responsive && !(scripted && scripted.pass === true)) reasons.push("game did not respond to input (canvas/DOM unchanged)");
   if (scripted && scripted.pass === false) reasons.push("scripted playtest failed: " + (scripted.detail || "see test"));
 
   const verdict = {

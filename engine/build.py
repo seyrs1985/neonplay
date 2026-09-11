@@ -252,6 +252,12 @@ def copy_play(gm):
         shutil.copytree(src, target)
     else:
         shutil.copy2(src, os.path.join(dst, os.path.basename(play)))
+    # shared game core copied per game -> pages stay self-contained (relative ref)
+    shared = os.path.join(ASSETS, "games", "_shared", "np_core.js")
+    if os.path.exists(shared):
+        shutil.copy2(shared, os.path.join(dst, "np_core.js"))
+        if play.endswith("/"):
+            shutil.copy2(shared, os.path.join(dst, "play", "np_core.js"))
 
 
 def main():

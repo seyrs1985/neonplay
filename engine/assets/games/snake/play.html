@@ -27,10 +27,11 @@ canvas{border-radius:12px;max-width:96vw;max-height:70vh;box-shadow:0 0 32px rgb
 <canvas id="cv" width="441" height="441"></canvas>
 <div id="msg">arrow keys / WASD — swipe on mobile</div>
 <div id="over"><h2 id="lb-over">GAME OVER</h2><p><span id="lb-fs">score</span> <b id="fs">0</b></p><button id="rb">Play again</button></div>
+<script src="np_core.js"></script>
 <script>
 var L={zh:{score:"得分",best:"最佳",msg:"方向键 / WASD — 手机滑动",over:"游戏结束",fsLabel:"得分",again:"再来一局"},en:{score:"SCORE",best:"BEST",msg:"arrow keys / WASD — swipe on mobile",over:"GAME OVER",fsLabel:"score",again:"Play again"}};
-var lang=(localStorage.getItem("np_lang")||"en").slice(0,2);
-var t=function(k){return(L[lang]||L.en)[k]||k};
+var lang=npLang();
+var t=function(k){return npT(L,k)};
 'use strict';
 const N=21,S=21,W=N*S;
 const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
@@ -174,13 +175,14 @@ addEventListener('touchend',e=>{
   Math.abs(dx)>Math.abs(dy)?turn(Math.sign(dx),0):turn(0,Math.sign(dy));tx=null;
 },{passive:true});
 document.getElementById('rb').addEventListener('click',reset);
-reset();
-</script>
-</body>
-</html>document.getElementById("lb-score").textContent=t("score");
+document.getElementById("lb-score").textContent=t("score");
 document.getElementById("lb-best").textContent=t("best");
 document.getElementById("msg").textContent=t("msg");
 document.getElementById("lb-over").textContent=t("over");
 document.getElementById("lb-fs").textContent=t("fsLabel");
 document.getElementById("rb").textContent=t("again");
+reset();
+</script>
+</body>
+</html>
 
