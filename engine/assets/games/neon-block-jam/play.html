@@ -66,7 +66,7 @@ html,body{margin:0;padding:0;min-height:100%;background:radial-gradient(120% 90%
 <div id="lvsel"></div>
 <div id="msg"></div>
 <div id="win">
-  <h2>CLEAR!</h2>
+  <h2 id="wtitle">CLEAR!</h2>
   <div class="bigstars" id="wstars"></div>
   <div class="info"><span id="wmv"></span> moves · par <span id="wpar"></span></div>
   <div class="btns">
@@ -76,23 +76,22 @@ html,body{margin:0;padding:0;min-height:100%;background:radial-gradient(120% 90%
 </div>
 <script>
 "use strict";
-const N=6,CS=70;
+const N=6;
+/* blocks: [color, col, row, w, h] · doors: side T/B/L/R + lane index · 1 move = 1 slide gesture */
 const LEVELS=[
  {par:1,doors:{A:[["R",3]]},blocks:[["A",2,3,1,1]]},
  {par:3,doors:{B:[["L",0]],A:[["R",4]]},blocks:[["B",4,4,1,1],["A",1,4,1,1]]},
  {par:3,doors:{A:[["R",1]],B:[["L",3]],C:[["T",2]]},blocks:[["A",0,1,2,1],["B",4,3,1,1],["C",2,4,1,1]]},
  {par:4,doors:{A:[["R",2]],B:[["L",5]],C:[["T",3]]},blocks:[["A",3,2,1,1],["B",4,2,1,1],["C",3,4,1,1]]},
- {par:7,doors:{A:[["T",1]],B:[["B",4]],C:[["L",2]],D:[["R",0]]},blocks:[["A",1,2,1,2],["B",4,4,1,1],["C",3,1,1,1],["D",0,0,1,1]]},
- {par:7,doors:{A:[["R",2]],B:[["T",1]],C:[["B",4]],D:[["T",3]],E:[["B",2]]},blocks:[["A",2,2,1,1],["B",1,1,1,1],["C",2,3,1,1],["D",3,2,1,1],["E",0,1,1,1]]},
- {par:8,doors:{A:[["T",0]],B:[["B",5]],C:[["R",3]],D:[["L",1]],E:[["B",1]]},blocks:[["A",2,2,1,1],["B",4,1,1,1],["C",3,3,1,1],["D",1,4,1,1],["E",0,5,1,1]]},
- {par:11,doors:{A:[["R",1]],B:[["T",5]],C:[["L",3]],D:[["B",0]],E:[["T",2]],F:[["B",3]]},blocks:[["A",3,1,1,1],["B",5,3,1,1],["C",2,4,1,1],["D",0,4,1,1],["E",1,2,1,1],["F",2,3,1,1]]},
- {par:11,doors:{A:[["R",1]],B:[["T",5]],C:[["L",3]],D:[["B",0]],E:[["T",2]],F:[["B",3]]},blocks:[["A",4,1,1,1],["B",5,4,1,1],["C",2,3,1,1],["D",1,4,1,1],["E",1,3,1,1],["F",2,4,1,1]]},
- {par:13,doors:{A:[["R",1]],B:[["T",5]],C:[["L",3]],D:[["B",0]],E:[["T",2]],F:[["B",3]],G:[["B",4]]},blocks:[["A",4,1,1,1],["B",5,4,1,1],["C",2,3,1,1],["D",1,4,1,1],["E",1,3,1,1],["F",2,4,1,1],["G",3,2,1,1]]}
+ {par:4,doors:{A:[["T",1]],B:[["B",4]],C:[["L",2]],D:[["R",0]]},blocks:[["A",1,2,1,2],["B",4,4,1,1],["C",3,1,1,1],["D",0,0,1,1]]},
+ {par:5,doors:{A:[["R",2]],B:[["T",1]],C:[["B",4]],D:[["T",3]],E:[["B",2]]},blocks:[["A",2,2,1,1],["B",1,1,1,1],["C",2,3,1,1],["D",3,2,1,1],["E",0,1,1,1]]},
+ {par:5,doors:{A:[["T",0]],B:[["B",5]],C:[["R",3]],D:[["L",1]],E:[["B",1]]},blocks:[["A",2,2,1,1],["B",4,1,1,1],["C",3,3,1,1],["D",1,4,1,1],["E",0,5,1,1]]},
+ {par:6,doors:{A:[["R",1]],B:[["T",5]],C:[["L",3]],D:[["B",0]],E:[["T",2]],F:[["B",3]]},blocks:[["A",3,1,1,1],["B",5,3,1,1],["C",2,4,1,1],["D",0,4,1,1],["E",1,2,1,1],["F",2,3,1,1]]},
+ {par:6,doors:{A:[["R",1]],B:[["T",5]],C:[["L",3]],D:[["B",0]],E:[["T",2]],F:[["B",3]]},blocks:[["A",4,1,1,1],["B",5,4,1,1],["C",2,3,1,1],["D",1,4,1,1],["E",1,3,1,1],["F",2,4,1,1]]},
+ {par:7,doors:{A:[["R",1]],B:[["T",5]],C:[["L",3]],D:[["B",0]],E:[["T",2]],F:[["B",3]],G:[["B",4]]},blocks:[["A",4,1,1,1],["B",5,4,1,1],["C",2,3,1,1],["D",1,4,1,1],["E",1,3,1,1],["F",2,4,1,1],["G",3,2,1,1]]}
 ];
 const COLORS={A:"#00e5ff",B:"#ff2d95",C:"#ffd54a",D:"#a8ff60",E:"#7c4dff",F:"#ff9e40",G:"#39ff88"};
-const GATE_POS={T:function(i){return[i*CS+CS/2,0,"h"]},B:function(i){return[i*CS+CS/2,(N)*CS,"h"]},
- L:function(i){return[0,i*CS+CS/2,"v"]},R:function(i){return[(N)*CS,i*CS+CS/2,"v"]}};
-let curLv=0,blocks,undoStack,moves,selIdx,progress;
+let curLv=0,blocks,undoStack,moves,selIdx=-1,progress,pendingVanish=false,gen=0;
 
 function loadProgress(){
   try{progress=JSON.parse(localStorage.getItem("np_nbj_progress")||'{"maxLv":0,"stars":{}}');}catch(e){progress={maxLv:0,stars:{}};}
@@ -102,24 +101,6 @@ function saveProgress(){try{localStorage.setItem("np_nbj_progress",JSON.stringif
 function boardPx(){return parseFloat(document.getElementById("board").style.width)||420;}
 function cellPx(){return boardPx()/N;}
 
-function canMove(blk,dr,dc){
-  var w=blk.w,h=blk.h;
-  for(var r=0;r<h;r++)for(var c=0;c<w;c++){
-    var nr=blk.row+r+dr,nc=blk.col+c+dc;
-    if(nr<0||nr>=N||nc<0||nc>=N)return false;
-    if(nr>=0&&nr<N&&nc>=0&&nc<N){
-      // gate wall check: different color can't enter gate cell
-      var gateHere=gateAt(nr,nc);
-      if(gateHere&&gateHere!==blk.color)return false;
-      for(var o=0;o<blocks.length;o++){
-        if(o===selIdx||!blocks[o])continue;
-        var ob=blocks[o];
-        if(nr>=ob.row&&nr<ob.row+ob.h&&nc>=ob.col&&nc<ob.col+ob.w)return false;
-      }
-    }
-  }
-  return true;
-}
 function gateAt(r,c){
   var lv=LEVELS[curLv];
   for(var col in lv.doors){
@@ -133,27 +114,36 @@ function gateAt(r,c){
   }
   return null;
 }
-function checkVanish(){
-  var removed=false;
-  for(var i=blocks.length-1;i>=0;i--){
-    var blk=blocks[i];
-    for(var r=0;r<blk.h;r++)for(var c=0;c<blk.w;c++){
-      if(gateAt(blk.row+r,blk.col+c)===blk.color){
-        blocks.splice(i,1);
-        removed=true;
-        return;
-      }
+function canMove(blk,dr,dc){
+  for(var r=0;r<blk.h;r++)for(var c=0;c<blk.w;c++){
+    var nr=blk.row+r+dr,nc=blk.col+c+dc;
+    if(nr<0||nr>=N||nc<0||nc>=N)return false;
+    var gateHere=gateAt(nr,nc);
+    if(gateHere&&gateHere!==blk.color)return false;
+    for(var o=0;o<blocks.length;o++){
+      var ob=blocks[o];
+      if(ob===blk||ob.vanishing)continue;
+      if(nr>=ob.row&&nr<ob.row+ob.h&&nc>=ob.col&&nc<ob.col+ob.w)return false;
     }
   }
-  return removed;
+  return true;
 }
-function allClear(){return blocks.length===0;}
+/* mark every block sitting on its own gate as vanishing (they exit together) */
+function checkVanish(){
+  var hit=false;
+  blocks.forEach(function(blk){
+    if(blk.vanishing)return;
+    for(var r=0;r<blk.h;r++)for(var c=0;c<blk.w;c++){
+      if(gateAt(blk.row+r,blk.col+c)===blk.color){blk.vanishing=true;hit=true;break;}
+    }
+  });
+  return hit;
+}
 
 function render(){
   var bd=document.getElementById("board");
   var px=cellPx();
   bd.innerHTML="";
-  // gate cells (background indicator)
   var lv=LEVELS[curLv];
   for(var col in lv.doors){
     lv.doors[col].forEach(function(d){
@@ -170,71 +160,107 @@ function render(){
   blocks.forEach(function(blk,i){
     var w=blk.w*px-4,h=blk.h*px-4;
     var d=document.createElement("div");d.className="blk";
-    if(selIdx===i)d.classList.add("sel");
+    if(blk.vanishing){d.classList.add("vanish");d.style.pointerEvents="none";}
+    else if(selIdx===i)d.classList.add("sel");
     d.style.left=(blk.col*px+2)+"px";d.style.top=(blk.row*px+2)+"px";
     d.style.width=w+"px";d.style.height=h+"px";
     d.style.background=COLORS[blk.color];
     d.style.color=COLORS[blk.color];
     d.textContent=blk.color;
-    d.addEventListener("click",function(e){e.stopPropagation();select(i);});
-    d.addEventListener("pointerdown",function(e){e.stopPropagation();select(i);startDrag(e,i);});
+    d.addEventListener("click",function(e){e.stopPropagation();if(!blk.vanishing)select(i);});
+    d.addEventListener("pointerdown",function(e){e.stopPropagation();if(!blk.vanishing){select(i);startDrag(e,i);}});
     bd.appendChild(d);
   });
 }
 function select(i){selIdx=i;render();}
+
+/* one pointer gesture = at most 1 move (slide any distance along one axis) */
 function startDrag(e,i){
   var blk=blocks[i];
+  if(!blk||blk.vanishing||pendingVanish)return;
   var startX=e.clientX,startY=e.clientY;
-  var el=document.querySelector('.blk.sel')||document.querySelectorAll('.blk')[i];
+  var counted=false,done=false,myGen=gen;
+  var preSnap=JSON.stringify(blocks);
   function mm(ev){
-    var dx=ev.clientX-startX,dy=ev.clientY-startY;
+    if(done||myGen!==gen||pendingVanish)return;
     var px=cellPx();
-    var steps=Math.round(Math.abs(dx)>Math.abs(dy)?dx/px:dy/px);
-    var dc=steps*(Math.abs(dx)>Math.abs(dy)?Math.sign(dx):0);
-    var dr=steps*(Math.abs(dx)>Math.abs(dy)?0:Math.sign(dy));
-    if(dr||dc){
-      if(canMove(blk,dr,dc)){
-        undoStack.push(JSON.stringify(blocks));
-        if(undoStack.length>50)undoStack.shift();
-        blk.col+=dc;blk.row+=dr;moves++;
-        document.getElementById("mv").textContent=moves;
-        render();
-        startX=ev.clientX;startY=ev.clientY;
-        if(checkVanish()){render();setTimeout(postVanish,350);}
-      } else {
-        el.classList.add("invalid");
-        setTimeout(function(){el.classList.remove("invalid");},300);
-      }
+    var dx=ev.clientX-startX,dy=ev.clientY-startY;
+    if(!dx&&!dy)return;
+    var horiz=Math.abs(dx)>Math.abs(dy);
+    var steps=Math.round(horiz?dx/px:dy/px);
+    if(!steps)return;
+    var dr=horiz?0:(steps>0?1:-1),dc=horiz?(steps>0?1:-1):0;
+    var movedAny=false,vanished=false;
+    for(var k=0;k<Math.abs(steps);k++){
+      if(!canMove(blk,dr,dc))break;
+      if(!counted){moves++;counted=true;undoStack.push(preSnap);if(undoStack.length>50)undoStack.shift();}
+      blk.col+=dc;blk.row+=dr;movedAny=true;
+      if(checkVanish()){vanished=true;break;}
+    }
+    if(movedAny){
+      document.getElementById("mv").textContent=moves;
+      selIdx=blocks.indexOf(blk);
+    }
+    if(vanished){done=true;selIdx=-1;pendingVanish=true;}
+    if(movedAny||vanished)render();
+    if(movedAny){startX=ev.clientX;startY=ev.clientY;}
+    if(vanished){
+      var g=myGen;
+      setTimeout(function(){postVanish(g);},350);
     }
   }
   function mu(){document.removeEventListener("pointermove",mm);document.removeEventListener("pointerup",mu);}
   document.addEventListener("pointermove",mm);
   document.addEventListener("pointerup",mu);
 }
-function postVanish(){
+function postVanish(g){
+  if(g!==gen)return;
+  blocks=blocks.filter(function(b){return !b.vanishing;});
+  pendingVanish=false;
   render();
-  if(allClear()){
+  if(blocks.length===0){
     var par=LEVELS[curLv].par;
     var st=moves<=par?3:moves<=par+2?2:1;
     progress.stars[curLv]=Math.max(progress.stars[curLv]||0,st);
     if(curLv+1>progress.maxLv)progress.maxLv=curLv+1;
     saveProgress();
+    var last=curLv+1>=LEVELS.length;
+    document.getElementById("wtitle").textContent=last?"ALL LEVELS CLEAR!":"CLEAR!";
+    document.getElementById("wnext").style.display=last?"none":"";
     document.getElementById("wstars").textContent="★".repeat(st)+"☆".repeat(3-st);
     document.getElementById("wmv").textContent=moves;
     document.getElementById("wpar").textContent=par;
     document.getElementById("win").style.display="flex";
     renderLevelSel();
   }
-  render();
 }
 function undo(){
-  if(!undoStack.length)return;
+  if(pendingVanish||!undoStack.length)return;
   blocks=JSON.parse(undoStack.pop());moves=Math.max(0,moves-1);selIdx=-1;
   document.getElementById("mv").textContent=moves;
   render();
 }
+/* keyboard: arrows slide the selected block 1 cell per press, U undo, R reset */
+document.addEventListener("keydown",function(e){
+  var k=e.key;
+  if(k==="u"||k==="U"){undo();return;}
+  if(k==="r"||k==="R"){loadLevel(curLv);return;}
+  if(pendingVanish)return;
+  var dir={ArrowUp:[-1,0],ArrowDown:[1,0],ArrowLeft:[0,-1],ArrowRight:[0,1]}[k];
+  if(!dir)return;
+  var blk=blocks[selIdx];
+  if(!blk||blk.vanishing)return;
+  e.preventDefault();
+  if(!canMove(blk,dir[0],dir[1]))return;
+  undoStack.push(JSON.stringify(blocks));if(undoStack.length>50)undoStack.shift();
+  moves++;blk.col+=dir[1];blk.row+=dir[0];
+  var v=checkVanish();
+  document.getElementById("mv").textContent=moves;
+  if(v){selIdx=-1;pendingVanish=true;var g=gen;render();setTimeout(function(){postVanish(g);},350);}
+  else render();
+});
 function loadLevel(n){
-  curLv=n;moves=0;selIdx=-1;undoStack=[];
+  curLv=n;moves=0;selIdx=-1;undoStack=[];pendingVanish=false;gen++;
   blocks=LEVELS[n].blocks.map(function(b){
     return{color:b[0],col:b[1],row:b[2],w:b[3],h:b[4]};
   });
@@ -253,7 +279,7 @@ function renderLevelSel(){
     var b=document.createElement("button");
     b.textContent=i+1;
     var st=progress.stars[i]||0;
-    if(st)b.innerHTML=i+1+'<div class="st">'+"★".repeat(st)+"</div>";
+    if(st)b.innerHTML=(i+1)+'<div class="st">'+"★".repeat(st)+"</div>";
     if(i===curLv)b.classList.add("cur");
     if(i>progress.maxLv){b.disabled=true;}
     b.addEventListener("click",function(n){return function(){loadLevel(n);};}(i));
