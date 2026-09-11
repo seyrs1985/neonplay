@@ -42,6 +42,25 @@ html,body{margin:0;min-height:100%;background:radial-gradient(120% 90% at 50% 0%
 #reset{font:inherit;font-weight:700;padding:9px 22px;min-height:44px;border:0;border-radius:999px;
   background:linear-gradient(135deg,#22d3ee,#a78bfa);color:#0b1020;cursor:pointer;
   box-shadow:0 0 14px rgba(34,211,238,.3)}
+/* 胜利状态渐变高亮 */
+#status.winhl{background:linear-gradient(135deg,#facc15,#f97316);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}
+/* 计分 chip 弹跳 */
+#tally .chip{transition:transform .15s}
+#tally .chip.bump{transform:scale(1.15)}
+/* 落子火花 */
+#board{position:relative}
+.spark{position:absolute;width:5px;height:5px;margin:-2.5px;border-radius:50%;pointer-events:none;z-index:5;
+  animation:sparkfly .45s ease-out forwards}
+@keyframes sparkfly{0%{transform:translate(0,0) scale(1);opacity:1}
+  100%{transform:translate(var(--dx),var(--dy)) scale(.15);opacity:0}}
+/* 胜利彩带 */
+.cf{position:fixed;top:-4%;width:8px;height:12px;border-radius:2px;pointer-events:none;z-index:10;
+  animation:cfall 1.1s ease-in forwards}
+@keyframes cfall{0%{transform:translate(0,0) rotate(0);opacity:1}
+  100%{transform:translate(var(--dx),58vh) rotate(540deg);opacity:0}}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
+}
 </style>
 </head>
 <body>
@@ -52,39 +71,75 @@ html,body{margin:0;min-height:100%;background:radial-gradient(120% 90% at 50% 0%
 <div id="board"></div>
 <div id="status">Your turn — you are X</div>
 <div id="tally">
-  <div class="chip">❌ <b id="wx">0</b></div>
-  <div class="chip">🤝 <b id="wd">0</b></div>
-  <div class="chip">⭕ <b id="wo" class="pink">0</b></div>
-  <div class="chip">🏆 <b id="wt" class="gold">0</b></div>
+  <div class="chip" id="c-x">❌ <b id="wx">0</b></div>
+  <div class="chip" id="c-d">🤝 <b id="wd">0</b></div>
+  <div class="chip" id="c-o">⭕ <b id="wo" class="pink">0</b></div>
+  <div class="chip" id="c-t">🏆 <b id="wt" class="gold">0</b></div>
 </div>
-<button id="reset">↻ 新回合</button>
+<button id="reset">↻ <span id="lbReset">New round</span></button>
+<script src="np_core.js"></script>
 <script>
 'use strict';
-var L={zh:{yourTurn:"你的回合 — 你是 X",cpuThinking:"电脑思考中…",cpuWins:"电脑赢了 🤖",xWins:"X 赢了！🎉",oWins:"O 赢了！🎉",draw:"平局 🤝",oMove:"O 回合",newRound:"↻ 新回合"},en:{yourTurn:"Your turn — you are X",cpuThinking:"Computer thinking…",cpuWins:"Computer wins 🤖",xWins:"X wins! 🎉",oWins:"O wins! 🎉",draw:"It's a draw 🤝",oMove:"O to move",newRound:"↻ New round"}};
-var _lang=(localStorage.getItem("np_lang")||"en").slice(0,2);
-var _t=function(k){return(L[_lang]||L.en)[k]||k};
+/* i18n — np_core.js (np_lang 与站点切换器共用) */
+var L={zh:{yourTurn:"你的回合 — 你是 X",cpuThinking:"电脑思考中…",cpuWins:"电脑赢了 🤖",xWins:"X 赢了！🎉",oWins:"O 赢了！🎉",draw:"平局 🤝",oMove:"O 回合",xMove:"X 回合",newRound:"新回合"},en:{yourTurn:"Your turn — you are X",cpuThinking:"Computer thinking…",cpuWins:"Computer wins 🤖",xWins:"X wins! 🎉",oWins:"O wins! 🎉",draw:"It's a draw 🤝",oMove:"O to move",xMove:"X to move",newRound:"New round"}};
+var _t=function(k){return npT(L,k)};
+document.getElementById('lbReset').textContent=_t('newRound');
+/* 落子火花 + 计分弹跳 + 胜利彩带 */
+function sparks(cell,color){
+  const r=cell.getBoundingClientRect(),br=document.getElementById('board').getBoundingClientRect();
+  const x=r.left-br.left+r.width/2,y=r.top-br.top+r.height/2;
+  for(let i=0;i<5;i++){
+    const s=document.createElement('span');s.className='spark';
+    s.style.left=x+'px';s.style.top=y+'px';
+    s.style.background=color;s.style.boxShadow='0 0 6px '+color;
+    const a=Math.random()*6.28,d=14+Math.random()*12;
+    s.style.setProperty('--dx',(Math.cos(a)*d).toFixed(1)+'px');
+    s.style.setProperty('--dy',(Math.sin(a)*d).toFixed(1)+'px');
+    document.getElementById('board').appendChild(s);
+    setTimeout(function(){s.remove();},500);
+  }
+}
+function bump(id){
+  const el=document.getElementById(id);
+  el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump');
+  setTimeout(function(){el.classList.remove('bump');},180);
+}
+function confetti(color){
+  const cols=[color,'#ffd54a','#a78bfa','#22d3ee'];
+  for(let i=0;i<26;i++){
+    const f=document.createElement('span');f.className='cf';
+    f.style.left=(Math.random()*100)+'%';
+    f.style.background=cols[(Math.random()*cols.length)|0];
+    f.style.setProperty('--dx',((Math.random()-.5)*90).toFixed(0)+'px');
+    f.style.animationDelay=(Math.random()*.4).toFixed(2)+'s';
+    document.body.appendChild(f);
+    setTimeout(function(){f.remove();},1700);
+  }
+}
 const WINS=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
 let b,turn,over,aiMode=true,tally={x:0,o:0,d:0},streak=0;
 const g=document.getElementById('board'),st=document.getElementById('status');
 function build(){
   g.innerHTML='';b=Array(9).fill('');turn='X';over=false;
+  st.classList.remove('winhl');
   for(let i=0;i<9;i++){
     const c=document.createElement('button');c.className='cell';c.dataset.i=i;
     c.addEventListener('click',()=>play(i));g.appendChild(c);
   }
-  st.textContent=aiMode?'Your turn — you are X':'X to move';
+  st.textContent=aiMode?_t('yourTurn'):_t('xMove');
 }
 function line(p){return WINS.find(w=>w.every(i=>b[i]===p));}
 function play(i){
   if(over||b[i])return;
   put(i,turn);
   const c=g.children[i];c.classList.add('pop');
+  sparks(c,turn==='X'?'#22d3ee':'#f472b6');
   const w=line(turn);
   if(w){win(w,turn);return;}
   if(b.every(Boolean)){drawEnd();return;}
   turn=turn==='X'?'O':'X';
-  if(aiMode&&turn==='O'){st.textContent='Computer thinking…';setTimeout(aiMove,320);}
-  else st.textContent=(aiMode?'Your turn':'O to move');
+  if(aiMode&&turn==='O'){st.textContent=_t('cpuThinking');setTimeout(aiMove,320);}
+  else st.textContent=(aiMode?_t('yourTurn'):_t('oMove'));
 }
 function put(i,p){b[i]=p;const c=g.children[i];c.textContent=p;c.classList.add(p.toLowerCase());c.disabled=true;}
 function aiMove(){
@@ -100,7 +155,7 @@ function aiMove(){
   const w=line('O');
   if(w){win(w,'O');return;}
   if(b.every(Boolean)){drawEnd();return;}
-  turn='X';st.textContent='Your turn — you are X';
+  turn='X';st.textContent=_t('yourTurn');
 }
 function mini(isMax){
   const w=line('O');if(w)return 1;
@@ -121,9 +176,12 @@ function win(w,p){
     c.style.animationDelay=(w.indexOf(i)*.12)+'s';
   });
   streak++;tally[p.toLowerCase()]++;tallyOut();
-  st.textContent=(aiMode&&p==='O')?'Computer wins 🤖':(p+' wins! 🔥'+streak);
+  st.textContent=(aiMode&&p==='O')?_t('cpuWins'):_t(p.toLowerCase()+'Wins')+(aiMode?'':' 🔥'+streak);
+  st.classList.add('winhl');
+  bump(p==='X'?'c-x':p==='O'?'c-o':'c-d');
+  if(!(aiMode&&p==='O'))confetti(p==='X'?'#22d3ee':'#f472b6');
 }
-function drawEnd(){over=true;tally.d++;streak=0;tallyOut();st.textContent=_t('draw');}
+function drawEnd(){over=true;tally.d++;streak=0;tallyOut();st.textContent=_t('draw');bump('c-d');}
 function tallyOut(){
   document.getElementById('wx').textContent=tally.x;
   document.getElementById('wo').textContent=tally.o;
