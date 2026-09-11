@@ -221,3 +221,11 @@ html{scroll-behavior:smooth}
   .cat h2{font-size:1rem}
   .game-frame iframe{height:min(56vh,480px)}
 }
+
+/* ---- micro-interaction polish ---- */
+.spot-card{cursor:default}
+.spot-card:hover{border-color:rgba(34,211,238,.4);box-shadow:0 4px 20px rgba(34,211,238,.1)}
+.cat-blurb{margin:4px auto 0;max-width:560px;line-height:1.6;opacity:.8}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
