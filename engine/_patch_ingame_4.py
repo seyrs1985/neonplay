@@ -36,7 +36,7 @@ new_np_l = """const NP_L = {
         best: 'RECORD', paused: 'PAUSE', resume: 'REPRENDRE', quit: 'QUITTER', score: 'points', over: 'ÉCHOUFFONNÉ',
         pearls: 'perles', newbest: '★ NOUVEAU RECORD ★', retry: 'TAPE POUR REJOUER', menu: 'MENU' },
   id: { dive: 'KETUK UNTUK MENYELAM', howto: 'tahan untuk naik · lepas untuk turun', credit: 'arkade buatan AI · v1.0',
-        best: 'TERBAIK', paused: 'DIJEDA', resume: 'LANJUT', quit: 'KELUAR', score: 'skor', over: 'TELANJANG',
+        best: 'TERBAIK', paused: 'DIJEDA', resume: 'LANJUT', quit: 'KELUAR', score: 'skor', over: 'TAMAT',
         pearls: 'mutiara', newbest: '★ REKOR BARU ★', retry: 'KETUK UNTUK ULANG', menu: 'MENU' }
 };"""
 
