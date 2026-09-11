@@ -181,21 +181,19 @@ def build_landing(cfg, gm, gms):
     doc += nav(cfg)
     doc += f"""<main class="wrap">
 <article>
-<nav class="crumbs" style="margin-top:16px"><a href="{base}">🎮 NeonPlay</a> › <span>{esc(gm['h1'])}</span></nav>
-<div class="page-emoji" style="margin-top:14px">{gm['emoji']}</div>
-<h1>{esc(gm['h1'])}</h1>
-<p class="cat-blurb" style="margin-top:-4px">{esc(gm['tagline'])}</p>
 <div class="game-frame">
   <iframe src="{gm.get('play', 'play.html')}" title="{esc(gm['h1'])} — playable" allow="autoplay; fullscreen; gamepad" allowfullscreen></iframe>
   <button id="fs-btn" type="button" title="Fullscreen">⛶</button>
 </div>
-<p class="controls-line">🎮 {esc(gm['controls'])}</p>
+<div class="title-row"><span class="title-emoji">{gm['emoji']}</span><h1>{esc(gm['h1'])}</h1><span class="controls-line">🎮 {esc(gm['controls'])}</span></div>
+<p class="cat-blurb">{esc(gm['tagline'])}</p>
 {ad_slot(cfg, cfg.get('ad_slot_mid', '2222222222'))}
 <section class="seo-block"><h2>How to play</h2><ol class="howto">{howto}</ol></section>
 <section class="seo-block"><h2>Frequently asked questions</h2>{faqs}</section>
 <section class="seo-block"><h2>More games</h2><div class="grid">{related}</div></section>
 <section class="seo-block"><h2>Free tools for work time</h2>
 <p>Between gaming sessions, our sister site <a href="{esc(sister)}">ToolTide</a> runs free online tools — percentage calculators, unit converters and live countdowns. No sign-up there either.</p></section>
+<nav class="crumbs"><a href="{base}">🎮 NeonPlay</a> › <span>{esc(gm['h1'])}</span></nav>
 </article>
 </main>"""
     doc += footer(cfg)

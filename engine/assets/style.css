@@ -152,3 +152,20 @@ input[type=range]{padding:0;accent-color:#0e7490}
 .game-frame #fs-btn{position:absolute;top:10px;right:10px;background:rgba(15,23,42,.6);color:#fff;border:0;border-radius:8px;width:38px;height:38px;font-size:1.1rem;cursor:pointer}
 .game-frame #fs-btn:hover{background:#0e7490}
 .controls-line{color:#64748b;font-size:.9rem;margin:10px 0 0}
+
+/* ---- game-first mobile layout ---- */
+.game-frame{margin:10px 0 0}
+.game-frame iframe{height:min(64vh,600px)}
+.title-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px}
+.title-row h1{margin:0;font-size:1.55rem}
+article>.title-emoji{font-size:1.5rem}
+@media (max-width:640px){
+  .site-head{padding:8px 0}
+  .wrap{padding:0 12px}
+  .game-frame{margin:8px 0 0;border-radius:10px}
+  .game-frame iframe{height:min(58vh,520px)}
+  .title-row h1{font-size:1.3rem}
+  .title-row .controls-line{width:100%;margin:2px 0 0}
+  .hero{padding:22px 0 8px}
+  .hero h1{font-size:1.5rem}
+}
