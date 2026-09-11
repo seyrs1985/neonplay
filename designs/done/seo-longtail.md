@@ -21,3 +21,5 @@
 - 变体页 URL 200、已进 sitemap、含 unique 文案与可玩 iframe
 - 375×667：游戏框首屏可见、无横向滚动
 - games.py 追加后 `python -c "import games"` 通过（LESSONS.md 第 1 条）
+
+已实现:2026-09-11 https://seyrs1985.github.io/neonplay/brickstorm/ball-x-pit-browser-alternative/ 等3页（首批仅Brickstorm按方案范围执行;变体页200/进sitemap/独特文案234-211词/可玩iframe;后续视收录与点击再铺全站）
