@@ -15,3 +15,5 @@
 
 - /feed.xml 200、合法 XML、含现有 9 款条目
 - 首页 head 与 footer 引用在位；无控制台报错
+
+已实现:2026-09-11 https://seyrs1985.github.io/neonplay/feed.xml （feed.xml早已由build.py生成;本轮补齐head alternate发现链接+footer RSS链接;12款游戏条目随构建自动更新）

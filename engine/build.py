@@ -61,6 +61,7 @@ def head(cfg, title, desc, canonical, csspath, extra_ld=()):
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
 <link rel="canonical" href="{esc(canonical)}">
+<link rel="alternate" type="application/rss+xml" title="NeonPlay New Games" href="{esc(cfg['base_url'])}feed.xml">
 <meta property="og:title" content="{esc(title)}">
 <meta property="og:description" content="{esc(desc)}">
 <meta property="og:type" content="website">
@@ -89,7 +90,7 @@ def footer(cfg):
     sister = (cfg.get("sister_site") or {})
     year = TODAY.year
     return f"""<footer class="site-foot"><div class="wrap">
-<nav><a href="{base}about/">About</a><a href="{base}privacy/">Privacy</a><a href="{base}contact/">Contact</a><a href="{esc(sister.get('url', '#'))}">🧰 Free online tools on ToolTide</a></nav>
+<nav><a href="{base}about/">About</a><a href="{base}privacy/">Privacy</a><a href="{base}contact/">Contact</a><a href="{base}feed.xml" title="New games RSS feed">RSS</a><a href="{esc(sister.get('url', '#'))}">🧰 Free online tools on ToolTide</a></nav>
 <p>© {year} NeonPlay · Free games that run in your browser. Sister site: {esc(sister.get('name', ''))} — {esc(sister.get('note', ''))}.</p>
 </div></footer>"""
 

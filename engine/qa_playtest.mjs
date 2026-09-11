@@ -29,7 +29,16 @@ if (!slug && !args.includes("--url")) {
   process.exit(1);
 }
 const BASE = argOf("--base", "https://seyrs1985.github.io/neonplay/");
-const playPath = slug === "neon-tide" ? "play/" : "play.html";
+// play page layout: dir games ("play/") vs single-file ("play.html") — probe, don't hardcode
+let playPath = "play.html";
+if (slug) {
+  for (const cand of ["play/", "play.html"]) {
+    try {
+      const probe = await fetch(new URL(slug + "/" + cand, BASE), { method: "HEAD" });
+      if (probe.ok) { playPath = cand; break; }
+    } catch (e) {}
+  }
+}
 const url = argOf("--url", null) || (BASE.replace(/\/$/, "/") + (BASE.endsWith("/") ? "" : "/") + slug + "/" + playPath);
 const SHOT_DIR = join(ROOT, "data", "qa");
 const BUDGET = parseInt(argOf("--budget", "25000"), 10);

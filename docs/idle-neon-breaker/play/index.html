@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Idle Neon Breaker</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="stage">
+  <div id="hud">
+    <div class="coin-chip">🪙 <b id="coins">0</b></div>
+    <div class="chip">⏱ <span id="rate">0</span>/min</div>
+    <div class="chip">🏆 <span id="highest">2</span></div>
+    <div class="chip">⚪ <span id="balln">1</span></div>
+    <div class="chip">⚔ <span id="dmg">1</span></div>
+  </div>
+  <div id="gamewrap">
+    <canvas id="cv"></canvas>
+    <div id="recordFx"><b id="recordNum">4</b></div>
+  </div>
+  <div id="shop">
+    <button class="card" id="up-ball">
+      <span class="ic">⚪</span>
+      <span class="tx"><span class="nm" id="nm-ball"></span><span class="lv" id="lv-ball"></span></span>
+      <span class="cost" id="cost-ball">25</span>
+    </button>
+    <button class="card" id="up-dmg">
+      <span class="ic">⚔</span>
+      <span class="tx"><span class="nm" id="nm-dmg"></span><span class="lv" id="lv-dmg"></span></span>
+      <span class="cost" id="cost-dmg">50</span>
+    </button>
+    <button class="card" id="up-spd">
+      <span class="ic">⚡</span>
+      <span class="tx"><span class="nm" id="nm-spd"></span><span class="lv" id="lv-spd"></span></span>
+      <span class="cost" id="cost-spd">80</span>
+    </button>
+    <button class="card" id="up-cnt">
+      <span class="ic">🪙</span>
+      <span class="tx"><span class="nm" id="nm-cnt"></span><span class="lv" id="lv-cnt"></span></span>
+      <span class="cost" id="cost-cnt">100</span>
+    </button>
+  </div>
+  <div id="msgline"></div>
+</div>
+<div id="welcome">
+  <div class="panel">
+    <h2 id="wTitle">Welcome back!</h2>
+    <p id="wText">You earned while away</p>
+    <div id="wGain">+0 🪙</div>
+    <button id="wClaim">Claim</button>
+  </div>
+</div>
+<script src="np_core.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
