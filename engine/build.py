@@ -163,7 +163,8 @@ def build_hall(cfg, gms):
     games_json = json.dumps([{"slug":gm["slug"],"emoji":gm["emoji"],"title":gm["h1"],"tag":gm["tagline"][:80]} for gm in gms], ensure_ascii=False)
     doc += """<script>
 (function(){
-  var GAMES=""" + json.dumps(games_json) + """;
+  var GAMES=""" + games_json + """;
+  var base=""" + json.dumps(cfg["base_url"]) + """;
   var day=Math.floor(Date.now()/86400000);
   var idx=(day*2654435761)>>>0; idx=idx%GAMES.length;
   var today=GAMES[idx];
@@ -178,7 +179,7 @@ def build_hall(cfg, gms):
   }catch(e){streak=1;}
   var isZh=(localStorage.getItem('np_lang')||'').indexOf('zh')===0;
   var html='<section class="cat spotlight-cat" style="margin-top:0"><div class="spot-card">';
-  html+='<div class="spot-label">'+(isZh?'⚡ 今日推荐':'⚡ TODAY'S GAME')+(streak>1?' · 🔥'+streak:'')+'</div>';
+  html+='<div class="spot-label">'+(isZh?'⚡ 今日推荐':"⚡ TODAY'S GAME")+(streak>1?' · 🔥'+streak:'')+'</div>';
   html+='<a href="'+base+today.slug+'/" class="spot-link" style="text-decoration:none">';
   html+='<span class="card-emoji" style="font-size:2.2rem">'+today.emoji+'</span>';
   html+='<span class="card-title" style="font-size:1.15rem">'+today.title+'</span>';

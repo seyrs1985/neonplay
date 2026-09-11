@@ -202,6 +202,11 @@ article>.title-emoji{font-size:1.5rem}
 .seo-block h2{font-size:1.05rem;margin:0 0 8px}
 .howto li{margin:6px 0;line-height:1.5}
 .faq{margin:8px 0}
+.seo-block ul{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:7px}
+.seo-block ul li{padding-left:16px;position:relative;line-height:1.5}
+.seo-block ul li::before{content:"▸";position:absolute;left:0;color:#22d3ee}
+.seo-block ul li a{color:#7dd3fc;font-weight:600;text-decoration:none}
+.seo-block ul li a:hover{text-decoration:underline}
 .faq summary{font-weight:700;cursor:pointer;padding:6px 0}
 .faq p{margin:6px 0;padding-left:12px;border-left:2px solid rgba(34,211,238,.2);line-height:1.5}
 
