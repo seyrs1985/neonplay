@@ -62,3 +62,5 @@
 - 文案全英文进内嵌 `var L={en,zh}` 字典（np_lang 键）
 - 无控制台报错；`engine/qa_tests/neon-block-blast.mjs` 脚本化验证：放置→消行→分数递增→无路可放时结算面板弹出
 - 部署前 `node engine/qa_playtest.mjs --slug neon-block-blast` PASS（移动端首屏一票否决照常）
+
+已实现:2026-09-11 https://seyrs1985.github.io/neonplay/neon-block-blast/ （MVP全量:19形状/8×8拖块/整行列消除倍率+combo/每日种子同题/离线存档;QA验证放置→双消计分→死局结算全链）
