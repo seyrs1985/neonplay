@@ -132,7 +132,7 @@ def build_static(cfg, rel, title, desc, body):
                 .replace("{today}", TODAY.isoformat())
                 .replace("{base}", esc(base)))
     depth = 0 if "/" not in rel.rstrip("/index.html") else "../"
-    css = "style.css" if rel.count("/") == 1 else "../style.css"
+    css = "style.css" if rel == "404.html" else "../style.css"
     doc = head(cfg, title, desc, base + rel.replace("index.html", ""), css,
                [{"@type": "WebPage", "name": title, "url": base + rel.replace("index.html", "")}])
     doc += nav(cfg)
