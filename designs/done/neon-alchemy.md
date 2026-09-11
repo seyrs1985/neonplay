@@ -208,3 +208,5 @@ const RECIPES = [
 - **本作资料片**：+20 元素包（风/星/月/龙/时间…）可作为后续独立美术/内容轮，配方表由策划补验。
 
 *产出：NeonPlay 市场分析+游戏策划 Agent · 2026-09-11 · 数据表 42 元素/38 配方/10 每日板已脚本验证（可达性/悬空引用/重复键/最少发现数）· 需求来源：r/infinitecraft、r/playmygame、r/LittleAlchemy、r/AndroidGaming*
+
+已实现:2026-09-11 https://seyrs1985.github.io/neonplay/neon-alchemy/ （MVP全量:自由合成+每日板+图鉴+图谱+存档+重置确认;QA抓出并修复每日板池门误禁中间元素的可解性bug;__qa.solveBoard BFS通用求解钩子）
