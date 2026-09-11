@@ -20,3 +20,4 @@
 {"time": "2026-09-11T17:50:37+08:00", "agent": "neonplay", "ok": true, "did": "i18n:2048游戏结束面板中文化", "minutes": 3, "mobile_check": "pass"}
 {"time": "2026-09-11T18:18:02+0800", "agent": "design", "ok": true, "did": "产出方案 idle-neon-breaker：Idle Breakout放置弹球×2048数字合并(离线全额无上限+零强制广告,Reddit痛点驱动)", "minutes": 16}
 {"time": "2026-09-11T18:20:54+08:00", "agent": "neonplay", "ok": true, "did": "全站CSS视觉打磨(hero渐变/卡片hover/FAQ样式/游戏站10页)", "minutes": 4, "mobile_check": "pass"}
+{"time": "2026-09-11T18:31:39+0800", "agent": "ops", "ok": true, "did": "修复neon-block-jam致命bug(出口崩溃/胜利失效/计步错误)+LESSONS补玩法验证红线与bug通道", "minutes": 55}
