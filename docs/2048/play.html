@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>2048</title>
+<style>
+html,body{margin:0;min-height:100%;background:#0f172a;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:system-ui,sans-serif;color:#e2e8f0;touch-action:none;user-select:none}
+#top{display:flex;gap:24px;align-items:center;margin-bottom:12px;font-size:1.05rem}
+#top b{color:#fbbf24}
+#grid{position:relative;background:#1e293b;border-radius:12px;padding:8px;display:grid;grid-template:repeat(4,1fr)/repeat(4,1fr);gap:8px;width:min(92vw,420px);aspect-ratio:1;box-sizing:border-box}
+.cell{background:#334155;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:clamp(1.1rem,5vw,2rem)}
+#over{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(15,23,42,.85);border-radius:12px;text-align:center;gap:6px}
+#over h2{margin:0;font-size:1.5rem}
+#over button,#again{font:inherit;font-weight:700;padding:8px 20px;border:0;border-radius:10px;background:#fbbf24;color:#0f172a;cursor:pointer;margin-top:8px}
+#msg{margin-top:12px;font-size:.85rem;color:#94a3b8}
+.t2{background:#64748b}.t4{background:#475569}.t8{background:#f59e0b}.t16{background:#f97316}
+.t32{background:#ef4444}.t64{background:#dc2626}.t128{background:#a855f7}.t256{background:#8b5cf6}
+.t512{background:#6366f1}.t1024{background:#0ea5e9}.t2048{background:#10b981}.tbig{background:#fbbf24;color:#7c2d12}
+</style>
+</head>
+<body>
+<div id="top">score <b id="sc">0</b><span>best <b id="bs">0</b></span><button id="again">↻ New game</button></div>
+<div id="grid"></div>
+<div id="msg">arrow keys / WASD — swipe on mobile · merge to 2048</div>
+<script>
+'use strict';
+const COL=['2','4','8','16','32','64','128','256','512','1024','2048'];
+let grid,score,dead,best=0;
+const g=document.getElementById('grid');
+function reset(){grid=Array.from({length:4},()=>[0,0,0,0]);score=0;dead=false;add();add();render();}
+function add(){
+  const empty=[];grid.forEach((r,i)=>r.forEach((v,j)=>{if(!v)empty.push([i,j]);}));
+  if(!empty.length)return;
+  const [i,j]=empty[(Math.random()*empty.length)|0];
+  grid[i][j]=Math.random()<0.9?2:4;
+}
+function render(){
+  g.querySelectorAll('.cell').forEach(c=>c.remove());
+  grid.forEach(r=>r.forEach(v=>{
+    const d=document.createElement('div');d.className='cell';
+    if(v){const c='t'+(v>2048?'big':v);d.classList.add(c.includes(' ')?'tbig':c);d.textContent=v;}
+    g.appendChild(d);
+  }));
+  document.getElementById('sc').textContent=score;
+  document.getElementById('bs').textContent=best;
+}
+function slide(row){
+  let a=row.filter(v=>v),out=[],moved=false;
+  for(let i=0;i<a.length;i++){
+    if(a[i]===a[i+1]){out.push(a[i]*2);score+=a[i]*2;if(a[i]*2>best)best=a[i]*2;i++;}
+    else out.push(a[i]);
+  }
+  while(out.length<4)out.push(0);
+  moved=out.some((v,i)=>v!==row[i]);
+  return [out,moved];
+}
+function move(dir){
+  if(dead)return;
+  const before=JSON.stringify(grid);let moved=false;
+  for(let i=0;i<4;i++){
+    let line=dir==='l'||dir==='r'?grid[i].slice():[grid[0][i],grid[1][i],grid[2][i],grid[3][i]];
+    if(dir==='r'||dir==='d')line.reverse();
+    const [out,m]=slide(line);
+    if(dir==='r'||dir==='d')out.reverse();
+    if(dir==='l'||dir==='r')grid[i]=out;else for(let j=0;j<4;j++)grid[j][i]=out[j];
+    moved=moved||m;
+  }
+  if(!moved||JSON.stringify(grid)===before)return;
+  add();render();
+  if(!canMove())gameOver();
+}
+function canMove(){
+  for(let i=0;i<4;i++)for(let j=0;j<4;j++){
+    if(!grid[i][j])return true;
+    if(j<3&&grid[i][j]===grid[i][j+1])return true;
+    if(i<3&&grid[i][j]===grid[i+1][j])return true;
+  }
+  return false;
+}
+function gameOver(){dead=true;
+  const o=document.createElement('div');o.id='over';
+  o.innerHTML=`<h2>No moves left</h2><p>score ${score} · best tile ${Math.max(...grid.flat())}</p><button onclick="location.reload()">Play again</button>`;
+  g.appendChild(o);o.style.display='flex';
+}
+const K={ArrowLeft:'l',ArrowRight:'r',ArrowUp:'u',ArrowDown:'d',a:'l',d:'r',w:'u',s:'d'};
+addEventListener('keydown',e=>{const k=K[e.key]||K[e.key.toLowerCase&&e.key.toLowerCase()];if(k){e.preventDefault();move(k);}});
+let tx=null,ty=null;
+addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
+addEventListener('touchend',e=>{
+  if(tx===null)return;
+  const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;
+  if(Math.abs(dx)<20&&Math.abs(dy)<20)return;
+  move(Math.abs(dx)>Math.abs(dy)?(dx>0?'r':'l'):(dy>0?'d':'u'));tx=null;
+},{passive:true});
+document.getElementById('again').addEventListener('click',reset);
+reset();
+</script>
+</body>
+</html>

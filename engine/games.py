@@ -1,0 +1,136 @@
+# -*- coding: utf-8 -*-
+"""Game catalog for the /games/ section.
+
+Each entry: slug, title, h1, desc (meta), tagline, emoji, howto, faqs,
+controls. The playable build lives in engine/assets/games/<slug>/play(.html|/)
+and is copied verbatim to docs/games/<slug>/play(...)/ — games are self-contained
+and iframe-embedded into the landing page.
+"""
+
+GAMES = [
+    {
+        "slug": "neon-tide",
+        "title": "Play Neon Tide — Free Online Neon Arcade Shooter",
+        "h1": "Neon Tide",
+        "tagline": "Ride the neon tide — a synthwave arcade shooter with procedural sound, waves of glowing enemies and boss pressure.",
+        "desc": "Play Neon Tide free online: a synthwave neon arcade shooter with waves of glowing enemies, procedural music and endless escalating pressure. No download, no sign-up.",
+        "emoji": "🌊",
+        "accent": "#22d3ee",
+        "play": "play/",  # directory build
+        "howto": [
+            "Move with the mouse or arrow keys — your ship follows on the lower half of the screen.",
+            "Hold to fire; dodging matters as much as shooting because enemies return fire in patterns.",
+            "Survive escalating waves, chase the score multiplier, and beat your personal best.",
+        ],
+        "controls": "Mouse / touch to move, hold to shoot. Keyboard: arrow keys.",
+        "faqs": [
+            ("Is Neon Tide free?",
+             "Yes — it runs entirely in your browser for free, with no download, account or payment. It is an original game built by the NeonPlay team."),
+            ("Does it work on mobile?",
+             "Yes. The game auto-scales to any screen and supports touch: drag to move your ship, it fires automatically while you hold."),
+            ("Who made Neon Tide?",
+             "We did — it is an exclusive NeonPlay original, with every sound and effect generated in code (no asset files)."),
+            ("Does the game track me?",
+             "No. The game runs 100% locally in your browser; your scores never leave your device."),
+        ],
+    },
+    {
+        "slug": "snake",
+        "title": "Play Snake Online — Free Classic Snake Game",
+        "h1": "Snake",
+        "tagline": "The timeless snake game: eat, grow, don't bite yourself. One more run is always one turn away.",
+        "desc": "Play the classic Snake game free online. Arrow keys, WASD or swipe on mobile. Eat apples, grow longer, avoid your own tail — instant play, no download.",
+        "emoji": "🐍",
+        "accent": "#4ade80",
+        "howto": [
+            "Press any arrow key (or swipe on mobile) to start — the snake moves on its own once started.",
+            "Steer into the red apples: every apple makes you one segment longer and raises your score.",
+            "Avoid walls and your own tail — the game ends the moment you crash, then restart instantly.",
+        ],
+        "controls": "Arrow keys / WASD, or swipe on touch screens.",
+        "faqs": [
+            ("How do you win at Snake?",
+             "Snake has no final win — you win by beating your high score. The classic technique is to coil in a spiral: keep your body along the edges so the center stays open for emergency turns."),
+            ("Is this the same Snake as on old Nokia phones?",
+             "Same game concept — eat, grow, don't crash. This version is an original browser implementation with smooth controls, mobile swipe support and instant restart."),
+            ("Does it work on a phone?",
+             "Yes — swipe anywhere on the board to steer. The board scales to fit any screen size."),
+            ("Are my scores saved?",
+             "Your best score is kept in memory while the tab is open; nothing is stored on our side or on your device after you leave."),
+        ],
+    },
+    {
+        "slug": "2048",
+        "title": "Play 2048 Online — Free Number Puzzle Game",
+        "h1": "2048",
+        "tagline": "Slide, merge, double. A deceptively simple number puzzle that eats hours — reach the 2048 tile.",
+        "desc": "Play 2048 free online. Swipe or use arrow keys to merge tiles and reach 2048. Original clean implementation, instant play, works on desktop and mobile.",
+        "emoji": "🔢",
+        "accent": "#fbbf24",
+        "howto": [
+            "Swipe or press arrow keys to slide every tile one step in that direction.",
+            "When two tiles with the same number touch, they merge into one tile of double value.",
+            "A new tile appears after each move — keep big numbers in one corner and build toward 2048.",
+        ],
+        "controls": "Arrow keys / WASD, or swipe on touch screens.",
+        "faqs": [
+            ("What is the 2048 world record?",
+             "Reaching the 2048 tile is the classic goal; expert players keep going to 4096 and beyond. Scores above 20,000 are considered very strong; the theoretical maximum tile on a 4×4 board is 131,072."),
+            ("What is the best strategy for 2048?",
+             "Pick one corner and never move your biggest tile out of it — most players keep it bottom-right and only use three directions. Build a descending 'snake chain' of tiles so merges cascade."),
+            ("Is this the original 2048?",
+             "This is our own clean-room implementation of the 2048 rules (the game concept was created by Gabriele Cirulli in 2014). No ads inside the board, instant restarts."),
+            ("Does it work offline?",
+             "Yes — once the page has loaded, the game runs entirely in your browser with no connection needed."),
+        ],
+    },
+    {
+        "slug": "memory-pairs",
+        "title": "Memory Pairs — Free Online Matching Card Game",
+        "h1": "Memory Pairs",
+        "tagline": "Flip, remember, match. The classic concentration card game — train your working memory in two minutes.",
+        "desc": "Play Memory Pairs free online: the classic concentration matching game with 8 emoji pairs. Flip two cards, find all pairs in as few moves as you can.",
+        "emoji": "🧠",
+        "accent": "#c084fc",
+        "howto": [
+            "Click any card to flip it, then click a second one.",
+            "If the two cards match, they stay face up; if not, they flip back after a moment.",
+            "Remember what you saw — clear all 8 pairs in the fewest moves possible.",
+        ],
+        "controls": "Click / tap cards.",
+        "faqs": [
+            ("What is the fewest moves to win Memory Pairs?",
+             "With 8 pairs and perfect memory, 8 moves (16 flips) is the theoretical minimum — every flip after the first pair of each turn must match. Typical casual wins land around 14–20 moves."),
+            ("Does this game actually improve memory?",
+             "Concentration-style games train visual working memory — the 'where did I see that' skill. Regular play improves your strategy (scanning in rows) and short-term recall."),
+            ("Is it suitable for kids?",
+             "Yes — no timers, no fail states, big friendly cards. It is a calm game; kids and grandparents play it the same way."),
+            ("Can I play on a phone?",
+             "Yes, tap cards directly — the board resizes to fit your screen."),
+        ],
+    },
+    {
+        "slug": "tic-tac-toe",
+        "title": "Tic Tac Toe Online — Play Free vs Computer or a Friend",
+        "h1": "Tic Tac Toe",
+        "tagline": "X's, O's and one unbeatable robot. The three-in-a-row classic — now with a minimax AI you can actually beat (sometimes).",
+        "desc": "Play Tic Tac Toe free online against a smart computer AI or a friend in 2-player mode. Instant play in your browser, works on desktop and mobile.",
+        "emoji": "⭕",
+        "howto": [
+            "Tap any square (or press keys 1–9) to place your X — you always start.",
+            "The computer replies instantly with strong play; line up three in a row — across, down or diagonally — to win.",
+            "Switch to 2-player mode to pass and play with a friend on the same screen.",
+        ],
+        "controls": "Click / tap squares, or number keys 1–9.",
+        "faqs": [
+            ("Can you beat the computer at Tic Tac Toe?",
+             "Our AI plays near-perfect minimax strategy with a small dose of randomness — it never falls for the classic double-threat traps, but it leaves the door open just often enough. About one in five games is winnable with sharp play."),
+            ("Is Tic Tac Toe solved?",
+             "Yes — with perfect play from both sides, Tic Tac Toe is always a draw. That's why the interesting question is spotting your opponent's mistake first, and why our AI deliberately isn't 100% perfect."),
+            ("How do I always win Tic Tac Toe?",
+             "Against imperfect opponents: take the center first, then create a fork — two threats at once. A fork forces a loss because your opponent can only block one line."),
+            ("Is it free and private?",
+             "Completely. The game runs in your browser with no sign-up, no ads inside the board, and nothing is uploaded — scores reset when you leave."),
+        ],
+    },
+]

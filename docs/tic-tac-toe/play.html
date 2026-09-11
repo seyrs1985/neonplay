@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Tic Tac Toe</title>
+<style>
+html,body{margin:0;min-height:100%;background:#0f172a;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:system-ui,sans-serif;color:#e2e8f0;user-select:none}
+#mode{margin-bottom:10px;font-size:.9rem;color:#94a3b8}
+#mode button{font:inherit;padding:5px 12px;margin:0 4px;border:1px solid #475569;background:transparent;color:#94a3b8;border-radius:8px;cursor:pointer}
+#mode button.on{background:#22c3a6;border-color:#22c3a6;color:#0f172a;font-weight:700}
+#board{display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);gap:8px;width:min(88vw,360px);aspect-ratio:1}
+.cell{background:#1e293b;border:0;border-radius:12px;font-size:clamp(2.2rem,11vw,3.4rem);font-weight:800;color:#e2e8f0;cursor:pointer;line-height:1}
+.cell.x{color:#22d3ee}.cell.o{color:#f472b6}
+.cell.winline{background:#334155;outline:2px solid #22c3a6}
+.cell:disabled{cursor:default}
+#status{margin:12px 0 4px;font-size:1.05rem;min-height:1.5em}
+#tally{font-size:.9rem;color:#94a3b8}#tally b{color:#e2e8f0}
+#reset{margin-top:12px;font:inherit;font-weight:700;padding:8px 20px;border:0;border-radius:10px;background:#22c3a6;color:#0f172a;cursor:pointer}
+</style>
+</head>
+<body>
+<div id="mode">vs computer <button id="m-ai" class="on">🤖 AI</button><button id="m-2p">👥 2 players</button></div>
+<div id="board"></div>
+<div id="status">Your turn — you are X</div>
+<div id="tally">X <b id="wx">0</b> · draws <b id="wd">0</b> · O <b id="wo">0</b></div>
+<button id="reset">↻ New round</button>
+<script>
+'use strict';
+const WINS=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+let b,turn,over,aiMode=true,tally={x:0,o:0,d:0};
+const g=document.getElementById('board'),st=document.getElementById('status');
+function build(){
+  g.innerHTML='';b=Array(9).fill('');turn='X';over=false;
+  for(let i=0;i<9;i++){
+    const c=document.createElement('button');c.className='cell';c.dataset.i=i;
+    c.addEventListener('click',()=>play(i));g.appendChild(c);
+  }
+  st.textContent=aiMode?'Your turn — you are X':'X to move';
+}
+function line(p){return WINS.find(w=>w.every(i=>b[i]===p));}
+function play(i){
+  if(over||b[i])return;
+  put(i,turn);
+  const w=line(turn);
+  if(w){win(w,turn);return;}
+  if(b.every(Boolean)){drawEnd();return;}
+  turn=turn==='X'?'O':'X';
+  if(aiMode&&turn==='O'){st.textContent='Computer thinking…';setTimeout(aiMove,320);}
+  else st.textContent=(aiMode?'Your turn':'O to move');
+}
+function put(i,p){b[i]=p;const c=g.children[i];c.textContent=p;c.classList.add(p.toLowerCase());c.disabled=true;}
+function aiMove(){
+  // minimax — perfect play; 20% chance of a random move keeps it beatable
+  let idx;
+  if(Math.random()<0.2){
+    const free=b.map((v,i)=>v?null:i).filter(v=>v!==null);
+    idx=free[(Math.random()*free.length)|0];
+  }else{
+    let bestS=-2;
+    for(let i=0;i<9;i++)if(!b[i]){b[i]='O';const s=mini(false);b[i]='';if(s>bestS){bestS=s;idx=i;}}
+  }
+  put(idx,'O');
+  const w=line('O');
+  if(w){win(w,'O');return;}
+  if(b.every(Boolean)){drawEnd();return;}
+  turn='X';st.textContent='Your turn — you are X';
+}
+function mini(isMax){
+  const w=line('O');if(w)return 1;
+  const l=line('X');if(l)return -1;
+  if(b.every(Boolean))return 0;
+  let best=isMax?-2:2;
+  for(let i=0;i<9;i++)if(!b[i]){
+    b[i]=isMax?'O':'X';
+    const s=mini(!isMax);b[i]='';
+    best=isMax?Math.max(best,s):Math.min(best,s);
+  }
+  return best;
+}
+function win(w,p){
+  over=true;w.forEach(i=>g.children[i].classList.add('winline'));
+  tally[p.toLowerCase()]++;tallyOut();
+  st.textContent=(aiMode&&p==='O')?'Computer wins 🤖':(p+' wins! 🎉');
+}
+function drawEnd(){over=true;tally.d++;tallyOut();st.textContent="It's a draw 🤝";}
+function tallyOut(){document.getElementById('wx').textContent=tally.x;document.getElementById('wo').textContent=tally.o;document.getElementById('wd').textContent=tally.d;}
+document.getElementById('reset').addEventListener('click',build);
+document.getElementById('m-ai').addEventListener('click',()=>{aiMode=true;document.getElementById('m-ai').classList.add('on');document.getElementById('m-2p').classList.remove('on');build();});
+document.getElementById('m-2p').addEventListener('click',()=>{aiMode=false;document.getElementById('m-2p').classList.add('on');document.getElementById('m-ai').classList.remove('on');build();});
+addEventListener('keydown',e=>{const i='123456789'.indexOf(e.key);if(i>=0)play(i);});
+build();
+</script>
+</body>
+</html>

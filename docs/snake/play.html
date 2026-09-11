@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Snake</title>
+<style>
+html,body{margin:0;height:100%;background:#0f172a;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:system-ui,sans-serif;color:#e2e8f0;touch-action:none;overflow:hidden}
+#hud{display:flex;gap:24px;font-size:1.05rem;margin-bottom:10px}
+#hud b{color:#4ade80}
+canvas{border-radius:10px;background:#1e293b;max-width:96vw;max-height:70vh}
+#msg{margin-top:10px;font-size:.9rem;color:#94a3b8;text-align:center}
+#over{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(15,23,42,.82);text-align:center}
+#over h2{font-size:1.6rem;margin:0 0 6px}
+#over p{margin:0 0 14px;color:#94a3b8}
+#over button{font:inherit;font-weight:700;padding:10px 22px;border:0;border-radius:10px;background:#4ade80;color:#0f172a;cursor:pointer}
+</style>
+</head>
+<body>
+<div id="hud">score <b id="sc">0</b><span>best <b id="bs">0</b></span></div>
+<canvas id="cv" width="441" height="441"></canvas>
+<div id="msg">arrow keys / WASD — swipe on mobile</div>
+<div id="over"><h2>Game over</h2><p>score <span id="fs">0</span></p><button id="rb">Play again</button></div>
+<script>
+'use strict';
+const N=21,S=21,W=N*S;
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+let snake,dir,queue,apple,score,dead,timer,acc,best=0;
+function reset(){
+  snake=[{x:10,y:12},{x:10,y:13},{x:10,y:14}];
+  dir={x:0,y:-1};queue=[];score=0;dead=false;acc=0;
+  placeApple();draw();hud();
+  document.getElementById('over').style.display='none';
+  clearInterval(timer);timer=setInterval(tick,110);
+}
+function hud(){document.getElementById('sc').textContent=score;document.getElementById('bs').textContent=best;}
+function placeApple(){
+  do{apple={x:(Math.random()*N)|0,y:(Math.random()*N)|0};}
+  while(snake.some(s=>s.x===apple.x&&s.y===apple.y));
+}
+function tick(){
+  if(dead)return;
+  if(queue.length){const n=queue.shift();if(n.x!==-dir.x||n.y!==-dir.y)dir=n;}
+  const h={x:snake[0].x+dir.x,y:snake[0].y+dir.y};
+  if(h.x<0||h.y<0||h.x>=N||h.y>=N||snake.some(s=>s.x===h.x&&s.y===h.y)){die();return;}
+  snake.unshift(h);
+  if(h.x===apple.x&&h.y===apple.y){score+=10;if(score>best)best=score;placeApple();hud();}
+  else snake.pop();
+  draw();
+}
+function die(){dead=true;clearInterval(timer);
+  document.getElementById('fs').textContent=score;
+  document.getElementById('over').style.display='flex';
+}
+function draw(){
+  ctx.fillStyle='#1e293b';ctx.fillRect(0,0,W,W);
+  ctx.fillStyle='#334155';for(let i=0;i<N;i++)for(let j=0;j<N;j++)if((i+j)%2)ctx.fillRect(i*S,j*S,S,S);
+  ctx.fillStyle='#f87171';ctx.beginPath();ctx.arc(apple.x*S+S/2,apple.y*S+S/2,S/2-2,0,7);ctx.fill();
+  snake.forEach((s,i)=>{ctx.fillStyle=i?'#4ade80':'#a7f3d0';ctx.fillRect(s.x*S+1,s.y*S+1,S-2,S-2);});
+}
+function turn(x,y){queue.push({x,y});}
+const K={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0],w:[0,-1],s:[0,1],a:[-1,0],d:[1,0]};
+addEventListener('keydown',e=>{
+  if(dead){if(e.key===' '||e.key==='Enter')reset();return;}
+  const k=K[e.key]||K[e.key.toLowerCase&&e.key.toLowerCase()];
+  if(k){e.preventDefault();turn(k[0],k[1]);}
+});
+let tx=null,ty=null;
+addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
+addEventListener('touchend',e=>{
+  if(dead){reset();return;}
+  if(tx===null)return;
+  const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;
+  if(Math.abs(dx)<18&&Math.abs(dy)<18)return;
+  Math.abs(dx)>Math.abs(dy)?turn(Math.sign(dx),0):turn(0,Math.sign(dy));tx=null;
+},{passive:true});
+document.getElementById('rb').addEventListener('click',reset);
+reset();
+</script>
+</body>
+</html>

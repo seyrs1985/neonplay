@@ -1,0 +1,16 @@
+{
+  "name": "NeonPlay",
+  "base_url": "https://seyrs1985.github.io/neonplay/",
+  "sister_site": {
+    "name": "ToolTide",
+    "url": "https://seyrs1985.github.io/tooltide/",
+    "note": "Sister site: free online tools (calculators, converters, countdowns)"
+  },
+  "contact_email": "tooltide.contact@gmail.com",
+  "ga4_id": "",
+  "gsc_verification": "k2uIEKYkISMx4oYalcwsZr5W_HwkM5K_Dv_PBaomNpc",
+  "adsense_client": "",
+  "ad_slot_top": "1111111111",
+  "ad_slot_mid": "2222222222",
+  "indexnow_key": "8f14e45fceea167a5a36dedd4bea2543"
+}

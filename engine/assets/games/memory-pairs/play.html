@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Memory Pairs</title>
+<style>
+html,body{margin:0;min-height:100%;background:#0f172a;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:system-ui,sans-serif;color:#e2e8f0;user-select:none}
+#top{margin-bottom:12px;font-size:1.05rem}#top b{color:#c084fc}
+#grid{display:grid;grid-template:repeat(4,1fr)/repeat(4,1fr);gap:10px;width:min(92vw,420px);aspect-ratio:1}
+.card{position:relative;perspective:600px;cursor:pointer}
+.inner{position:absolute;inset:0;transition:transform .3s;transform-style:preserve-3d}
+.card.up .inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:clamp(1.6rem,7vw,2.4rem);backface-visibility:hidden}
+.back{background:#334155;background-image:linear-gradient(135deg,#475569 25%,#334155 25%,#334155 50%,#475569 50%,#475569 75%,#334155 75%);background-size:14px 14px}
+.front{background:#c084fc;transform:rotateY(180deg)}
+.card.done .front{background:#7e22ce}
+#win{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(15,23,42,.88);text-align:center;gap:6px}
+#win h2{margin:0;font-size:1.6rem}#win p{margin:0;color:#94a3b8}
+#win button{font:inherit;font-weight:700;padding:10px 22px;border:0;border-radius:10px;background:#c084fc;color:#0f172a;cursor:pointer;margin-top:10px}
+</style>
+</head>
+<body>
+<div id="top">moves <b id="mv">0</b> · pairs <b id="pr">0</b>/8</div>
+<div id="grid"></div>
+<div id="win"><h2>All pairs found! 🎉</h2><p><span id="fm"></span> moves</p><button onclick="location.reload()">Play again</button></div>
+<script>
+'use strict';
+const EMO=['🍎','🚀','🐱','🌟','🎧','⚽','🌵','🎲'];
+let first=null,lock=false,moves=0,pairs=0;
+const g=document.getElementById('grid');
+const deck=[...EMO,...EMO].sort(()=>Math.random()-0.5);
+deck.forEach((emo,idx)=>{
+  const c=document.createElement('div');c.className='card';c.dataset.emo=emo;
+  c.innerHTML='<div class="inner"><div class="face back"></div><div class="face front">'+emo+'</div></div>';
+  c.addEventListener('click',()=>flip(c));
+  g.appendChild(c);
+});
+function flip(c){
+  if(lock||c.classList.contains('up')||c.classList.contains('done'))return;
+  c.classList.add('up');
+  if(!first){first=c;return;}
+  moves++;document.getElementById('mv').textContent=moves;
+  if(first.dataset.emo===c.dataset.emo){
+    first.classList.add('done');c.classList.add('done');
+    first=null;pairs++;document.getElementById('pr').textContent=pairs;
+    if(pairs===8){document.getElementById('fm').textContent=moves;document.getElementById('win').style.display='flex';}
+  }else{
+    lock=true;const a=first;first=null;
+    setTimeout(()=>{a.classList.remove('up');c.classList.remove('up');lock=false;},700);
+  }
+}
+</script>
+</body>
+</html>
