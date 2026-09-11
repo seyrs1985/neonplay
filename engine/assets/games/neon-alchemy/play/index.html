@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Neon Alchemy</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="stage">
+  <div id="topbar">
+    <button id="tab-free" class="tab on"></button>
+    <button id="tab-daily" class="tab"></button>
+    <div id="progress" class="chip">0/42</div>
+  </div>
+  <div id="dailyCard" class="hide">
+    <div id="dTarget"></div>
+    <div id="dNote" class="sub"></div>
+  </div>
+  <div id="cauldron">
+    <div class="slot" id="slotA"><span class="q">?</span></div>
+    <div class="plus">+</div>
+    <div class="slot" id="slotB"><span class="q">?</span></div>
+    <div class="plus">=</div>
+    <div class="slot ring" id="slotR"><span class="q">?</span></div>
+  </div>
+  <div id="msg"></div>
+  <div id="chips"></div>
+  <div id="wallhead"><span id="wallTitle"></span><button id="resetBtn" class="mini"></button></div>
+  <div id="wall"></div>
+  <div id="rxhead"></div>
+  <div id="rx"></div>
+</div>
+<div id="dailWin" class="overlay hide">
+  <div class="panel">
+    <h2 id="dwTitle"></h2>
+    <div id="dwEmoji"></div>
+    <p id="dwText"></p>
+    <button id="dwShare"></button>
+    <button id="dwClose"></button>
+  </div>
+</div>
+<script src="np_core.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
