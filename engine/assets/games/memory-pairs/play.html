@@ -72,10 +72,17 @@ html,body{margin:0;min-height:100%;background:radial-gradient(120% 90% at 50% 0%
 <script src="np_core.js"></script>
 <script>
 'use strict';
-var L={zh:{mv:"步数",pr:"配对",tm:"时间",again:"再来一局",winT:"全部配对成功！",
-  winP:"{m} 步 · {s} 秒"},
- en:{mv:"MOVES",pr:"PAIRS",tm:"TIME",again:"Play again",winT:"All pairs found!",
-  winP:"{m} moves · {s} s"}};
+var L={
+en:{mv:"MOVES",pr:"PAIRS",tm:"TIME",again:"Play again",winT:"All pairs found!",winP:"{m} moves · {s} s"},
+zh:{mv:"步数",pr:"配对",tm:"时间",again:"再来一局",winT:"全部配对成功！",winP:"{m} 步 · {s} 秒"},
+es:{mv:"JUGADAS",pr:"PAREJAS",tm:"TIEMPO",again:"Jugar de nuevo",winT:"¡Todas las parejas encontradas!",winP:"{m} jugadas · {s} s"},
+pt:{mv:"JOGADAS",pr:"PARES",tm:"TEMPO",again:"Jogar de novo",winT:"Todos os pares encontrados!",winP:"{m} jogadas · {s} s"},
+ru:{mv:"ХОДЫ",pr:"ПАРЫ",tm:"ВРЕМЯ",again:"Играть снова",winT:"Все пары найдены!",winP:"{m} ходов · {s} с"},
+ja:{mv:"手数",pr:"ペア",tm:"タイム",again:"もう一度遊ぶ",winT:"全ペア発見！",winP:"{m} 手 · {s} 秒"},
+ko:{mv:"이동",pr:"짝",tm:"시간",again:"다시 플레이",winT:"모든 짝을 찾았어요!",winP:"{m}번 이동 · {s}초"},
+de:{mv:"ZÜGE",pr:"PAARE",tm:"ZEIT",again:"Nochmal spielen",winT:"Alle Paare gefunden!",winP:"{m} Züge · {s} s"},
+fr:{mv:"COUPS",pr:"PAIRES",tm:"TEMPS",again:"Rejouer",winT:"Toutes les paires trouvées !",winP:"{m} coups · {s} s"},
+id:{mv:"LANGKAH",pr:"PASANGAN",tm:"WAKTU",again:"Main lagi",winT:"Semua pasangan ditemukan!",winP:"{m} langkah · {s} dtk"}};
 var _t=function(k){return npT(L,k)};
 /* 程序化音效(零文件,首次手势懒恢复) */
 var Sound=(function(){

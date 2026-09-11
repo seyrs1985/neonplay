@@ -70,10 +70,17 @@
 (function(){
 "use strict";
 /* i18n — np_core.js (np_lang 与站点切换器共用) */
-var L={zh:{flagOn:"旗标:开",flagOff:"旗标:关",lose:"💥 踩雷了！点再来一局。",
-  win:"🏆 扫雷成功！用时 {s} 秒。",again:"再来一局"},
- en:{flagOn:"Flag: ON",flagOff:"Flag: OFF",lose:"💥 Boom! Tap replay.",
-  win:"🏆 Cleared in {s}s!",again:"Play again"}};
+var L={
+en:{flagOn:"Flag: ON",flagOff:"Flag: OFF",lose:"💥 Boom! Tap replay.",win:"🏆 Cleared in {s}s!",again:"Play again"},
+zh:{flagOn:"旗标:开",flagOff:"旗标:关",lose:"💥 踩雷了！点再来一局。",win:"🏆 扫雷成功！用时 {s} 秒。",again:"再来一局"},
+es:{flagOn:"Bandera: SÍ",flagOff:"Bandera: NO",lose:"💥 ¡Boom! Toca para repetir.",win:"¡🏆 Despejado en {s} s!",again:"Jugar de nuevo"},
+pt:{flagOn:"Bandeira: SIM",flagOff:"Bandeira: NÃO",lose:"💥 Boom! Toque para repetir.",win:"🏆 Limpo em {s} s!",again:"Jogar de novo"},
+ru:{flagOn:"Флажок: ВКЛ",flagOff:"Флажок: ВЫКЛ",lose:"💥 Бум! Нажмите ещё раз.",win:"🏆 Очищено за {s} с!",again:"Играть снова"},
+ja:{flagOn:"旗モード:ON",flagOff:"旗モード:OFF",lose:"💥 爆発！タップでリプレイ。",win:"🏆 {s} 秒でクリア！",again:"もう一度遊ぶ"},
+ko:{flagOn:"깃발: 켜짐",flagOff:"깃발: 꺼짐",lose:"💥 펑! 다시 눌러 재도전.",win:"🏆 {s}초 만에 클리어!",again:"다시 플레이"},
+de:{flagOn:"Fahne: AN",flagOff:"Fahne: AUS",lose:"💥 Boom! Zum Wiederholen tippen.",win:"🏆 In {s} s geräumt!",again:"Nochmal spielen"},
+fr:{flagOn:"Drapeau : OUI",flagOff:"Drapeau : NON",lose:"💥 Boum ! Tape pour rejouer.",win:"🏆 Déminé en {s} s !",again:"Rejouer"},
+id:{flagOn:"Bendera: AKTIF",flagOff:"Bendera: MATI",lose:"💥 Boom! Ketuk untuk ulang.",win:"🏆 Bersih dalam {s} dtk!",again:"Main lagi"}};
 var _t=function(k){return npT(L,k)};
 
 var N=9,MINES=10;
