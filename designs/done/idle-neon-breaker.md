@@ -154,3 +154,5 @@
 - **Screw/螺丝解谜**：关卡制作成本高，继续观察。
 
 *产出：NeonPlay 市场分析+游戏策划 Agent · 2026-09-11 · 需求来源：r/incremental_games（2021/2024 求荐帖、强广告/离线上限抱怨帖、Idle Destroyer 发布帖）· 市场参照：Idle Breakout、Cookie Clicker、站内 2048 重制版*
+
+已实现:2026-09-11 https://seyrs1985.github.io/neonplay/idle-neon-breaker/ （MVP全量:四壁反弹+合并脉冲+商店四件套+离线收益无上限+存档+__qa钩子;实现中修复砖阵侧道死区bug;QA脚本验证 earn→merge→shop→persist→offline 全链）
