@@ -18,6 +18,8 @@
   #overlay button{margin-top:6px;padding:10px 26px;font-size:15px;border:0;border-radius:8px;
     background:linear-gradient(135deg,#22d3ee,#a78bfa);color:#0b1020;font-weight:700;cursor:pointer}
   .hide{display:none!important}
+
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;transition-duration:.01ms !important}}
 </style>
 </head>
 <body>
@@ -45,7 +47,17 @@ var ROW_COLORS=["#f472b6","#a78bfa","#22d3ee","#4ade80","#facc15","#fb923c"];
 var paddle,ball,bricks,score,lives,level,state,shake;
 var particles=[],floats=[];
 var keys={};
-var L={zh:{title:"🧱 霓虹打砖块",hint:"消灭所有砖块。用鼠标、手指或方向键移动挡板。<br>点击 / 触摸 / 空格键发射弹球。",play:"开始",winT:"🏆 全部消除!",overT:"游戏结束",scoreL:"得分",levelL:"到达关卡",retry:"再玩一次"},en:{title:"🧱 NEON BREAKOUT",hint:"Smash every brick. Move with mouse, finger or arrow keys.<br>Tap / click / Space to launch the ball.",play:"PLAY",winT:"🏆 ALL CLEAR!",overT:"GAME OVER",scoreL:"Score",levelL:"Level reached",retry:"PLAY"}};
+var L={
+en:{title:"🧱 NEON BREAKOUT",hint:"Smash every brick. Move with mouse, finger or arrow keys.<br>Tap / click / Space to launch the ball.",play:"PLAY",winT:"🏆 ALL CLEAR!",overT:"GAME OVER",scoreL:"Score",levelL:"Level reached",retry:"PLAY"},
+zh:{title:"🧱 霓虹打砖块",hint:"消灭所有砖块。用鼠标、手指或方向键移动挡板。<br>点击 / 触摸 / 空格键发射弹球。",play:"开始",winT:"🏆 全部消除!",overT:"游戏结束",scoreL:"得分",levelL:"到达关卡",retry:"再玩一次"},
+es:{title:"🧱 NEON BREAKOUT",hint:"Rompe todos los ladrillos. Muévete con ratón, dedo o flechas.<br>Toca / haz clic / Espacio para lanzar la bola.",play:"JUGAR",winT:"🏆 ¡TODO LIMPIO!",overT:"FIN DEL JUEGO",scoreL:"Puntos",levelL:"Nivel alcanzado",retry:"JUGAR"},
+pt:{title:"🧱 NEON BREAKOUT",hint:"Quebre todos os blocos. Mova com mouse, dedo ou setas.<br>Toque / clique / Espaço para lançar a bola.",play:"JOGAR",winT:"🏆 TUDO LIMPO!",overT:"FIM DE JOGO",scoreL:"Pontos",levelL:"Nível alcançado",retry:"JOGAR"},
+ru:{title:"🧱 НЕОНОВЫЙ АРКАНОИД",hint:"Разбей все кирпичи. Двигайся мышью, пальцем или стрелками.<br>Тап / клик / Пробел — запуск мяча.",play:"ИГРАТЬ",winT:"🏆 ВСЁ ЧИСТО!",overT:"ИГРА ОКОНЧЕНА",scoreL:"Очки",levelL:"Достигнут уровень",retry:"ИГРАТЬ"},
+ja:{title:"🧱 ネオンブロック崩し",hint:"すべてのブロックを壊そう。マウス・指・方向キーで移動。<br>タップ / クリック / スペースでボールを発射。",play:"プレイ",winT:"🏆 全消し！",overT:"ゲームオーバー",scoreL:"スコア",levelL:"到達レベル",retry:"プレイ"},
+ko:{title:"🧱 네온 벽돌깨기",hint:"모든 벽돌을 부수세요. 마우스, 터치 또는 방향키로 이동.<br>탭 / 클릭 / 스페이스로 공을 발사.",play:"플레이",winT:"🏆 전부 제거!",overT:"게임 오버",scoreL:"점수",levelL:"도달 레벨",retry:"플레이"},
+de:{title:"🧱 NEON-BREAKOUT",hint:"Zerschmetre alle Blöcke. Bewege dich mit Maus, Finger oder Pfeiltasten.<br>Tippen / Klicken / Leertaste startet den Ball.",play:"SPIELEN",winT:"🏆 ALLES KLAR!",overT:"GAME OVER",scoreL:"Punkte",levelL:"Erreichte Stufe",retry:"SPIELEN"},
+fr:{title:"🧱 CASSE-BRIQUES NÉON",hint:"Casse toutes les briques. Bouge avec la souris, le doigt ou les flèches.<br>Tape / clique / Espace pour lancer la balle.",play:"JOUER",winT:"🏆 TOUT CASSÉ !",overT:"PARTIE TERMINÉE",scoreL:"Points",levelL:"Niveau atteint",retry:"JOUER"},
+id:{title:"🧱 BREAKOUT NEON",hint:"Hancurkan semua bata. Bergeraklah dengan mouse, jari, atau panah.<br>Ketuk / klik / Spasi untuk meluncurkan bola.",play:"MAIN",winT:"🏆 SEMUA BERHASIL!",overT:"PERMAINAN SELESAI",scoreL:"Skor",levelL:"Level dicapai",retry:"MAIN"}};
 var lang=(localStorage.getItem("np_lang")||"en").slice(0,2);
 var t=function(k){return(L[lang]||L.en)[k]||k};
 
@@ -86,6 +98,7 @@ function burst(x,y,c,n){
 function pop(x,y,txt,c){floats.push({x:x,y:y,txt:txt,color:c,life:1});}
 
 function update(){
+  if(state!=="play")return;
   particles=particles.filter(function(p){return p.life>0;});
   particles.forEach(function(p){p.x+=p.vx;p.y+=p.vy;p.vy+=.06;p.life-=.035;});
   floats=floats.filter(function(f){return f.life>0;});
@@ -208,6 +221,8 @@ window.addEventListener("keyup",function(e){
   if(e.code==="ArrowRight")keys.right=false;
 });
 ovB.addEventListener("click",function(e){e.stopPropagation();newGame();});
+// boot: init pieces so the loop never touches undefined before first game
+resetPaddle();makeBricks();newBall();state="ready";
 })();
 </script>
 </body>

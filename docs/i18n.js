@@ -901,6 +901,17 @@ function boot(){
   apply();
   switcher();
   document.documentElement.lang=lang;
+  // Pass an explicit ?lang= choice down into game iframes (same origin — the
+  // game's own np_core reads the same localStorage; this covers ?lang= QA links).
+  if(new URLSearchParams(location.search).get("lang")){
+    var fr=document.querySelectorAll(".game-frame iframe");
+    for(var fi=0;fi<fr.length;fi++){
+      try{
+        var fu=new URL(fr[fi].getAttribute("src"),location.href);
+        if(!fu.searchParams.get("lang")){fu.searchParams.set("lang",lang);fr[fi].src=fu.toString();}
+      }catch(e){}
+    }
+  }
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot);
 else boot();

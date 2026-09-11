@@ -74,12 +74,37 @@ html,body{margin:0;padding:0;min-height:100%;background:radial-gradient(120% 90%
 <script>
 'use strict';
 /* i18n — np_lang 与站点切换器共用 */
-var L={zh:{yourTurn:"你的回合 — 点一列落子",aiTurn:"AI 思考中…",aiWin:"AI 赢了 🤖",youWin:"你赢了！🎉",
+var L={
+en:{yourTurn:"Your turn — tap a column",aiTurn:"AI thinking…",aiWin:"AI wins 🤖",youWin:"You win! 🎉",
+  p1Turn:"🔴 Red's turn",p2Turn:"🔵 Blue's turn",p1Win:"🔴 Red wins!",p2Win:"🔵 Blue wins!",draw:"Draw 🤝",
+  newGame:"New game",you:"You",drawLbl:"Draw"},
+zh:{yourTurn:"你的回合 — 点一列落子",aiTurn:"AI 思考中…",aiWin:"AI 赢了 🤖",youWin:"你赢了！🎉",
   p1Turn:"🔴 红方回合",p2Turn:"🔵 蓝方回合",p1Win:"🔴 红方赢！",p2Win:"🔵 蓝方赢！",draw:"平局 🤝",
   newGame:"新游戏",you:"你",drawLbl:"平局"},
- en:{yourTurn:"Your turn — tap a column",aiTurn:"AI thinking…",aiWin:"AI wins 🤖",youWin:"You win! 🎉",
-  p1Turn:"🔴 Red's turn",p2Turn:"🔵 Blue's turn",p1Win:"🔴 Red wins!",p2Win:"🔵 Blue wins!",draw:"Draw 🤝",
-  newGame:"New game",you:"You",drawLbl:"Draw"}};
+es:{yourTurn:"Tu turno — toca una columna",aiTurn:"La IA piensa…",aiWin:"Gana la IA 🤖",youWin:"¡Ganaste! 🎉",
+  p1Turn:"Turno del 🔴 rojo",p2Turn:"Turno del 🔵 azul",p1Win:"¡Gana el 🔴 rojo!",p2Win:"¡Gana el 🔵 azul!",draw:"Empate 🤝",
+  newGame:"Nueva partida",you:"Tú",drawLbl:"Empate"},
+pt:{yourTurn:"Sua vez — toque numa coluna",aiTurn:"A IA pensando…",aiWin:"A IA ganhou 🤖",youWin:"Você ganhou! 🎉",
+  p1Turn:"Vez do 🔴 vermelho",p2Turn:"Vez do 🔵 azul",p1Win:"O 🔴 vermelho ganhou!",p2Win:"O 🔵 azul ganhou!",draw:"Empate 🤝",
+  newGame:"Novo jogo",you:"Você",drawLbl:"Empate"},
+ru:{yourTurn:"Ваш ход — нажмите на колонку",aiTurn:"ИИ думает…",aiWin:"Победил ИИ 🤖",youWin:"Вы победили! 🎉",
+  p1Turn:"Ход 🔴 красных",p2Turn:"Ход 🔵 синих",p1Win:"Победили 🔴 красные!",p2Win:"Победили 🔵 синие!",draw:"Ничья 🤝",
+  newGame:"Новая игра",you:"Вы",drawLbl:"Ничья"},
+ja:{yourTurn:"あなたの番 — 列をタップして落とす",aiTurn:"AI 思考中…",aiWin:"AI の勝ち 🤖",youWin:"あなたの勝ち！🎉",
+  p1Turn:"🔴 赤の番",p2Turn:"🔵 青の番",p1Win:"🔴 赤の勝ち！",p2Win:"🔵 青の勝ち！",draw:"引き分け 🤝",
+  newGame:"ニューゲーム",you:"あなた",drawLbl:"引き分け"},
+ko:{yourTurn:"당신 차례 — 열을 탭해 놓기",aiTurn:"AI 생각 중…",aiWin:"AI 승리 🤖",youWin:"당신 승리! 🎉",
+  p1Turn:"🔴 빨강 차례",p2Turn:"🔵 파랑 차례",p1Win:"🔴 빨강 승리!",p2Win:"🔵 파랑 승리!",draw:"무승부 🤝",
+  newGame:"새 게임",you:"당신",drawLbl:"무승부"},
+de:{yourTurn:"Dein Zug — tippe auf eine Spalte",aiTurn:"KI überlegt…",aiWin:"Die KI gewinnt 🤖",youWin:"Du gewinnst! 🎉",
+  p1Turn:"🔴 Rot ist am Zug",p2Turn:"🔵 Blau ist am Zug",p1Win:"🔴 Rot gewinnt!",p2Win:"🔵 Blau gewinnt!",draw:"Unentschieden 🤝",
+  newGame:"Neues Spiel",you:"Du",drawLbl:"Unentschieden"},
+fr:{yourTurn:"À toi — tape une colonne",aiTurn:"L'IA réfléchit…",aiWin:"L'IA gagne 🤖",youWin:"Tu gagnes ! 🎉",
+  p1Turn:"Au tour du 🔴 rouge",p2Turn:"Au tour du 🔵 bleu",p1Win:"Le 🔴 rouge gagne !",p2Win:"Le 🔵 bleu gagne !",draw:"Match nul 🤝",
+  newGame:"Nouvelle partie",you:"Toi",drawLbl:"Match nul"},
+id:{yourTurn:"Giliranmu — ketuk satu kolom",aiTurn:"AI berpikir…",aiWin:"AI menang 🤖",youWin:"Kamu menang! 🎉",
+  p1Turn:"Giliran 🔴 merah",p2Turn:"Giliran 🔵 biru",p1Win:"🔴 merah menang!",p2Win:"🔵 biru menang!",draw:"Seri 🤝",
+  newGame:"Main baru",you:"Kamu",drawLbl:"Seri"}};
 var _lang=(localStorage.getItem("np_lang")||"en").slice(0,2);
 var _t=function(k){return(L[_lang]||L.en)[k]||k};
 

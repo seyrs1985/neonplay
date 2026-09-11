@@ -31,6 +31,8 @@ canvas{width:100%;height:100%;display:block;border-radius:8px;touch-action:none}
 .modebtn.daily{border-color:#ffd54a;background:rgba(64,52,10,.55)}
 .modebtn.daily:hover{border-color:#ffd54a;background:rgba(255,213,74,.16)}
 .modebtn .tag{display:block;font-size:.72rem;opacity:.65;margin-top:2px;font-weight:400}
+
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;transition-duration:.01ms !important}}
 </style>
 </head>
 <body>
@@ -60,15 +62,46 @@ var W=480,H=720;
 
 // ---- i18n (np_lang 与站点切换器共用) ----
 var L={
- en:{classic:"CLASSIC",tagClassic:"endless waves",daily:"DAILY",tagDaily:"same board for everyone today",
+en:{classic:"CLASSIC",tagClassic:"endless waves",daily:"DAILY",tagDaily:"same board for everyone today",
    tapStart:"pick a mode to start",lvl:"⬆ LEVEL UP",choose:"Choose one upgrade",over:"💀 GAME OVER",
    score:"Score",wave:"Wave",best:"Best",todayBest:"Today's Best",
    comeBack:"Come back tomorrow for a new board",retry:"RETRY"},
- zh:{classic:"经典模式",tagClassic:"无尽波次",daily:"每日挑战",tagDaily:"今日全球同题",
+zh:{classic:"经典模式",tagClassic:"无尽波次",daily:"每日挑战",tagDaily:"今日全球同题",
    tapStart:"选择模式开始",lvl:"⬆ 升级！",choose:"选择一个强化",over:"💀 游戏结束",
    score:"得分",wave:"波次",best:"最佳",todayBest:"今日最佳",
-   comeBack:"明天再来挑战新棋盘吧",retry:"再来一局"}
-};
+   comeBack:"明天再来挑战新棋盘吧",retry:"再来一局"},
+es:{classic:"CLÁSICO",tagClassic:"oleadas sin fin",daily:"DIARIO",tagDaily:"mismo tablero hoy para todos",
+   tapStart:"elige un modo para empezar",lvl:"⬆ SUBES DE NIVEL",choose:"Elige una mejora",over:"💀 FIN DEL JUEGO",
+   score:"Puntos",wave:"Oleada",best:"Récord",todayBest:"Récord de hoy",
+   comeBack:"Vuelve mañana para un tablero nuevo",retry:"REINTENTAR"},
+pt:{classic:"CLÁSSICO",tagClassic:"ondas sem fim",daily:"DIÁRIO",tagDaily:"mesmo tabuleiro hoje para todos",
+   tapStart:"escolha um modo para começar",lvl:"⬆ SUBIU DE NÍVEL",choose:"Escolha uma melhoria",over:"💀 FIM DE JOGO",
+   score:"Pontos",wave:"Onda",best:"Recorde",todayBest:"Recorde de hoje",
+   comeBack:"Volte amanhã para um tabuleiro novo",retry:"TENTAR DE NOVO"},
+ru:{classic:"КЛАССИКА",tagClassic:"бесконечные волны",daily:"ЕЖЕДНЕВНЫЙ",tagDaily:"сегодня поле одно для всех",
+   tapStart:"выберите режим, чтобы начать",lvl:"⬆ НОВЫЙ УРОВЕНЬ",choose:"Выберите улучшение",over:"💀 ИГРА ОКОНЧЕНА",
+   score:"Очки",wave:"Волна",best:"Рекорд",todayBest:"Рекорд дня",
+   comeBack:"Загляните завтра за новым полем",retry:"ЕЩЁ РАЗ"},
+ja:{classic:"クラシック",tagClassic:"エンドレスウェーブ",daily:"デイリー",tagDaily:"今日は全員同じ盤面",
+   tapStart:"モードを選んでスタート",lvl:"⬆ レベルアップ",choose:"アップグレードを1つ選択",over:"💀 ゲームオーバー",
+   score:"スコア",wave:"ウェーブ",best:"ベスト",todayBest:"今日のベスト",
+   comeBack:"新しい盤面はまた明日",retry:"リトライ"},
+ko:{classic:"클래식",tagClassic:"끝없는 웨이브",daily:"일일",tagDaily:"오늘은 모두 같은 보드",
+   tapStart:"모드를 골라 시작하세요",lvl:"⬆ 레벨 업",choose:"업그레이드 하나를 선택하세요",over:"💀 게임 오버",
+   score:"점수",wave:"웨이브",best:"최고",todayBest:"오늘의 최고",
+   comeBack:"새 보드는 내일 다시 도전!",retry:"재도전"},
+de:{classic:"KLASSIK",tagClassic:"endlose Wellen",daily:"TAGESAUFGABE",tagDaily:"heute dasselbe Brett für alle",
+   tapStart:"Modus wählen zum Starten",lvl:"⬆ STUFE AUF",choose:"Wähle ein Upgrade",over:"💀 GAME OVER",
+   score:"Punkte",wave:"Welle",best:"Rekord",todayBest:"Rekord des Tages",
+   comeBack:"Morgen gibt es ein neues Brett",retry:"NOCHMAL"},
+fr:{classic:"CLASSIQUE",tagClassic:"vagues sans fin",daily:"QUOTIDIEN",tagDaily:"même grille aujourd'hui pour tous",
+   tapStart:"choisis un mode pour commencer",lvl:"⬆ NIVEAU SUPÉRIEUR",choose:"Choisis une amélioration",over:"💀 PARTIE TERMINÉE",
+   score:"Points",wave:"Vague",best:"Record",todayBest:"Record du jour",
+   comeBack:"Reviens demain pour une nouvelle grille",retry:"RÉESSAYER"},
+id:{classic:"KLASIK",tagClassic:"gelombang tanpa akhir",daily:"HARIAN",tagDaily:"papan yang sama hari ini untuk semua",
+   tapStart:"pilih mode untuk mulai",lvl:"⬆ NAIK LEVEL",choose:"Pilih satu peningkatan",over:"💀 PERMAINAN SELESAI",
+   score:"Skor",wave:"Gelombang",best:"Terbaik",todayBest:"Terbaik Hari Ini",
+   comeBack:"Kembali besok untuk papan baru",retry:"COBA LAGI"}};
 var lang=(localStorage.getItem("np_lang")||"en").slice(0,2);
 var t=function(k){return (L[lang]||L.en)[k]||k;};
 

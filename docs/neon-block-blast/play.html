@@ -93,13 +93,36 @@ html,body{margin:0;padding:0;min-height:100%;background:radial-gradient(120% 90%
 "use strict";
 /* i18n — np_core.js (np_lang 与站点切换器共用) */
 var L={
- en:{score:"SCORE",best:"BEST",combo:"COMBO",daily:"📅 Daily",dailyOn:"✅ Daily done",
+en:{score:"SCORE",best:"BEST",combo:"COMBO",daily:"📅 Daily",dailyOn:"✅ Daily done",
    over:"GAME OVER",bestLine:"Best",beat:"Beat yesterday: {d}",again:"PLAY AGAIN",
    clear1:"LINE CLEAR!",clearN:"{n} LINES ×{m}!",reset:"board reset"},
- zh:{score:"得分",best:"最佳",combo:"连消",daily:"📅 每日挑战",dailyOn:"✅ 今日已完成",
+zh:{score:"得分",best:"最佳",combo:"连消",daily:"📅 每日挑战",dailyOn:"✅ 今日已完成",
    over:"游戏结束",bestLine:"最佳",beat:"超越昨日：{d}",again:"再来一局",
-   clear1:"消行！",clearN:"{n} 行同消 ×{m}！",reset:"盘面已重置"}
-};
+   clear1:"消行！",clearN:"{n} 行同消 ×{m}！",reset:"盘面已重置"},
+es:{score:"PUNTOS",best:"RÉCORD",combo:"COMBO",daily:"📅 Diario",dailyOn:"✅ Diario hecho",
+   over:"FIN DEL JUEGO",bestLine:"Récord",beat:"Supera el ayer: {d}",again:"JUGAR OTRA VEZ",
+   clear1:"¡LÍNEA!",clearN:"¡{n} LÍNEAS ×{m}!",reset:"tablero reiniciado"},
+pt:{score:"PONTOS",best:"RECORDE",combo:"COMBO",daily:"📅 Diário",dailyOn:"✅ Diário feito",
+   over:"FIM DE JOGO",bestLine:"Recorde",beat:"Supere ontem: {d}",again:"JOGAR DE NOVO",
+   clear1:"LINHA!",clearN:"{n} LINHAS ×{m}!",reset:"tabuleiro reiniciado"},
+ru:{score:"ОЧКИ",best:"РЕКОРД",combo:"КОМБО",daily:"📅 Ежедневный",dailyOn:"✅ Ежедневный пройден",
+   over:"ИГРА ОКОНЧЕНА",bestLine:"Рекорд",beat:"Побит вчерашний: {d}",again:"ИГРАТЬ СНОВА",
+   clear1:"ЛИНИЯ!",clearN:"{n} ЛИНИЙ ×{m}!",reset:"поле сброшено"},
+ja:{score:"スコア",best:"ベスト",combo:"コンボ",daily:"📅 デイリー",dailyOn:"✅ デイリー達成",
+   over:"ゲームオーバー",bestLine:"ベスト",beat:"昨日を超えた：{d}",again:"もう一度プレイ",
+   clear1:"ライン消去！",clearN:"{n} ライン ×{m}！",reset:"盤面をリセット"},
+ko:{score:"점수",best:"최고",combo:"콤보",daily:"📅 일일",dailyOn:"✅ 일일 완료",
+   over:"게임 오버",bestLine:"최고",beat:"어제를 넘음: {d}",again:"다시 플레이",
+   clear1:"한 줄 제거!",clearN:"{n}줄 ×{m}!",reset:"보드 초기화됨"},
+de:{score:"PUNKTE",best:"REKORD",combo:"COMBO",daily:"📅 Tagesaufgabe",dailyOn:"✅ Tagesaufgabe erledigt",
+   over:"GAME OVER",bestLine:"Rekord",beat:"Gestern geschlagen: {d}",again:"NOCHMAL SPIELEN",
+   clear1:"REIHE GELEERT!",clearN:"{n} REIHEN ×{m}!",reset:"Brett zurückgesetzt"},
+fr:{score:"POINTS",best:"RECORD",combo:"COMBO",daily:"📅 Quotidien",dailyOn:"✅ Quotidien fait",
+   over:"PARTIE TERMINÉE",bestLine:"Record",beat:"Hier battu : {d}",again:"REJOUER",
+   clear1:"LIGNE !",clearN:"{n} LIGNES ×{m} !",reset:"grille réinitialisée"},
+id:{score:"SKOR",best:"TERBAIK",combo:"KOMBO",daily:"📅 Harian",dailyOn:"✅ Harian selesai",
+   over:"PERMAINAN SELESAI",bestLine:"Terbaik",beat:"Kalahkan kemarin: {d}",again:"MAIN LAGI",
+   clear1:"BARIS BERSIH!",clearN:"{n} BARIS ×{m}!",reset:"papan direset"}};
 function t(k){return npT(L,k);}
 document.getElementById('dailyBtn').textContent=t('daily');
 

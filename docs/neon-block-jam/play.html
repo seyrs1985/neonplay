@@ -148,10 +148,27 @@ const Sound = (() => {
 })();
 const N=6;
 /* i18n — np_core.js (np_lang 与站点切换器共用) */
-var L={zh:{level:"关卡",moves:"步数",undo:"↩ 撤销",reset:"↻ 重置",clear:"通关！",allClear:"全部通关！",
+var L={
+en:{level:"LEVEL",moves:"MOVES",undo:"↩ Undo",reset:"↻ Reset",clear:"CLEAR!",allClear:"ALL LEVELS CLEAR!",
+  replay:"↻ Replay",next:"Next →",mvUnit:"moves",parLbl:"par"},
+zh:{level:"关卡",moves:"步数",undo:"↩ 撤销",reset:"↻ 重置",clear:"通关！",allClear:"全部通关！",
   replay:"↻ 重玩",next:"下一关 →",mvUnit:"步",parLbl:"目标"},
- en:{level:"LEVEL",moves:"MOVES",undo:"↩ Undo",reset:"↻ Reset",clear:"CLEAR!",allClear:"ALL LEVELS CLEAR!",
-  replay:"↻ Replay",next:"Next →",mvUnit:"moves",parLbl:"par"}};
+es:{level:"NIVEL",moves:"JUGADAS",undo:"↩ Deshacer",reset:"↻ Reiniciar",clear:"¡NIVEL!",allClear:"¡TODOS LOS NIVELES!",
+  replay:"↻ Repetir",next:"Siguiente →",mvUnit:"jugadas",parLbl:"par"},
+pt:{level:"NÍVEL",moves:"JOGADAS",undo:"↩ Desfazer",reset:"↻ Reiniciar",clear:"NÍVEL!",allClear:"TODOS OS NÍVEIS!",
+  replay:"↻ Repetir",next:"Próximo →",mvUnit:"jogadas",parLbl:"par"},
+ru:{level:"УРОВЕНЬ",moves:"ХОДЫ",undo:"↩ Отмена",reset:"↻ Сброс",clear:"ПРОЙДЕНО!",allClear:"ВСЕ УРОВНИ ПРОЙДЕНЫ!",
+  replay:"↻ Заново",next:"Дальше →",mvUnit:"ходов",parLbl:"норма"},
+ja:{level:"レベル",moves:"手数",undo:"↩ 元に戻す",reset:"↻ リセット",clear:"クリア！",allClear:"全レベルクリア！",
+  replay:"↻ リプレイ",next:"次へ →",mvUnit:"手",parLbl:"目標"},
+ko:{level:"레벨",moves:"이동",undo:"↩ 되돌리기",reset:"↻ 초기화",clear:"클리어!",allClear:"모든 레벨 클리어!",
+  replay:"↻ 다시 하기",next:"다음 →",mvUnit:"이동",parLbl:"목표"},
+de:{level:"STUFE",moves:"ZÜGE",undo:"↩ Rückgängig",reset:"↻ Neustart",clear:"GELEERT!",allClear:"ALLE STUFEN!",
+  replay:"↻ Wiederholen",next:"Weiter →",mvUnit:"Züge",parLbl:"Vorgabe"},
+fr:{level:"NIVEAU",moves:"COUPS",undo:"↩ Annuler",reset:"↻ Réinitialiser",clear:"RÉSOLU !",allClear:"TOUS RÉSOLUS !",
+  replay:"↻ Rejouer",next:"Suivant →",mvUnit:"coups",parLbl:"par"},
+id:{level:"LEVEL",moves:"LANGKAH",undo:"↩ Urungkan",reset:"↻ Ulang",clear:"BERSIH!",allClear:"SEMUA LEVEL BERES!",
+  replay:"↻ Main ulang",next:"Lanjut →",mvUnit:"langkah",parLbl:"target"}};
 var _t=function(k){return npT(L,k)};
 document.getElementById("lbLv").textContent=_t("level");
 document.getElementById("lbMv").textContent=_t("moves");
