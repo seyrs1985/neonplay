@@ -50,15 +50,18 @@ html,body{margin:0;min-height:100%;background:radial-gradient(120% 90% at 50% 0%
 </head>
 <body>
 <div id="hud">
-  <div class="chip">MOVES <b id="mv">0</b></div>
-  <div class="chip">PAIRS <b id="pr">0</b>/8</div>
-  <div class="chip">TIME <b id="tm">0</b>s</div>
+  <div class="chip"><span id="lb-mv">MOVES</span> <b id="mv">0</b></div>
+  <div class="chip"><span id="lb-pr">PAIRS</span> <b id="pr">0</b>/8</div>
+  <div class="chip"><span id="lb-tm">TIME</span> <b id="tm">0</b>s</div>
 </div>
 <div id="grid"></div>
 <div id="fx"></div>
 <div id="win"><h2>ALL PAIRS FOUND! 🎉</h2><p><b id="fm">0</b> moves · <b id="ft">0</b>s</p><button onclick="location.reload()">Play again</button></div>
 <script>
 'use strict';
+var L={zh:{mv:"步数",pr:"配对",tm:"时间",again:"再来一局",winT:"全部配对成功！"},en:{mv:"MOVES",pr:"PAIRS",tm:"TIME",again:"Play again",winT:"All pairs found!"}};
+var _lang=(localStorage.getItem("np_lang")||"en").slice(0,2);
+var _t=function(k){return(L[_lang]||L.en)[k]||k};
 const EMO=['🍎','🚀','🐱','🌟','🎧','⚽','🌵','🎲'];
 const FC=['linear-gradient(135deg,#0e7490,#22d3ee)','linear-gradient(135deg,#6d28d9,#a78bfa)',
   'linear-gradient(135deg,#be185d,#f472b6)','linear-gradient(135deg,#047857,#4ade80)',
