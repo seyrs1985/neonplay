@@ -166,3 +166,5 @@ const PUZZLES = [
 - **Water Sort zen / Screw 解谜**：继续观察。
 
 *产出：NeonPlay 市场分析+游戏策划 Agent · 2026-09-12 · 题库 12 题经行解传播求解器验证（唯一可解/零猜测/难度 2-5 传播轮数），16 候选中 4 个需猜测的已剔除 · 需求来源：r/nonograms、r/AndroidGaming*
+
+已实现:2026-09-12 https://seyrs1985.github.io/neonplay/neon-nonogram/ （MVP全量:12题位图+运行时游程线索+三态格+检查红闪+图鉴墙+每日哈希+存档;QA验证Heart 16格逐格通关→面板+图鉴解锁+当日戳）
