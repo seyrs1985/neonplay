@@ -321,7 +321,7 @@ async function main() {
   // Landing pages (static SEO content wrapping a playable iframe) are content
   // pages: the poke can't reach into the iframe, so iframe presence satisfies
   // the interaction criterion — the iframe itself is QA'd by its own --slug run.
-  if (!responsive && !(surface && (surface.hasGameFrame || surface.canvases > 0)) && !(scripted && scripted.pass === true)) reasons.push("game did not respond to input (canvas/DOM unchanged)");
+  if (!responsive && !(surface && (surface.hasGameFrame || surface.canvases === 0)) && !(scripted && scripted.pass === true)) reasons.push("game did not respond to input (canvas/DOM unchanged)");
   if (scripted && scripted.pass === false) reasons.push("scripted playtest failed: " + (scripted.detail || "see test"));
 
   const verdict = {
