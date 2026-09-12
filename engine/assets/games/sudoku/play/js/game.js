@@ -51,26 +51,35 @@ function countSolutions(g,cap){
   }
   return solve();
 }
-// full-solution generator via backtracking with seeded digit order
+// full-solution generator: sequential cell order + randomized digit order.
+// (Shuffling CELL order makes naive backtracking exponential on unlucky seeds —
+//  it hung production on 2026-09-13. Sequential fill from an empty grid is
+//  practically instant; the step budget below is a safety fuse only.)
 function genSolution(rng){
-  var grid=new Array(81).fill(0);
-  function fill(pos){
-    if(pos>=81)return true;
-    var i=order[pos];
-    var digits=[1,2,3,4,5,6,7,8,9];
-    for(var k=digits.length-1;k>0;k--){var j=(rng()*(k+1))|0;var t=digits[k];digits[k]=digits[j];digits[j]=t;}
-    var used={};
-    PEERS[i].forEach(function(j){if(grid[j])used[grid[j]]=1;});
-    for(var d=0;d<9;d++){
-      var v=digits[d];
-      if(!used[v]){grid[i]=v;if(fill(pos+1))return true;grid[i]=0;}
+  for(var attempt=0;attempt<10;attempt++){
+    var grid=new Array(81).fill(0);
+    var steps=0,stuck=false;
+    function fill(pos){
+      if(pos>=81)return true;
+      if(++steps>50000){stuck=true;return false;}
+      var i=pos;
+      var digits=[1,2,3,4,5,6,7,8,9];
+      for(var k=digits.length-1;k>0;k--){var j=(rng()*(k+1))|0;var t=digits[k];digits[k]=digits[j];digits[j]=t;}
+      var used={};
+      PEERS[i].forEach(function(j){if(grid[j])used[grid[j]]=1;});
+      for(var d=0;d<9;d++){
+        var v=digits[d];
+        if(!used[v]){grid[i]=v;if(fill(pos+1))return true;grid[i]=0;}
+        if(stuck)return false;
+      }
+      return false;
     }
-    return false;
+    if(fill(0)&&!stuck)return grid;
   }
-  var order=[];for(var oi=0;oi<81;oi++)order.push(oi);
-  for(var k=order.length-1;k>0;k--){var j=(rng()*(k+1))|0;var t=order[k];order[k]=order[j];order[j]=t;}
-  fill(0);
-  return grid;
+  // deterministic fallback: cyclic pattern shifted per band/stack — always valid
+  var g2=new Array(81).fill(0);
+  for(var r=0;r<9;r++)for(var c=0;c<9;c++)g2[r*9+c]=((r%3)*3+((r/3)|0)+c)%9+1;
+  return g2;
 }
 // dig holes keeping the solution unique (clue target depends on difficulty)
 function digHoles(sol,rng,clues){

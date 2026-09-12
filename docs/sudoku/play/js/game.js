@@ -28,44 +28,58 @@ function peersOf(i){
 }
 var PEERS=[];for(var pi=0;pi<81;pi++)PEERS.push(peersOf(pi));
 
-// counting solver: returns number of solutions up to `cap`
+// counting solver: returns number of solutions up to `cap` (MRV-pruned)
 function countSolutions(g,cap){
   var grid=g.slice();
-  var empty=[];
-  for(var e=0;e<81;e++)if(!grid[e])empty.push(e);
-  function solve(pos){
-    if(pos>=empty.length)return 1;
-    var i=empty[pos];
-    var used={};
-    PEERS[i].forEach(function(j){if(grid[j])used[grid[j]]=1;});
+  function solve(){
+    var best=-1,bestUsed=null,bestN=10;
+    for(var i=0;i<81;i++){
+      if(grid[i])continue;
+      var used={};
+      PEERS[i].forEach(function(j){if(grid[j])used[grid[j]]=1;});
+      var n=0;
+      for(var v=1;v<=9;v++)if(!used[v])n++;
+      if(n===0)return 0;
+      if(n<bestN){bestN=n;best=i;bestUsed=used;if(n===1)break;}
+    }
+    if(best===-1)return 1;
     var count=0;
-    for(var v=1;v<=9&&count<cap;v++){
-      if(!used[v]){grid[i]=v;count+=solve(pos+1);grid[i]=0;}
+    for(var v2=1;v2<=9&&count<cap;v2++){
+      if(!bestUsed[v2]){grid[best]=v2;count+=solve();grid[best]=0;}
     }
     return count;
   }
-  return solve(0);
+  return solve();
 }
-// full-solution generator via backtracking with seeded digit order
+// full-solution generator: sequential cell order + randomized digit order.
+// (Shuffling CELL order makes naive backtracking exponential on unlucky seeds —
+//  it hung production on 2026-09-13. Sequential fill from an empty grid is
+//  practically instant; the step budget below is a safety fuse only.)
 function genSolution(rng){
-  var grid=new Array(81).fill(0);
-  function fill(pos){
-    if(pos>=81)return true;
-    var i=order[pos];
-    var digits=[1,2,3,4,5,6,7,8,9];
-    for(var k=digits.length-1;k>0;k--){var j=(rng()*(k+1))|0;var t=digits[k];digits[k]=digits[j];digits[j]=t;}
-    var used={};
-    PEERS[i].forEach(function(j){if(grid[j])used[grid[j]]=1;});
-    for(var d=0;d<9;d++){
-      var v=digits[d];
-      if(!used[v]){grid[i]=v;if(fill(pos+1))return true;grid[i]=0;}
+  for(var attempt=0;attempt<10;attempt++){
+    var grid=new Array(81).fill(0);
+    var steps=0,stuck=false;
+    function fill(pos){
+      if(pos>=81)return true;
+      if(++steps>50000){stuck=true;return false;}
+      var i=pos;
+      var digits=[1,2,3,4,5,6,7,8,9];
+      for(var k=digits.length-1;k>0;k--){var j=(rng()*(k+1))|0;var t=digits[k];digits[k]=digits[j];digits[j]=t;}
+      var used={};
+      PEERS[i].forEach(function(j){if(grid[j])used[grid[j]]=1;});
+      for(var d=0;d<9;d++){
+        var v=digits[d];
+        if(!used[v]){grid[i]=v;if(fill(pos+1))return true;grid[i]=0;}
+        if(stuck)return false;
+      }
+      return false;
     }
-    return false;
+    if(fill(0)&&!stuck)return grid;
   }
-  var order=[];for(var oi=0;oi<81;oi++)order.push(oi);
-  for(var k=order.length-1;k>0;k--){var j=(rng()*(k+1))|0;var t=order[k];order[k]=order[j];order[j]=t;}
-  fill(0);
-  return grid;
+  // deterministic fallback: cyclic pattern shifted per band/stack — always valid
+  var g2=new Array(81).fill(0);
+  for(var r=0;r<9;r++)for(var c=0;c<9;c++)g2[r*9+c]=((r%3)*3+((r/3)|0)+c)%9+1;
+  return g2;
 }
 // dig holes keeping the solution unique (clue target depends on difficulty)
 function digHoles(sol,rng,clues){
@@ -86,9 +100,9 @@ function digHoles(sol,rng,clues){
 var CACHE_KEY="np_sd_cache";
 
 var DIFFS=[
-  {key:"easy",  label:"easy", clues:40},
-  {key:"med",   label:"med",  clues:32},
-  {key:"hard",  label:"hard", clues:26}
+  {key:"easy",  label:"easy", clues:42},
+  {key:"med",   label:"med",  clues:36},
+  {key:"hard",  label:"hard", clues:30}
 ];
 var mode="daily", diff=1;               // free-play difficulty index
 var givens, user, sel=0;                // givens[i]: 1-9 or 0; user[i]: 0 or 1-9
