@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Sudoku</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="stage">
+  <div id="topbar">
+    <button id="tab-daily" class="tab on"></button>
+    <button id="tab-free" class="tab"></button>
+    <div id="diff" class="hide">
+      <button data-d="0" class="dbtn on" id="d0"></button>
+      <button data-d="1" class="dbtn" id="d1"></button>
+      <button data-d="2" class="dbtn" id="d2"></button>
+    </div>
+  </div>
+  <div id="hud">
+    <div class="chip" id="diffChip"></div>
+    <div class="chip" id="doneChip" style="display:none"></div>
+  </div>
+  <div id="gridwrap"><table id="grid"></table></div>
+  <div id="pad"></div>
+  <div id="msg"></div>
+</div>
+<div id="win" class="overlay hide">
+  <div class="panel">
+    <h2 id="wTitle"></h2>
+    <div id="wEmo">🎉</div>
+    <p id="wText"></p>
+    <button id="wClose"></button>
+  </div>
+</div>
+<script src="np_core.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>

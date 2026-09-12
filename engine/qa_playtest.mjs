@@ -106,6 +106,7 @@ async function main() {
     `--remote-debugging-port=${port}`,
     `--user-data-dir=${userDataDir}`,
     "--no-first-run", "--no-default-browser-check", "--disable-extensions",
+    "--proxy-bypass-list=<-loopback>",
     "--window-size=800,640", "about:blank",
   ], { stdio: ["ignore", "ignore", "pipe"] });
 

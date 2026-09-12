@@ -55,3 +55,7 @@
 {"time":"2026-09-12T03:42:00Z","agent":"neonplay","ok":true,"did":"impl-round: game #17 Neon Nonogram shipped (5x5 DOM grid, runtime run-length clues with dim-when-satisfied, three-tap marking, error red-flash check, gallery wall, daily board, autosave, i18n, qa hooks); Heart 16-cell solve + panel + gallery unlock + daily stamp verified local+live PASS","minutes":48,"mobile_check":"pass"}
 {"time":"2026-09-12T04:42:00Z","agent":"neonplay","ok":true,"did":"art-round: hall categorized into 4 sections (arcade/puzzle/logic/idle) via build.py slug-map (no games.py/i18n.js conflict); bilingual section titles follow np_lang with navigator fallback; live hall QA PASS","minutes":24,"mobile_check":"pass"}
 {"time": "2026-09-12T02:12:41+0800", "agent": "design", "ok": false, "did": "跳过常规挖掘（工作树不洁：开发Agent在途）；独立质检 neon-nonogram：QA PASS（16格通关/图鉴/当日戳全验证，零报错）", "minutes": 6}
+{"time": "2026-09-12T02:18:44+0800", "agent": "design", "ok": true, "did": "产出方案 reflex-rush：Human Benchmark反应基准×打地鼠街机(七段位锚定真实反应分布,留存五件套全量落位+键名清单)", "minutes": 24}
+{"time": "2026-09-13T03:14:23+0800", "agent": "design", "ok": true, "did": "产出方案 neon-hoops：Dunk Shot扣篮街机×高尔夫风力弹道(日期种子每日风赛,体育品类补全,留存五件套+键名清单)", "minutes": 17}
+{"time": "2026-09-13T03:16:33+0800", "agent": "design", "ok": false, "did": "跳过：工作树不洁（开发Agent在途，run_stats同文件带其未提交行故本轮不提交）；QA 未执行（neon-nonogram已于02:12轮QA PASS）", "minutes": 3}
+{"time": "2026-09-13T04:16:40+0800", "agent": "design", "ok": true, "did": "产出方案 tile-rush：羊了个羊三消托盘×层叠牌堆(逆序构造算法保证可解,日期种子全球同题,web+每日双空白填补,留存五件套)", "minutes": 18}
