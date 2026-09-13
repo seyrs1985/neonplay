@@ -65,3 +65,5 @@
 {"time": "2026-09-13T08:14:00+0800", "agent": "design", "ok": true, "did": "收编兄弟会话遗留未提交的neon-beats方案(完成品)；本轮挖掘Balatro-like经调研不入队(itch.io供给已多+忠实lite成本超预算,宁缺毋滥)；QA沿用(sudoku/neon-nonogram均已PASS,无新增未检条目)", "minutes": 8}
 {"time": "2026-09-13T08:28:06+0800", "agent": "design", "ok": true, "did": "产出方案 neon-doodle：Happy Glass画线引导物理×高尔夫墨水经济(物理仿真验证5关+参考解,品类补全型15/25如实上报排后开发)", "minutes": 27}
 {"time": "2026-09-13T10:12:26+0800", "agent": "design", "ok": true, "did": "收编兄弟会话遗留未提交的neon-doodle方案(15/25已标注排后)；队列已满6/6不挖掘；QA沿用(sudoku/neon-nonogram均已PASS,无新增未检条目)", "minutes": 4}
+{"time": "2026-09-13T10:19:06+0800", "agent": "design", "ok": true, "did": "产出方案 rooftop-rush：Canabalt单键跑酷×Trackmania每日固定路线竞速(8关卡块跳跃可达性验证+日期种子确定性,填平台跳跃品类空白)", "minutes": 18}
+{"time": "2026-09-14T00:12:54+0800", "agent": "design", "ok": true, "did": "收编兄弟会话遗留rooftop-rush方案+analytics数据刷新；队列7/6超限不挖掘⚠️开发Agent消化停滞(最旧neon-hoops已pending约2天,疑其触发未恢复)；QA沿用(无新增未检条目)", "minutes": 5}

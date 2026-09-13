@@ -1,23 +1,93 @@
 {
- "generated": "2026-09-11 17:14",
+ "generated": "2026-09-13 10:30",
  "ga4_property": "553744321",
  "gsc_site": "https://seyrs1985.github.io/",
  "ga4": {
   "7d": {
    "site": {
-    "activeUsers": 21,
-    "screenPageViews": 16,
-    "sessions": 21,
-    "avgSessionDuration": 2.7,
+    "activeUsers": 30,
+    "screenPageViews": 31,
+    "sessions": 30,
+    "avgSessionDuration": 69.2,
+    "engagementRate": 0.611
+   },
+   "snake": {
+    "activeUsers": 2,
+    "screenPageViews": 2,
+    "sessions": 2,
+    "avgSessionDuration": 27.5,
+    "engagementRate": 0.5
+   },
+   "2048": {
+    "activeUsers": 1,
+    "screenPageViews": 1,
+    "sessions": 1,
+    "avgSessionDuration": 0.0,
+    "engagementRate": 0.0
+   },
+   "breakout": {
+    "activeUsers": 1,
+    "screenPageViews": 1,
+    "sessions": 1,
+    "avgSessionDuration": 18.2,
+    "engagementRate": 1.0
+   },
+   "neon-block-jam": {
+    "activeUsers": 1,
+    "screenPageViews": 1,
+    "sessions": 1,
+    "avgSessionDuration": 0.0,
+    "engagementRate": 0.0
+   },
+   "tic-tac-toe": {
+    "activeUsers": 1,
+    "screenPageViews": 1,
+    "sessions": 1,
+    "avgSessionDuration": 0.0,
     "engagementRate": 0.0
    }
   },
   "28d": {
    "site": {
-    "activeUsers": 21,
-    "screenPageViews": 16,
-    "sessions": 21,
-    "avgSessionDuration": 2.7,
+    "activeUsers": 30,
+    "screenPageViews": 31,
+    "sessions": 30,
+    "avgSessionDuration": 69.2,
+    "engagementRate": 0.611
+   },
+   "snake": {
+    "activeUsers": 2,
+    "screenPageViews": 2,
+    "sessions": 2,
+    "avgSessionDuration": 27.5,
+    "engagementRate": 0.5
+   },
+   "2048": {
+    "activeUsers": 1,
+    "screenPageViews": 1,
+    "sessions": 1,
+    "avgSessionDuration": 0.0,
+    "engagementRate": 0.0
+   },
+   "breakout": {
+    "activeUsers": 1,
+    "screenPageViews": 1,
+    "sessions": 1,
+    "avgSessionDuration": 18.2,
+    "engagementRate": 1.0
+   },
+   "neon-block-jam": {
+    "activeUsers": 1,
+    "screenPageViews": 1,
+    "sessions": 1,
+    "avgSessionDuration": 0.0,
+    "engagementRate": 0.0
+   },
+   "tic-tac-toe": {
+    "activeUsers": 1,
+    "screenPageViews": 1,
+    "sessions": 1,
+    "avgSessionDuration": 0.0,
     "engagementRate": 0.0
    }
   }
