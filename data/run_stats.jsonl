@@ -63,3 +63,5 @@
 {"time": "2026-09-13T06:14:35+0800", "agent": "design", "ok": true, "did": "产出方案 neon-solitaire：Klondike霓虹零广告版(20/25,solitaire月搜1110万-1660万全球Top50,全站纸牌品类空白+打通每日streak)；QA沿用(sudoku终检PASS,无新增未检条目)", "minutes": 12}
 {"time": "2026-09-13T06:15:35+0800", "agent": "design", "ok": true, "did": "产出方案 neon-beats：Piano Tiles下落点按×程序化芯片音乐生成(日期种子全球同曲零素材,填音频品类空白,留存五件套)", "minutes": 19}
 {"time": "2026-09-13T08:14:00+0800", "agent": "design", "ok": true, "did": "收编兄弟会话遗留未提交的neon-beats方案(完成品)；本轮挖掘Balatro-like经调研不入队(itch.io供给已多+忠实lite成本超预算,宁缺毋滥)；QA沿用(sudoku/neon-nonogram均已PASS,无新增未检条目)", "minutes": 8}
+{"time": "2026-09-13T08:28:06+0800", "agent": "design", "ok": true, "did": "产出方案 neon-doodle：Happy Glass画线引导物理×高尔夫墨水经济(物理仿真验证5关+参考解,品类补全型15/25如实上报排后开发)", "minutes": 27}
+{"time": "2026-09-13T10:12:26+0800", "agent": "design", "ok": true, "did": "收编兄弟会话遗留未提交的neon-doodle方案(15/25已标注排后)；队列已满6/6不挖掘；QA沿用(sudoku/neon-nonogram均已PASS,无新增未检条目)", "minutes": 4}
