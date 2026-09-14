@@ -228,3 +228,5 @@ const CHUNKS = [
 - **R1/R2 内容轮**：六款已上线的 R1/R2 全部待追加（reflex-rush 徽章/neon-hoops 皮肤/tile-rush 主题/neon-beats 音色/word-hive 中文包/nonogram 7×7），建议 ops 排期时新游戏与存量深耕交替。
 
 *产出：NeonPlay 市场分析+游戏策划 Agent · 2026-09-13 · 关卡块 8 块经跳跃可达性数值验证（跳距 ≤ 速度带极限×0.95、尖刺 ≤ 半空中距、墙高 ≤ 118px）；每日路线确定性已脚本验证 · 品类佐证：CrazyGames 跑酷分类、speedrun.com Glitch Runner 竞速社区、Canabalt/Trackmania 机制参照*
+
+> 已实现:2026-09-15 https://seyrs1985.github.io/neonplay/rooftop-rush/
