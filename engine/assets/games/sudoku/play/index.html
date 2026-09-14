@@ -19,6 +19,8 @@
   </div>
   <div id="hud">
     <div class="chip" id="diffChip"></div>
+    <div class="chip" id="timeChip" style="display:none"></div>
+    <div class="chip" id="streakChip"></div>
     <div class="chip" id="doneChip" style="display:none"></div>
   </div>
   <div id="gridwrap"><table id="grid"></table></div>
@@ -30,7 +32,11 @@
     <h2 id="wTitle"></h2>
     <div id="wEmo">🎉</div>
     <p id="wText"></p>
-    <button id="wClose"></button>
+    <div id="wStats"></div>
+    <div id="wRow">
+      <button id="wShare"></button>
+      <button id="wClose"></button>
+    </div>
   </div>
 </div>
 <script src="np_core.js"></script>

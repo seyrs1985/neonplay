@@ -47,8 +47,15 @@ html,body{margin:0;padding:0;min-height:100%;background:radial-gradient(120% 90%
   -webkit-background-clip:text;background-clip:text;color:transparent}
 #wEmo{font-size:2.6rem;margin:6px 0}
 .panel p{margin:0 0 12px;color:#94a3b8}
-.panel button{font:inherit;font-weight:800;min-height:44px;padding:10px 30px;border:0;border-radius:10px;
-  background:linear-gradient(135deg,#22d3ee,#a78bfa);color:#0b1020;cursor:pointer;
+#wStats{margin:0 0 12px}
+#wStats .wtime{font-size:1.5rem;font-weight:900;color:#22d3ee}
+#wStats .rankline{margin-top:4px;font-weight:900;color:#ffd54a;font-size:1.05rem}
+#wStats .stars{letter-spacing:2px;color:#ffd54a}
+#wStats .next{margin-top:2px;color:#7c8db5;font-size:.85rem}
+#wRow{display:flex;gap:10px;justify-content:center}
+#wRow button{font:inherit;font-weight:800;min-height:44px;padding:10px 26px;border-radius:10px;cursor:pointer}
+#wShare{border:1px solid #2b3564;background:rgba(20,26,53,.85);color:#22d3ee}
+#wClose{border:0;background:linear-gradient(135deg,#22d3ee,#a78bfa);color:#0b1020;
   box-shadow:0 0 14px rgba(34,211,238,.35)}
 .cf{position:fixed;top:-4%;width:8px;height:12px;border-radius:2px;pointer-events:none;z-index:21;
   animation:cfall 1.2s ease-in forwards}

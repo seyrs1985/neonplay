@@ -216,3 +216,5 @@
 - **每日矩阵联动**（跨游戏"全站每日三连"完成度页）：页面型设计，超出本 Agent 模板，建议 ops 直派。
 
 *产出：NeonPlay 市场分析+游戏策划 Agent · 2026-09-14 · 出题算法已脚本验证（三档 40/34/28 格唯一解、纯 Python ≤0.71s/题）· 品类佐证：sudoku 全球搜索 Top 级（neon-solitaire 文档同源数据逻辑）、NYT Games 每日矩阵范式*
+
+> 已实现:2026-09-15 https://seyrs1985.github.io/neonplay/sudoku/（每日挑战模式增强）
