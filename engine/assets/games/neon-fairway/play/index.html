@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a18">
+<title>Neon Fairway — Golf Solitaire</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="stage">
+  <div id="topbar">
+    <button id="tabDaily" class="tab on" type="button"></button>
+    <button id="tabPractice" class="tab" type="button"></button>
+    <div id="streak" class="chip"></div>
+    <button id="muteBtn" class="chip" type="button" aria-label="sound"></button>
+  </div>
+  <div id="hud">
+    <div class="stat"><span id="score" class="big">0</span><label id="lbScore"></label></div>
+    <div id="flagBox"><div id="multFlag">×1</div><label id="lbChain"></label></div>
+    <div class="stat"><span id="clearedCt">0/35</span><label id="lbCleared"></label></div>
+    <div class="stat"><span id="stockCt">17</span><label id="lbStock"></label></div>
+  </div>
+  <div id="tierChip"></div>
+  <div id="field" role="grid" aria-label="card field"></div>
+  <div id="bottom">
+    <div id="wasteWrap">
+      <div id="waste"></div>
+      <label id="lbWaste"></label>
+    </div>
+    <div id="stocksWrap">
+      <button id="stockB" class="stockpile" type="button"><span class="pileface"></span></button>
+      <button id="stockA" class="stockpile on" type="button"><span class="pileface"></span></button>
+      <label id="lbFlip"></label>
+    </div>
+  </div>
+  <div id="msg"></div>
+</div>
+<div id="fxLayer" aria-hidden="true"></div>
+<div id="jokerPanel" class="overlay">
+  <div class="panel glass">
+    <h2 id="jpTitle"></h2>
+    <p id="jpSub"></p>
+    <div id="jokerCards"></div>
+  </div>
+</div>
+<div id="endPanel" class="overlay hide">
+  <div class="panel">
+    <h2 id="epTitle"></h2>
+    <div id="epNew" class="hide">★ NEW BEST ★</div>
+    <div id="epRows"></div>
+    <p id="epTier"></p>
+    <button id="epShare" class="primary" type="button"></button>
+    <button id="epAgain" type="button"></button>
+  </div>
+</div>
+<script src="np_core.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>

@@ -150,7 +150,7 @@ def build_hall(cfg, gms):
         ("arcade", "🎮 Arcade & Action", "🎮 街机动作",
          ["neon-tide", "snake", "flappy-dash", "breakout", "brickstorm", "neon-pop", "reflex-rush", "neon-hoops"]),
         ("puzzle", "🧩 Puzzle & Brain", "🧩 益智解谜",
-         ["2048", "minesweeper", "memory-pairs", "neon-block-jam", "neon-block-blast", "neon-nonogram", "neon-solitaire"]),
+         ["2048", "minesweeper", "memory-pairs", "neon-block-jam", "neon-block-blast", "neon-nonogram", "neon-solitaire", "neon-fairway"]),
         ("logic", "🐝 Word & Logic", "🐝 词与逻辑",
          ["word-hive", "neon-alchemy", "tic-tac-toe", "connect-four"]),
         ("idle", "💫 Idle & Chill", "💫 放置挂机",

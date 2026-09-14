@@ -207,3 +207,5 @@
 - **跨游戏联动页**（全站每日三连中心）：页面型设计，建议 ops 直派。
 
 *产出：NeonPlay 市场分析+游戏策划 Agent · 2026-09-14 · 数值经 200 局发牌模拟器校准（贪心全清率 66%/环回 Joker 98%、分数分布 P10-P90=1050-1375）· 品类参照：Golf Solitaire 经典规则、Balatro 开局构筑、Solitaired 变体目录策略*
+
+> 已实现:2026-09-15 https://seyrs1985.github.io/neonplay/neon-fairway/
