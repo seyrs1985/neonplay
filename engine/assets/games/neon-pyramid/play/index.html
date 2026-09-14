@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a18">
+<title>Neon Pyramid — Pyramid Solitaire</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="stage">
+  <div id="topbar">
+    <button id="tab-daily" class="tab on"></button>
+    <button id="tab-rand" class="tab"></button>
+    <div id="rankChip" class="chip">🟤 Bronze</div>
+    <div id="streak" class="chip">🔥 0</div>
+  </div>
+  <div id="hud">
+    <div class="stat"><span class="lb" id="lb-score"></span><b id="v-score">0</b></div>
+    <div class="stat"><span class="lb" id="lb-pairs"></span><b id="v-pairs">0</b></div>
+    <div class="stat"><span class="lb" id="lb-stock"></span><b id="v-stock">24</b></div>
+    <div class="stat"><span class="lb" id="lb-cycles"></span><b id="v-cycles">○○○</b></div>
+    <div class="hudbtns">
+      <button id="hammerBtn" class="pill hide" aria-label="hammer"></button>
+      <button id="newBtn" class="pill" aria-label="new deal">↻</button>
+      <button id="muteBtn" class="pill" aria-label="mute">🔊</button>
+    </div>
+  </div>
+  <div id="board">
+    <div id="pyrwrap">
+      <div id="pyr"></div>
+    </div>
+    <div id="bottomRow">
+      <div class="pilebox">
+        <div class="pile" id="stock" data-zone="stock"></div>
+        <div id="xray" class="xray hide"></div>
+      </div>
+      <div class="pile wide" id="waste" data-zone="waste"></div>
+      <div id="jokerChip" class="chip hide"></div>
+    </div>
+  </div>
+  <div id="msg"></div>
+</div>
+<div id="jokerPanel" class="overlay hide">
+  <div class="panel">
+    <h2 id="jt"></h2>
+    <p class="sub" id="js"></p>
+    <div id="jokerList"></div>
+  </div>
+</div>
+<div id="winPanel" class="overlay hide">
+  <div class="panel">
+    <h2 id="wpTitle"></h2>
+    <div id="wpStars"></div>
+    <div id="wpRows"></div>
+    <canvas id="shareCard" width="640" height="320" class="hide"></canvas>
+    <button id="wpShare"></button>
+    <button id="wpNew" class="primary"></button>
+  </div>
+</div>
+<script src="np_core.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/game.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
