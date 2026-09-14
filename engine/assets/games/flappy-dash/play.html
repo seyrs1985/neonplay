@@ -76,15 +76,13 @@ function die(){
   boom(bird.x,bird.y);
   if(score>best){best=score;hbEl.textContent=best;}
   var medal="";
-  if(score>=50)medal="🏆 Platinum";
-  else if(score>=25)medal="🥇 Gold";
-  else if(score>=10)medal="🥈 Silver";
-  else if(score>=5)medal="🥉 Bronze";
-  var isZh=lang==="zh";
-  var mLabel=isZh?"奖牌":t("medal");
+  if(score>=50)medal=t("mP");
+  else if(score>=25)medal=t("mG");
+  else if(score>=10)medal=t("mS");
+  else if(score>=5)medal=t("mB");
   document.getElementById("overlay").querySelector("p").innerHTML=
     t("scoreL")+" <b>"+score+"</b> · "+t("bestL")+" <b>"+best+"</b>"+
-    (medal?"<br>"+medal:"")+"<br>Tap START for another run.";
+    (medal?"<br>"+medal:"")+"<br>"+t("again");
   btn.textContent=t("start");
   setTimeout(function(){ov.classList.remove("hide");},420);
 }
@@ -97,18 +95,34 @@ function boom(x,y){
 }
 var best=0,particles=[];
 var L={
-en:{start:"START",hint:"Tap / click / Space to flap.<br>Thread the neon gates. One touch and it's over.<br>Best:",scoreL:"Score:",bestL:"Best:",medal:"Medal"},
-zh:{start:"START",hint:"Tap / click / Space to flap.<br>Thread the neon gates. One touch and it's over.<br>Best:",scoreL:"Score:",bestL:"Best:",medal:"奖牌"},
-es:{start:"EMPEZAR",hint:"Toca / haz clic / Espacio para aletear.<br>Cruza las puertas de neón. Un roce y se acabó.<br>Récord:",scoreL:"Puntos:",bestL:"Récord:",medal:"Medalla"},
-pt:{start:"COMEÇAR",hint:"Toque / clique / Espaço para bater as asas.<br>Atravesse os portais neon. Um toque e acabou.<br>Recorde:",scoreL:"Pontos:",bestL:"Recorde:",medal:"Medalha"},
-ru:{start:"СТАРТ",hint:"Тап / клик / Пробел — взмах.<br>Проходите неоновые ворота. Одно касание — конец.<br>Рекорд:",scoreL:"Очки:",bestL:"Рекорд:",medal:"Медаль"},
-ja:{start:"スタート",hint:"タップ / クリック / スペースで羽ばたく。<br>ネオンのゲートを縫って。一度触れたら終わり。<br>ベスト:",scoreL:"スコア:",bestL:"ベスト:",medal:"メダル"},
-ko:{start:"시작",hint:"탭 / 클릭 / 스페이스로 날개짓.<br>네온 게이트를 통과하세요. 스치면 끝.<br>최고:",scoreL:"점수:",bestL:"최고:",medal:"메달"},
-de:{start:"START",hint:"Tippen / Klicken / Leertaste zum Flattern.<br>Durch die Neon-Tore schlängeln. Eine Berührung — vorbei.<br>Rekord:",scoreL:"Punkte:",bestL:"Rekord:",medal:"Medaille"},
-fr:{start:"DÉMARRER",hint:"Tape / clique / Espace pour battre des ailes.<br>Enfile les portes néon. Un effleurement et c'est fini.<br>Record :",scoreL:"Points :",bestL:"Record :",medal:"Médaille"},
-id:{start:"MULAI",hint:"Ketuk / klik / Spasi untuk mengepak.<br>Menembus gerbang neon. Sekali sentuh, tamat.<br>Terbaik:",scoreL:"Skor:",bestL:"Terbaik:",medal:"Medali"}};
+en:{start:"START",hint:"Tap / click / Space to flap.<br>Thread the neon gates. One touch and it's over.<br>Best:",scoreL:"Score:",bestL:"Best:",medal:"Medal",
+  again:"Tap START for another run.",mP:"🏆 Platinum",mG:"🥇 Gold",mS:"🥈 Silver",mB:"🥉 Bronze"},
+zh:{start:"开始",hint:"点按 / 点击 / 空格键起飞。<br>穿过霓虹闸门，一触即败。<br>最佳：",scoreL:"得分：",bestL:"最佳：",medal:"奖牌",
+  again:"点击「开始」再来一局。",mP:"🏆 白金",mG:"🥇 金牌",mS:"🥈 银牌",mB:"🥉 铜牌"},
+es:{start:"EMPEZAR",hint:"Toca / haz clic / Espacio para aletear.<br>Cruza las puertas de neón. Un roce y se acabó.<br>Récord:",scoreL:"Puntos:",bestL:"Récord:",medal:"Medalla",
+  again:"Toca EMPEZAR para otra partida.",mP:"🏆 Platino",mG:"🥇 Oro",mS:"🥈 Plata",mB:"🥉 Bronce"},
+pt:{start:"COMEÇAR",hint:"Toque / clique / Espaço para bater as asas.<br>Atravesse os portais neon. Um toque e acabou.<br>Recorde:",scoreL:"Pontos:",bestL:"Recorde:",medal:"Medalha",
+  again:"Toque COMEÇAR para outra tentativa.",mP:"🏆 Platina",mG:"🥇 Ouro",mS:"🥈 Prata",mB:"🥉 Bronze"},
+ru:{start:"СТАРТ",hint:"Тап / клик / Пробел — взмах.<br>Проходите неоновые ворота. Одно касание — конец.<br>Рекорд:",scoreL:"Очки:",bestL:"Рекорд:",medal:"Медаль",
+  again:"Нажмите СТАРТ для новой попытки.",mP:"🏆 Платина",mG:"🥇 Золото",mS:"🥈 Серебро",mB:"🥉 Бронза"},
+ja:{start:"スタート",hint:"タップ / クリック / スペースで羽ばたく。<br>ネオンのゲートを縫って。一度触れたら終わり。<br>ベスト:",scoreL:"スコア:",bestL:"ベスト:",medal:"メダル",
+  again:"スタートをタップしてもう一回。",mP:"🏆 プラチナ",mG:"🥇 ゴールド",mS:"🥈 シルバー",mB:"🥉 ブロンズ"},
+ko:{start:"시작",hint:"탭 / 클릭 / 스페이스로 날개짓.<br>네온 게이트를 통과하세요. 스치면 끝.<br>최고:",scoreL:"점수:",bestL:"최고:",medal:"메달",
+  again:"시작을 눌러 다시 도전!",mP:"🏆 플래티넘",mG:"🥇 골드",mS:"🥈 실버",mB:"🥉 브론즈"},
+de:{start:"START",hint:"Tippen / Klicken / Leertaste zum Flattern.<br>Durch die Neon-Tore schlängeln. Eine Berührung — vorbei.<br>Rekord:",scoreL:"Punkte:",bestL:"Rekord:",medal:"Medaille",
+  again:"Tippe auf START für ein weiteres Spiel.",mP:"🏆 Platin",mG:"🥇 Gold",mS:"🥈 Silber",mB:"🥉 Bronze"},
+fr:{start:"DÉMARRER",hint:"Tape / clique / Espace pour battre des ailes.<br>Enfile les portes néon. Un effleurement et c'est fini.<br>Record :",scoreL:"Points :",bestL:"Record :",medal:"Médaille",
+  again:"Tape DÉMARRER pour rejouer.",mP:"🏆 Platine",mG:"🥇 Or",mS:"🥈 Argent",mB:"🥉 Bronze"},
+id:{start:"MULAI",hint:"Ketuk / klik / Spasi untuk mengepak.<br>Menembus gerbang neon. Sekali sentuh, tamat.<br>Terbaik:",scoreL:"Skor:",bestL:"Terbaik:",medal:"Medali",
+  again:"Ketuk MULAI untuk main lagi.",mP:"🏆 Platinum",mG:"🥇 Emas",mS:"🥈 Perak",mB:"🥉 Perunggu"}};
 var lang=(localStorage.getItem("np_lang")||"en").slice(0,2);
 var t=function(k){return(L[lang]||L.en)[k]||k};
+/* 初始标题界面也走字典(en 输出与原 HTML 逐字一致) */
+(function(){
+  var p=document.querySelector("#overlay p");
+  if(p){p.innerHTML=t("hint")+' <b id="hb">0</b>';hbEl=document.getElementById("hb");}
+  btn.textContent=t("start");
+})();
 
 var skyFar=[],skyNear=[];
 (function(){

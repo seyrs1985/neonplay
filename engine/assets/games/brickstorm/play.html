@@ -65,11 +65,21 @@ var L={
 en:{classic:"CLASSIC",tagClassic:"endless waves",daily:"DAILY",tagDaily:"same board for everyone today",
    tapStart:"pick a mode to start",lvl:"⬆ LEVEL UP",choose:"Choose one upgrade",over:"💀 GAME OVER",
    score:"Score",wave:"Wave",best:"Best",todayBest:"Today's Best",
-   comeBack:"Come back tomorrow for a new board",retry:"RETRY"},
+   comeBack:"Come back tomorrow for a new board",retry:"RETRY",
+   up_multiball:"MULTIBALL +1",upd_multiball:"Spawn an extra ball",
+   up_damage:"DAMAGE +1",upd_damage:"Balls deal +1 damage",
+   up_speed:"SPEED +20%",upd_speed:"Balls fly 20% faster",
+   up_pierce:"PIERCE +1",upd_pierce:"Balls pierce 1 extra brick",
+   up_paddle:"PADDLE +25%",upd_paddle:"Wider catching surface"},
 zh:{classic:"经典模式",tagClassic:"无尽波次",daily:"每日挑战",tagDaily:"今日全球同题",
    tapStart:"选择模式开始",lvl:"⬆ 升级！",choose:"选择一个强化",over:"💀 游戏结束",
    score:"得分",wave:"波次",best:"最佳",todayBest:"今日最佳",
-   comeBack:"明天再来挑战新棋盘吧",retry:"再来一局"},
+   comeBack:"明天再来挑战新棋盘吧",retry:"再来一局",
+   up_multiball:"弹球 +1",upd_multiball:"额外生成一颗弹球",
+   up_damage:"伤害 +1",upd_damage:"弹球伤害 +1",
+   up_speed:"速度 +20%",upd_speed:"弹球飞行速度 +20%",
+   up_pierce:"穿透 +1",upd_pierce:"弹球可多穿透 1 块砖",
+   up_paddle:"挡板 +25%",upd_paddle:"接球面更宽"},
 es:{classic:"CLÁSICO",tagClassic:"oleadas sin fin",daily:"DIARIO",tagDaily:"mismo tablero hoy para todos",
    tapStart:"elige un modo para empezar",lvl:"⬆ SUBES DE NIVEL",choose:"Elige una mejora",over:"💀 FIN DEL JUEGO",
    score:"Puntos",wave:"Oleada",best:"Récord",todayBest:"Récord de hoy",
@@ -103,7 +113,7 @@ id:{classic:"KLASIK",tagClassic:"gelombang tanpa akhir",daily:"HARIAN",tagDaily:
    score:"Skor",wave:"Gelombang",best:"Terbaik",todayBest:"Terbaik Hari Ini",
    comeBack:"Kembali besok untuk papan baru",retry:"COBA LAGI"}};
 var lang=(localStorage.getItem("np_lang")||"en").slice(0,2);
-var t=function(k){return (L[lang]||L.en)[k]||k;};
+var t=function(k,fb){var v=(L[lang]||L.en)[k];return v!==undefined?v:(fb!==undefined?fb:k);};
 
 // ---- daily seed: mulberry32 + FNV-1a(YYYY-MM-DD) ----
 function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var x=Math.imul(a^a>>>15,1|a);x=x+Math.imul(x^x>>>7,61|x)^x;return((x^x>>>14)>>>0)/4294967296;};}
@@ -186,7 +196,7 @@ function showUpgrades(){
   for(var i=0;i<3&&pool.length;i++)picks.push(pool.splice((Math.random()*pool.length)|0,1)[0]);
   picks.forEach(function(u){
     var b=document.createElement("button");b.className="upbtn";
-    b.innerHTML='<span class="ui">'+u.icon+'</span><span class="un">'+u.name+'</span><div class="ud">'+u.desc+'</div>';
+    b.innerHTML='<span class="ui">'+u.icon+'</span><span class="un">'+t("up_"+u.id,u.name)+'</span><div class="ud">'+t("upd_"+u.id,u.desc)+'</div>';
     b.addEventListener("click",function(){u.fn();hidePanels();state="play";});
     el.appendChild(b);
   });
