@@ -36,3 +36,39 @@
 - GA4 密钥：`I:\BaiduSyncdisk\Drill\数据报告\ga_sa_key.json`（勿入仓库）；GA4 属性 ID 553744321
 - 部署：`bash engine/deploy.sh`（含锁+rebase+IndexNow）；质检：`node engine/qa_playtest.mjs --slug <slug>`
 - 王国防线封存于 `C:\Users\Administrator\.zcode\workspace\default\td/`，状态见该目录 MONITOR_LOG.md
+
+---
+
+# 交接日志 · 2026-09-15 夜班（Ops 驱动会话存档，00:53-08:45 值守）
+
+> 本段由夜班值守会话书写。用户指令：持续工作至 08:45，收益最高优先。主攻=消化积压队列。
+
+## 一、夜班成果（全部已部署上线，线上 200 验证）
+
+1. **游戏 18 → 35 款（+17）**：
+   - 队列 14 份方案全部消化（reflex-rush/neon-hoops/neon-solitaire/neon-fairway/neon-link/tile-rush/neon-air-hockey/neon-pyramid/neon-beats/neon-mahjong/neon-doodle/bubble-storm/rooftop-rush + sudoku 每日挑战增强）
+   - 自选加餐 4 款（dev 提示词"pending 空自选"条款）：neon-checkers（严格跳棋+AI）、neon-wordle（每日五字母+无限）、neon-othello（黑白棋，04:17 代挖入队即实现）、neon-hangman（六分类词库）
+   - 收官 1 款在途：neon-typing（孤儿方案收编，06:15 前集成）→ 最终以 STATUS.md 为准
+2. **i18n 修复**：flappy-dash 假 zh 字典补真翻译、brickstorm 升级卡文案；2048/nbj/neon-tide 核查已接入；**游戏内 i18n 存量缺口清零**
+3. **SEO**：12 个关键词意图变体页（8 款新游戏，sitemap 38→50+，IndexNow 78 URL）
+4. **美术轮**：breakout/tic-tac-toe/minesweeper 手感三连升级
+5. **QA 基建**：通关脚本补齐 flappy-dash/2048/neon-tide + 重写 neon-alchemy 日期依赖坏脚本；qa_tests 覆盖 31+ 款
+6. **LESSONS 15-17 固化**：diff 提取配平块/refs 锁竞争/台账时间戳/CronUpdate 不能跨会话重绑
+
+## 二、生产机制（夜班验证有效的并行打法）
+
+- **多 agent 并行 + 主会话串行集成**：git worktree `C:/wt-neonplay/<slug>` 隔离实现（每 agent 独立端口 896x-898x），主树集成=ast.unparse 提取条目→games.py→build.py CATS 分区→build→qa_playtest 双模式→deploy.sh→线上复验→STATUS/run_stats→push→清 worktree
+- **QA 门一票否决全程零豁免**：每款桌面+touch 双跑 PASS 才部署
+- 生成器/规则引擎全部要求 node 直跑自证（440-800 种子级），夜班零线上事故
+
+## 三、待用户决策/操作（晨读）
+
+1. **开发 Agent 自动化根治（唯一阻塞项）**：CronUpdate 重绑已实证无效（nextRunAt 过期而 runCount/lastRunAt 双冻结依旧）。修法=新开会话 → CronList 复制提示词 → CronCreate 重建（建议保留 30 分钟间隔+把 i18n 待办行更新为"全部完成"）→ 删旧任务 automation-7d609861-df4b-456c-ae0d-6b73ff4e3e64
+2. **策划自动化 04:12 轮误判**：以"队列超限"跳过但实际 pending=0——建议核对其跳过条件逻辑（可能把 claimed/done 计入或读错路径）；其投递链路本身健康（记账+推送正常）
+3. 孤儿方案模式第 8 次实发（neon-typing，已收编）；04:11 后如再现兄弟会话产出，按 run_stats 核对后代收编
+4. 域名迁移仍等用户购买（方案已定，见上文 09-11 段待办 5）
+
+## 四、夜班数据
+
+- GA4（04:20 拉取）：7d 91 用户/204 PV（周一基线 86/163）；今晚 17 款新游戏待搜索引擎收录，预计 3-7 天开始灌数
+- 提交 30+，全部推送成功（两次瞬断均按 LESSONS 16 处理无损失）
