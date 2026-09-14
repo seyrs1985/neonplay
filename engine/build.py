@@ -148,9 +148,9 @@ def build_hall(cfg, gms):
     # hall categories: slug -> section (20 games; keep in sync with games.py)
     CATS = [
         ("arcade", "🎮 Arcade & Action", "🎮 街机动作",
-         ["neon-tide", "snake", "flappy-dash", "breakout", "brickstorm", "neon-pop", "reflex-rush", "neon-hoops", "neon-air-hockey", "neon-beats"]),
+         ["neon-tide", "snake", "flappy-dash", "breakout", "brickstorm", "neon-pop", "reflex-rush", "neon-hoops", "neon-air-hockey", "neon-beats", "bubble-storm"]),
         ("puzzle", "🧩 Puzzle & Brain", "🧩 益智解谜",
-         ["2048", "minesweeper", "memory-pairs", "neon-block-jam", "neon-block-blast", "neon-nonogram", "neon-solitaire", "neon-fairway", "neon-link", "tile-rush", "neon-pyramid"]),
+         ["2048", "minesweeper", "memory-pairs", "neon-block-jam", "neon-block-blast", "neon-nonogram", "neon-solitaire", "neon-fairway", "neon-link", "tile-rush", "neon-pyramid", "neon-mahjong", "neon-doodle"]),
         ("logic", "🐝 Word & Logic", "🐝 词与逻辑",
          ["word-hive", "neon-alchemy", "tic-tac-toe", "connect-four"]),
         ("idle", "💫 Idle & Chill", "💫 放置挂机",

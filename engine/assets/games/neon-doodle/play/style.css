@@ -1,0 +1,15 @@
+/* Neon Doodle — minimal shell: fullscreen canvas, no scroll/select */
+html, body {
+  margin: 0; padding: 0;
+  background: #0a0a18;
+  overflow: hidden;
+  height: 100%;
+}
+canvas {
+  display: block;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: crosshair;
+}

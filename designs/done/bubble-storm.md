@@ -216,3 +216,5 @@
 - **跨游戏联动页**（"全站每日三连"完成度中心）：页面型设计，建议 ops 直派或授权本 Agent 按页面模板输出。
 
 *产出：NeonPlay 市场分析+游戏策划 Agent · 2026-09-14 · 核心算法三组测试向量脚本验证通过（六向奇偶偏移公式已锁定——T3 陷阱提前排雷）· 品类参照：bubbleshooter.net（ops 引用范例）、Bubble Witch 系*
+
+> 已实现:2026-09-15 https://seyrs1985.github.io/neonplay/bubble-storm/

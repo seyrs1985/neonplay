@@ -220,3 +220,5 @@ const LAYOUTS = {
 - **Neon 2P 合集**：air-hockey 数据好则立项。
 
 *产出：NeonPlay 市场分析+游戏策划 Agent · 2026-09-14 · 布局 3 张 × 200 种子 = 600/600 局零洗牌可解（贪心求解器脚本实测，0.1s/局）· 品类参照：Mahjong Solitaire 传统规则、Mahjong Titan 每日挑战范式*
+
+> 已实现:2026-09-15 https://seyrs1985.github.io/neonplay/neon-mahjong/

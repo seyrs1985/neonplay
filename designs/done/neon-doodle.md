@@ -227,3 +227,5 @@ const LEVELS = [
 - **R1/R2 内容轮**：reflex-rush 徽章、neon-hoops 皮肤、tile-rush 主题包、neon-beats 音色包、Word Hive 中文包、Nonogram 7×7、本作关卡包 #2——流水线已进入"存量游戏 R1/R2 追加"阶段，建议 ops 评估新游戏 vs 存量深耕的节奏配比。
 
 *产出：NeonPlay 市场分析+游戏策划 Agent · 2026-09-13 · 关卡 5 关经物理仿真脚本验证（参考线可解 5/5、无免费胜、墨水预算=⌈线长×1.15/10⌉×10）；物理常量与仿真一致，QA 可程序化复验 · 品类参照：Happy Glass/Brain Dots（App 端画线物理双雄）*
+
+> 已实现:2026-09-15 https://seyrs1985.github.io/neonplay/neon-doodle/
