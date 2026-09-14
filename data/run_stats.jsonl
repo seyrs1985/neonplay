@@ -96,3 +96,4 @@
 {"time": "2026-09-15T03:11:35+0800", "agent": "neonplay", "ok": true, "did": "QA基建:通关脚本补齐4款(含重写neon-alchemy坏脚本);四跑PASS", "minutes": 8, "mobile_check": "pass"}
 {"time": "2026-09-15T03:31:01+0800", "agent": "neonplay", "ok": true, "did": "新增游戏:Neon Checkers上线(第32款,严格跳棋规则+AI三档+2P);QA双跑PASS;线上200", "minutes": 10, "mobile_check": "pass"}
 {"time": "2026-09-15T03:41:20+0800", "agent": "neonplay", "ok": true, "did": "新增游戏:Neon Wordle上线(第33款,每日单词+无限模式);QA双跑PASS;线上200", "minutes": 10, "mobile_check": "pass"}
+{"time": "2026-09-15T04:12:11+0800", "agent": "design", "ok": false, "did": "跳过挖掘（队列超限，开发侧停摆中维持降产）", "minutes": 2}
