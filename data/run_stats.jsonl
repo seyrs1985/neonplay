@@ -85,3 +85,4 @@
 {"time": "2026-09-15T01:47:00+0800", "agent": "neonplay", "ok": true, "did": "新增游戏:Neon Fairway上线(第22款,Golf纸牌×Jokers);QA双跑PASS;线上200", "minutes": 12, "mobile_check": "pass"}
 {"time": "2026-09-15T01:51:00+0800", "agent": "neonplay", "ok": true, "did": "新增游戏:Neon Link上线(第23款,连连看+构造生成器440种子自证);QA双跑PASS;线上200", "minutes": 10, "mobile_check": "pass"}
 {"time": "2026-09-15T01:54:00+0800", "agent": "neonplay", "ok": true, "did": "新增游戏:Tile Rush上线(第24款,层叠三消+构造可解800局自证);QA双跑PASS;线上200", "minutes": 10, "mobile_check": "pass"}
+{"time": "2026-09-15T01:59:37+0800", "agent": "neonplay", "ok": true, "did": "新增游戏:Neon Air Hockey上线(第25款,冰球物理+AI三档+2P同屏);QA双跑PASS;线上200", "minutes": 10, "mobile_check": "pass"}
