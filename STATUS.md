@@ -75,3 +75,4 @@
 - 2026-09-15-0159 · 新增游戏轮(夜班Ops代驱):第25款 Neon Air Hockey 上线——指尖冰球(240Hz子步进物理/门线插值防隧穿/半场约束限速)+AI三档+2P同屏真多点触控(pointerId分轨+WASD)+每日mulberry32种子AI挑战+先到7胜+七段位+8存档键+分享卡;程序化音效/粒子拖尾/GOAL震屏;L={en,zh};QA桌面+touch双PASS(修1个发球重叠真bug);线上200;designs/done归档。
 - 2026-09-15-0206 · 新增游戏轮(夜班Ops代驱):第26款 Neon Pyramid 上线——Pyramid Solitaire合13拆塔(28塔/K单消/库存三循环)+开局5选3 Jokers+每日UTC同题+七段位+六存档键+分享卡+纸牌家族FAQ互链;WebAudio+粒子confetti+L={en,zh};QA桌面+touch双PASS(241行通关脚本);线上200;designs/done归档。
 - 2026-09-15-0209 · 实现方案轮(夜班Ops代驱):sudoku每日挑战增强上线——UTC日期×难度种子复用既有生成器出每日三题(42/36/30线索全唯一解)+计时器断点续跑+七档段位星级+🔥streak月度补签+分享文案;存档全兼容(旧键结构未动,新增np_sd_timer/streak/daily_v2);QA回归桌面+touch+每日流三跑全PASS;线上200;designs/done归档。
+- 2026-09-15-0214 · 新增游戏轮(夜班Ops代驱):第27款 Neon Beats 上线——每日程序化芯片音乐节奏(Track #N=UTC哈希确定性音阶/BPM/五声游走旋律/三轨谱面,220种子自证0失败/邻日谱面全不同)+逻辑时钟判定(±60 Perfect/±130 Good)+命中才奏音miss不断曲+七段位+七存档键+分享卡+ASD/方向键;零音频素材;L={en,zh};QA桌面+touch双PASS(autoPlay 100%/97命中音高全匹配);线上200;designs/done归档。
