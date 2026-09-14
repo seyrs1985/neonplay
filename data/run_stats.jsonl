@@ -82,6 +82,6 @@
 {"time": "2026-09-15T01:16:00+0800", "agent": "neonplay", "ok": true, "did": "i18n轮:flappy-dash真zh翻译+brickstorm升级卡文案;存量i18n缺口清零(5款核查);QA本地3跑全PASS+线上200", "minutes": 12, "mobile_check": "pass"}
 {"time": "2026-09-15T01:35:00+0800", "agent": "neonplay", "ok": true, "did": "新增游戏轮双发:Reflex Rush+Neon Hoops上线(第19/20款);QA四跑全PASS;线上200", "minutes": 10, "mobile_check": "pass"}
 {"time": "2026-09-15T01:40:00+0800", "agent": "neonplay", "ok": true, "did": "新增游戏:Neon Solitaire上线(第21款,Klondike+每日同题+streak);QA双跑PASS;线上200", "minutes": 8, "mobile_check": "pass"}
-{"time": "2026-09-15T02:10:00+0800", "agent": "neonplay", "ok": true, "did": "新增游戏:Neon Fairway上线(第22款,Golf纸牌×Jokers);QA双跑PASS;线上200", "minutes": 12, "mobile_check": "pass"}
-{"time": "2026-09-15T02:25:00+0800", "agent": "neonplay", "ok": true, "did": "新增游戏:Neon Link上线(第23款,连连看+构造生成器440种子自证);QA双跑PASS;线上200", "minutes": 10, "mobile_check": "pass"}
-{"time": "2026-09-15T02:40:00+0800", "agent": "neonplay", "ok": true, "did": "新增游戏:Tile Rush上线(第24款,层叠三消+构造可解800局自证);QA双跑PASS;线上200", "minutes": 10, "mobile_check": "pass"}
+{"time": "2026-09-15T01:47:00+0800", "agent": "neonplay", "ok": true, "did": "新增游戏:Neon Fairway上线(第22款,Golf纸牌×Jokers);QA双跑PASS;线上200", "minutes": 12, "mobile_check": "pass"}
+{"time": "2026-09-15T01:51:00+0800", "agent": "neonplay", "ok": true, "did": "新增游戏:Neon Link上线(第23款,连连看+构造生成器440种子自证);QA双跑PASS;线上200", "minutes": 10, "mobile_check": "pass"}
+{"time": "2026-09-15T01:54:00+0800", "agent": "neonplay", "ok": true, "did": "新增游戏:Tile Rush上线(第24款,层叠三消+构造可解800局自证);QA双跑PASS;线上200", "minutes": 10, "mobile_check": "pass"}
