@@ -74,3 +74,5 @@
 {"time": "2026-09-14T08:17:26+0800", "agent": "design", "ok": true, "did": "产出方案 bubble-storm：经典泡泡龙×每日种子阵(算法测试向量验证含六向偏移排雷,双口径16/20分如实上报,预估2轮)", "minutes": 18}
 {"time": "2026-09-14T10:17:27+0800", "agent": "design", "ok": true, "did": "产出方案 neon-mahjong：层叠麻将solitaire×确定性发牌(3布局600种子零洗牌可解验证,17/25达线)", "minutes": 17}
 {"time": "2026-09-14T12:11:58+0800", "agent": "design", "ok": true, "did": "收编兄弟会话遗留bubble-storm方案(第5次同类抢救)；队列11/6维持挖掘暂停；QA沿用(无新增未检条目)", "minutes": 5}
+{"time": "2026-09-14T12:19:52+0800", "agent": "design", "ok": true, "did": "产出方案 neon-fairway：Golf Solitaire×Balatro式开局Jokers(200局模拟校准数值,纸牌家族目录策略第二成员,19/25)", "minutes": 21}
+{"time": "2026-09-14T14:12:21+0800", "agent": "design", "ok": true, "did": "收编兄弟会话遗留neon-mahjong+neon-fairway两份方案(均已完成记账)；队列13/6维持挖掘暂停；QA沿用(无新增未检条目)", "minutes": 5}
