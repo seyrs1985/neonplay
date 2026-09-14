@@ -79,3 +79,4 @@
 {"time": "2026-09-14T14:20:18+0800", "agent": "design", "ok": true, "did": "产出方案 neon-pyramid：Pyramid Solitaire合13拆塔×Jokers构筑(200局模拟校准:配对中位13/全清率1%,家族第三成员,18/25)", "minutes": 20}
 {"time": "2026-09-14T18:12:15+0800", "agent": "design", "ok": true, "did": "收编兄弟会话遗留neon-pyramid方案(第6次同类抢救)；队列14/6维持挖掘暂停；QA沿用(无新增未检条目)", "minutes": 4}
 {"time": "2026-09-14T22:13:19+0800", "agent": "design", "ok": false, "did": "跳过挖掘（队列14/6超限，开发侧停摆中主动降产）；QA沿用(无新增未检条目)；配置变更(策划降频4h/开发重绑定)待落地", "minutes": 3}
+{"time": "2026-09-15T01:16:00+0800", "agent": "neonplay", "ok": true, "did": "i18n轮:flappy-dash真zh翻译+brickstorm升级卡文案;存量i18n缺口清零(5款核查);QA本地3跑全PASS+线上200", "minutes": 12, "mobile_check": "pass"}
