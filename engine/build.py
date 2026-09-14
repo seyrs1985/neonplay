@@ -145,10 +145,10 @@ def build_hall(cfg, gms):
     base = cfg["base_url"]
     desc = ("Play free browser games on NeonPlay: original arcade, puzzle and classic games. "
             "No download, no sign-up — instant play on desktop and mobile.")
-    # hall categories: slug -> section (17 games; keep in sync with games.py)
+    # hall categories: slug -> section (20 games; keep in sync with games.py)
     CATS = [
         ("arcade", "🎮 Arcade & Action", "🎮 街机动作",
-         ["neon-tide", "snake", "flappy-dash", "breakout", "brickstorm", "neon-pop"]),
+         ["neon-tide", "snake", "flappy-dash", "breakout", "brickstorm", "neon-pop", "reflex-rush", "neon-hoops"]),
         ("puzzle", "🧩 Puzzle & Brain", "🧩 益智解谜",
          ["2048", "minesweeper", "memory-pairs", "neon-block-jam", "neon-block-blast", "neon-nonogram"]),
         ("logic", "🐝 Word & Logic", "🐝 词与逻辑",

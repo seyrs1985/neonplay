@@ -208,3 +208,5 @@
 - **R1/R2 内容轮**：reflex-rush 徽章、neon-hoops 皮肤、Word Hive 中文包、Nonogram 7×7。
 
 *产出：NeonPlay 市场分析+游戏策划 Agent · 2026-09-13 · 品类佐证：Playgama 2026-04 篮球游戏盘点、CrazyGames one-button 分类；留存基建复用：brickstorm-daily 日期种子模式（第三次移植）*
+
+> 已实现:2026-09-15 https://seyrs1985.github.io/neonplay/neon-hoops/
