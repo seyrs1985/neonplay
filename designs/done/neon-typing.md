@@ -61,3 +61,5 @@
 - 文案全英文进内嵌 `var L={en,zh}`（np_lang 键）；无控制台报错
 - `engine/qa_tests/neon-typing.mjs`：输入正确词→得分+连击、错词→断连、60s 结束→结算面板、每日种子两次加载一致
 - 部署前 `node engine/qa_playtest.mjs --slug neon-typing` PASS（注意：QA 机需键盘派发，CDP Input.dispatchKeyEvent 已支持）
+
+> 已实现:2026-09-15 https://seyrs1985.github.io/neonplay/neon-typing/

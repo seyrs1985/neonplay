@@ -1,0 +1,6 @@
+html,body{margin:0;padding:0;background:#0a0a18;height:100%;overflow:hidden}
+canvas{display:block;width:100vw;height:100vh;touch-action:none;user-select:none;-webkit-user-select:none}
+#tin{position:fixed;left:12%;width:76%;height:48px;min-height:48px;bottom:10px;display:none;
+  background:rgba(10,10,24,.85);border:1px solid #00e5ff;color:#eaf6ff;font:600 20px/48px monospace;
+  text-align:center;border-radius:10px;outline:none;z-index:9}
+#tin.show{display:block}
