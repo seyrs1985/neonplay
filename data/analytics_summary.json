@@ -1,15 +1,22 @@
 {
- "generated": "2026-09-13 10:30",
+ "generated": "2026-09-14 08:13",
  "ga4_property": "553744321",
  "gsc_site": "https://seyrs1985.github.io/",
  "ga4": {
   "7d": {
    "site": {
-    "activeUsers": 30,
-    "screenPageViews": 31,
-    "sessions": 30,
-    "avgSessionDuration": 69.2,
-    "engagementRate": 0.611
+    "activeUsers": 86,
+    "screenPageViews": 163,
+    "sessions": 86,
+    "avgSessionDuration": 62.6,
+    "engagementRate": 0.191
+   },
+   "2048": {
+    "activeUsers": 2,
+    "screenPageViews": 1,
+    "sessions": 2,
+    "avgSessionDuration": 3.4,
+    "engagementRate": 0.0
    },
    "snake": {
     "activeUsers": 2,
@@ -17,13 +24,6 @@
     "sessions": 2,
     "avgSessionDuration": 27.5,
     "engagementRate": 0.5
-   },
-   "2048": {
-    "activeUsers": 1,
-    "screenPageViews": 1,
-    "sessions": 1,
-    "avgSessionDuration": 0.0,
-    "engagementRate": 0.0
    },
    "breakout": {
     "activeUsers": 1,
@@ -49,11 +49,18 @@
   },
   "28d": {
    "site": {
-    "activeUsers": 30,
-    "screenPageViews": 31,
-    "sessions": 30,
-    "avgSessionDuration": 69.2,
-    "engagementRate": 0.611
+    "activeUsers": 86,
+    "screenPageViews": 163,
+    "sessions": 86,
+    "avgSessionDuration": 62.6,
+    "engagementRate": 0.191
+   },
+   "2048": {
+    "activeUsers": 2,
+    "screenPageViews": 1,
+    "sessions": 2,
+    "avgSessionDuration": 3.4,
+    "engagementRate": 0.0
    },
    "snake": {
     "activeUsers": 2,
@@ -61,13 +68,6 @@
     "sessions": 2,
     "avgSessionDuration": 27.5,
     "engagementRate": 0.5
-   },
-   "2048": {
-    "activeUsers": 1,
-    "screenPageViews": 1,
-    "sessions": 1,
-    "avgSessionDuration": 0.0,
-    "engagementRate": 0.0
    },
    "breakout": {
     "activeUsers": 1,
