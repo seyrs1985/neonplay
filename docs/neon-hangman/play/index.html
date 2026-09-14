@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a18">
+<title>Neon Hangman — Play Hangman Online Free, Word Guessing Game</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="stage">
+  <header id="topbar">
+    <button id="tab-daily" class="tab on" type="button"></button>
+    <button id="tab-practice" class="tab" type="button"></button>
+    <div id="spacer"></div>
+    <div id="streak" class="chip" title="streak">🔥0</div>
+    <button id="hintBtn" class="chip tog" type="button" title="hint">💡</button>
+    <button id="muteBtn" class="chip tog" type="button" title="sound">🔊</button>
+  </header>
+  <nav id="catbar" aria-label="categories"></nav>
+  <main id="main">
+    <svg id="gallows" viewBox="0 0 120 140" aria-hidden="true">
+      <g class="frame">
+        <line x1="8" y1="132" x2="112" y2="132"/>
+        <line x1="28" y1="132" x2="28" y2="12"/>
+        <line x1="28" y1="12" x2="96" y2="12"/>
+        <line x1="28" y1="38" x2="52" y2="12"/>
+        <line x1="96" y1="12" x2="96" y2="26"/>
+      </g>
+      <g class="body">
+        <circle class="part" id="gp0" cx="96" cy="38" r="12" pathLength="1"/>
+        <line class="part" id="gp1" x1="96" y1="50" x2="96" y2="88" pathLength="1"/>
+        <line class="part" id="gp2" x1="96" y1="58" x2="78" y2="74" pathLength="1"/>
+        <line class="part" id="gp3" x1="96" y1="58" x2="114" y2="74" pathLength="1"/>
+        <line class="part" id="gp4" x1="96" y1="88" x2="82" y2="114" pathLength="1"/>
+        <line class="part" id="gp5" x1="96" y1="88" x2="110" y2="114" pathLength="1"/>
+      </g>
+    </svg>
+    <div id="wordcol">
+      <div id="hint" aria-live="polite"></div>
+      <div id="word"></div>
+      <div id="pips"></div>
+    </div>
+  </main>
+  <div id="msg" aria-live="polite"></div>
+  <div id="keys"></div>
+</div>
+<div id="endPanel" class="overlay hide">
+  <div class="panel">
+    <h2 id="epTitle"></h2>
+    <div id="epWord"></div>
+    <p id="epHint"></p>
+    <p id="epNote"></p>
+    <button id="epShare" type="button"></button>
+    <button id="epRetry" type="button"></button>
+    <button id="epNext" type="button"></button>
+    <button id="epClose" type="button"></button>
+  </div>
+</div>
+<script src="np_core.js"></script>
+<script src="js/words.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>

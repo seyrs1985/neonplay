@@ -11,3 +11,5 @@
 - **美术**：#0a0a18 深空棋盘+格线辉光，执子 cyan #00e5ff vs pink #ff2d95，翻转=3D 翻面动画+粒子，终局棋子计数弹跳。
 - **SEO 关键词簇**：reversi online free / othello free no download / play reversi vs computer / 2 player reversi
 - **验收标准**：375×667 首屏棋盘完整可玩；遵循 engine/GAME_STANDARD.md（程序化音效/粒子/__qa 钩子/i18n L={en,zh}+np_lang）；无 console 报错；qa_tests/neon-othello.mjs 用 __qaState 注入局面断言：翻转子数正确/角权重行为/强制 pass/终局计子/非法步拒绝。
+
+> 已实现:2026-09-15 https://seyrs1985.github.io/neonplay/neon-othello/

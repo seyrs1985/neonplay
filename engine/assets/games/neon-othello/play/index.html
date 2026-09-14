@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0a0a18">
+<title>Neon Othello — Play Reversi Online Free, vs Computer or 2 Player</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="hud">
+  <div class="chip" id="chipR"><span class="dot dR"></span><span id="lbR">You</span> <b id="cR">2</b></div>
+  <div class="chip" id="chipB"><span class="dot dB"></span><span id="lbB">AI</span> <b id="cB" class="pink">2</b></div>
+  <div class="chip">🏅 <b id="cRank" class="gold">Bronze</b></div>
+</div>
+<div id="board" role="grid" aria-label="reversi board"></div>
+<div id="msg">Your turn — tap a glowing square</div>
+<div id="ctrl">
+  <div class="row" id="modes">
+    <button id="bEasy" class="mode lvl">😀 <span id="lbEasy">Easy</span></button>
+    <button id="bMed" class="mode lvl on">🤖 <span id="lbMed">Medium</span></button>
+    <button id="bHard" class="mode lvl">😈 <span id="lbHard">Hard</span></button>
+    <button id="b2p" class="mode">👥 <span id="lb2p">2P</span></button>
+    <button id="bDaily" class="mode">📅 <span id="lbDaily">Daily</span></button>
+  </div>
+  <div class="row">
+    <button id="bNew">↻ <span id="lbNew">New</span></button>
+    <button id="bShare">📋 <span id="lbShare">Share</span></button>
+    <button id="bResign">🏳 <span id="lbResign">Resign</span></button>
+    <button id="bSound">🔊</button>
+  </div>
+</div>
+<div id="panel" hidden>
+  <div id="ptitle">You win!</div>
+  <div id="pdetail"></div>
+  <button id="bAgain">▶ <span id="lbAgain">Play again</span></button>
+</div>
+<script src="np_core.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/game.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

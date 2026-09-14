@@ -10,3 +10,5 @@
 - **美术**：#0a0a18 底，绞架与小人=程序化 SVG/canvas 线条辉光（cyan 走笔/pink 错误），字母键命中=cyan 浮起、失错=pink 抖动+粒子。
 - **SEO 关键词簇**：hangman online free / hangman unblocked / word guessing game free
 - **验收标准**：375×667 首屏（词格+键盘+绞架）完整；遵循 engine/GAME_STANDARD.md；无 console 报错；qa_tests/neon-hangman.mjs 注入答案词驱动：猜中流程/6 错失败揭示/提示句展示/键盘染色/分类切换/每日同词断言。
+
+> 已实现:2026-09-15 https://seyrs1985.github.io/neonplay/neon-hangman/

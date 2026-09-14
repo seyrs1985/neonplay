@@ -1,15 +1,15 @@
 {
- "generated": "2026-09-14 08:13",
+ "generated": "2026-09-15 04:17",
  "ga4_property": "553744321",
  "gsc_site": "https://seyrs1985.github.io/",
  "ga4": {
   "7d": {
    "site": {
-    "activeUsers": 86,
-    "screenPageViews": 163,
-    "sessions": 86,
-    "avgSessionDuration": 62.6,
-    "engagementRate": 0.191
+    "activeUsers": 91,
+    "screenPageViews": 204,
+    "sessions": 91,
+    "avgSessionDuration": 96.1,
+    "engagementRate": 0.426
    },
    "2048": {
     "activeUsers": 2,
@@ -49,11 +49,11 @@
   },
   "28d": {
    "site": {
-    "activeUsers": 86,
-    "screenPageViews": 163,
-    "sessions": 86,
-    "avgSessionDuration": 62.6,
-    "engagementRate": 0.191
+    "activeUsers": 91,
+    "screenPageViews": 204,
+    "sessions": 91,
+    "avgSessionDuration": 96.1,
+    "engagementRate": 0.426
    },
    "2048": {
     "activeUsers": 2,

@@ -152,7 +152,7 @@ def build_hall(cfg, gms):
         ("puzzle", "🧩 Puzzle & Brain", "🧩 益智解谜",
          ["2048", "minesweeper", "memory-pairs", "neon-block-jam", "neon-block-blast", "neon-nonogram", "neon-solitaire", "neon-fairway", "neon-link", "tile-rush", "neon-pyramid", "neon-mahjong", "neon-doodle"]),
         ("logic", "🐝 Word & Logic", "🐝 词与逻辑",
-         ["word-hive", "neon-alchemy", "tic-tac-toe", "connect-four", "neon-checkers", "neon-wordle"]),
+         ["word-hive", "neon-alchemy", "tic-tac-toe", "connect-four", "neon-checkers", "neon-wordle", "neon-othello"]),
         ("idle", "💫 Idle & Chill", "💫 放置挂机",
          ["idle-neon-breaker"]),
     ]
