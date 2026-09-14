@@ -66,3 +66,5 @@ Klondike 供给极多但两极：大站捆绑注册/广告/下载，小站质量
 - 文案全英文进内嵌 `var L={en,zh}` 字典（np_lang 键）；无控制台报错
 - `engine/qa_tests/neon-solitaire.mjs`：发牌合法性（28 张 tableau/24 张 stock）→ 列间合法移动 → 双击自动上 foundation → 强制胜利路径 → 牌雨+结算面板，全程 `__qaState` 断言
 - 部署前 `node engine/qa_playtest.mjs --slug neon-solitaire` PASS（移动端首屏一票否决照常）
+
+> 已实现:2026-09-15 https://seyrs1985.github.io/neonplay/neon-solitaire/

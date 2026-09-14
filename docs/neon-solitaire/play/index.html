@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a18">
+<title>Neon Solitaire</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="stage">
+  <div id="topbar">
+    <button id="tab-daily" class="tab on"></button>
+    <button id="tab-rand" class="tab"></button>
+    <div id="streak" class="chip">🔥 0</div>
+  </div>
+  <div id="hud">
+    <div class="stat"><span class="lb" id="lb-score"></span><b id="v-score">0</b></div>
+    <div class="stat"><span class="lb" id="lb-time"></span><b id="v-time">0:00</b></div>
+    <div class="stat"><span class="lb" id="lb-moves"></span><b id="v-moves">0</b></div>
+    <div class="hudbtns">
+      <button id="undoBtn" class="pill" aria-label="undo"></button>
+      <button id="hintBtn" class="pill" aria-label="hint">💡</button>
+      <button id="autoBtn" class="pill hide" aria-label="auto finish"></button>
+      <button id="newBtn" class="pill" aria-label="new deal">↻</button>
+      <button id="muteBtn" class="pill" aria-label="mute">🔊</button>
+    </div>
+  </div>
+  <div id="board">
+    <div id="rowTop">
+      <div class="pile stockP" id="stock" data-zone="stock"></div>
+      <div class="pile" id="waste" data-zone="waste"></div>
+      <div class="pile filler" aria-hidden="true"></div>
+      <div class="pile foundP" data-zone="f0"></div>
+      <div class="pile foundP" data-zone="f1"></div>
+      <div class="pile foundP" data-zone="f2"></div>
+      <div class="pile foundP" data-zone="f3"></div>
+    </div>
+    <div id="rowTab"></div>
+  </div>
+  <div id="msg"></div>
+</div>
+<div id="dragLayer" aria-hidden="true"></div>
+<div id="winPanel" class="overlay hide">
+  <div class="panel">
+    <h2 id="wpTitle"></h2>
+    <div id="wpStars"></div>
+    <div id="wpRows"></div>
+    <button id="wpShare"></button>
+    <button id="wpNew" class="primary"></button>
+  </div>
+</div>
+<script src="np_core.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/game.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
