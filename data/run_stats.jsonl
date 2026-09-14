@@ -80,3 +80,4 @@
 {"time": "2026-09-14T18:12:15+0800", "agent": "design", "ok": true, "did": "收编兄弟会话遗留neon-pyramid方案(第6次同类抢救)；队列14/6维持挖掘暂停；QA沿用(无新增未检条目)", "minutes": 4}
 {"time": "2026-09-14T22:13:19+0800", "agent": "design", "ok": false, "did": "跳过挖掘（队列14/6超限，开发侧停摆中主动降产）；QA沿用(无新增未检条目)；配置变更(策划降频4h/开发重绑定)待落地", "minutes": 3}
 {"time": "2026-09-15T01:16:00+0800", "agent": "neonplay", "ok": true, "did": "i18n轮:flappy-dash真zh翻译+brickstorm升级卡文案;存量i18n缺口清零(5款核查);QA本地3跑全PASS+线上200", "minutes": 12, "mobile_check": "pass"}
+{"time": "2026-09-15T01:35:00+0800", "agent": "neonplay", "ok": true, "did": "新增游戏轮双发:Reflex Rush+Neon Hoops上线(第19/20款);QA四跑全PASS;线上200", "minutes": 10, "mobile_check": "pass"}
