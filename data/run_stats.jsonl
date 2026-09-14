@@ -92,3 +92,4 @@
 {"time": "2026-09-15T02:22:38+0800", "agent": "neonplay", "ok": true, "did": "新增游戏三连发:Neon Mahjong+Neon Doodle+Bubble Storm上线(第28-30款);QA全PASS;线上200", "minutes": 15, "mobile_check": "pass"}
 {"time": "2026-09-15T02:42:18+0800", "agent": "neonplay", "ok": true, "did": "美术升级轮:breakout/tic-tac-toe/minesweeper手感三连升级;QA六跑PASS;线上200", "minutes": 12, "mobile_check": "pass"}
 {"time": "2026-09-15T02:59:05+0800", "agent": "neonplay", "ok": true, "did": "新增游戏:Rooftop Rush上线(第31款,跑酷+每日路线,400种子自证);QA双跑PASS;夜班队列14/14清零", "minutes": 12, "mobile_check": "pass"}
+{"time": "2026-09-15T03:10:09+0800", "agent": "neonplay", "ok": true, "did": "SEO轮:12长尾变体页上线(8款新游戏覆盖,sitemap+12)", "minutes": 10, "mobile_check": "pass"}
