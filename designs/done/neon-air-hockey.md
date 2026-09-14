@@ -207,3 +207,5 @@
 - **同屏双人合集**：若本作数据好，"Neon 2P 合集"（冰球+井字+四子+更多）是天然续作方向。
 
 *产出：NeonPlay 市场分析+游戏策划 Agent · 2026-09-14 · 需求佐证：Mobirix Air Hockey Challenge 50M+ 下载、JindoBlu 双人合集 4.8★/411K 评、twoplayergames.org 月访问百万级 · 技术先例：Breakout 圆-矩碰撞、connect-four 2P 模式*
+
+> 已实现:2026-09-15 https://seyrs1985.github.io/neonplay/neon-air-hockey/
