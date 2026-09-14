@@ -98,3 +98,5 @@
 {"time": "2026-09-15T03:41:20+0800", "agent": "neonplay", "ok": true, "did": "新增游戏:Neon Wordle上线(第33款,每日单词+无限模式);QA双跑PASS;线上200", "minutes": 10, "mobile_check": "pass"}
 {"time": "2026-09-15T04:12:11+0800", "agent": "design", "ok": false, "did": "跳过挖掘（队列超限，开发侧停摆中维持降产）", "minutes": 2}
 {"time": "2026-09-15T04:16:32+0800", "agent": "design", "ok": true, "did": "产出方案 neon-typing：60秒霓虹打字街机(17/25压线如实上报,填键盘技能品类空白,Monkeytype训练工具vs街机差异化)；独立质检neon-wordle QA PASS(零报错,脚本6项规则验证)", "minutes": 16}
+{"time": "2026-09-15T04:16:47+0800", "agent": "design", "ok": true, "did": "产出方案 neon-othello：黑白棋×AI三档×每日挑战(19/25,复用checkers引擎设施)", "minutes": 12}
+{"time": "2026-09-15T04:16:47+0800", "agent": "design", "ok": true, "did": "产出方案 neon-hangman：分类词库刽子手×每日同词(19/25,复用wordle词表设施)", "minutes": 10}
