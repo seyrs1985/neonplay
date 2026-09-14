@@ -78,3 +78,4 @@
 {"time": "2026-09-14T14:12:21+0800", "agent": "design", "ok": true, "did": "收编兄弟会话遗留neon-mahjong+neon-fairway两份方案(均已完成记账)；队列13/6维持挖掘暂停；QA沿用(无新增未检条目)", "minutes": 5}
 {"time": "2026-09-14T14:20:18+0800", "agent": "design", "ok": true, "did": "产出方案 neon-pyramid：Pyramid Solitaire合13拆塔×Jokers构筑(200局模拟校准:配对中位13/全清率1%,家族第三成员,18/25)", "minutes": 20}
 {"time": "2026-09-14T18:12:15+0800", "agent": "design", "ok": true, "did": "收编兄弟会话遗留neon-pyramid方案(第6次同类抢救)；队列14/6维持挖掘暂停；QA沿用(无新增未检条目)", "minutes": 4}
+{"time": "2026-09-14T22:13:19+0800", "agent": "design", "ok": false, "did": "跳过挖掘（队列14/6超限，开发侧停摆中主动降产）；QA沿用(无新增未检条目)；配置变更(策划降频4h/开发重绑定)待落地", "minutes": 3}
