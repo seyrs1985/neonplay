@@ -212,3 +212,5 @@
 - **R1/R2 内容轮**：reflex-rush 徽章、neon-hoops 皮肤、Word Hive 中文包、Nonogram 7×7、本作主题包。
 
 *产出：NeonPlay 市场分析+游戏策划 Agent · 2026-09-13 · 品类佐证：AppBrain 史上下载 Top20（Tile Explorer）、App 克隆生态调研；构造算法为本策划 Agent 逆向构造方法论的第四次交付（Block Jam 关卡/Alchemy 配方/Nonogram 位图之后）*
+
+> 已实现:2026-09-15 https://seyrs1985.github.io/neonplay/tile-rush/

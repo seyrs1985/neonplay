@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a18">
+<title>Tile Rush — Triple Tile Match</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="stage">
+  <div id="topbar">
+    <button id="tab-daily" class="tab on"></button>
+    <button id="tab-endless" class="tab"></button>
+    <div id="diffRow" class="hide">
+      <button data-diff="casual" class="diff"></button>
+      <button data-diff="standard" class="diff on"></button>
+      <button data-diff="challenge" class="diff"></button>
+    </div>
+  </div>
+  <div id="hud">
+    <div id="timer" class="chip">0:00</div>
+    <div id="rankChip" class="chip"></div>
+    <div id="streakChip" class="chip"></div>
+    <button id="muteBtn" class="icon"></button>
+  </div>
+  <div id="boardWrap"><div id="board"></div></div>
+  <div id="props">
+    <button id="pullBtn" class="pill"></button>
+    <button id="shuffleBtn" class="pill"></button>
+  </div>
+  <div id="tray"></div>
+  <div id="msg"></div>
+</div>
+<div id="endPanel" class="overlay hide">
+  <div class="panel">
+    <h2 id="epTitle"></h2>
+    <div id="epRows"></div>
+    <p id="epNote"></p>
+    <canvas id="shareCard" width="600" height="315" class="hide"></canvas>
+    <button id="epShare"></button>
+    <button id="epRetry" class="primary"></button>
+    <button id="epNew" class="hide"></button>
+  </div>
+</div>
+<script src="np_core.js"></script>
+<script src="js/generator.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/game.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
