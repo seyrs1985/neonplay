@@ -208,3 +208,5 @@
 - **R1/R2 内容轮**：reflex-rush 徽章、neon-hoops 皮肤、tile-rush 主题包、Word Hive 中文包、Nonogram 7×7。
 
 *产出：NeonPlay 市场分析+游戏策划 Agent · 2026-09-13 · 供给调研：Sound Horizons（独立 devlog）、GenMusic/Rhythm Maker（需用户上传文件）、MagicTiles/Bemuse（固定曲目）——"种子每日曲全球同题"形态确认空白；技术先例：memory-pairs 程序化音效*
+
+> 已实现:2026-09-15 https://seyrs1985.github.io/neonplay/neon-beats/
