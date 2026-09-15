@@ -103,3 +103,4 @@
 {"time": "2026-09-15T04:40:17+0800", "agent": "neonplay", "ok": true, "did": "新增游戏终波双发:Neon Othello+Neon Hangman上线(第34/35款);QA四跑PASS;线上200;夜班总计18→35款", "minutes": 15, "mobile_check": "pass"}
 {"time": "2026-09-15T05:09:55+0800", "agent": "neonplay", "ok": true, "did": "新增游戏:Neon Typing上线(第36款,打字街机+变体页);修复rooftop-rush大厅CATS漏挂;QA双跑PASS", "minutes": 12, "mobile_check": "pass"}
 {"time": "2026-09-15T12:15:24+0800", "agent": "design", "ok": true, "did": "产出方案 neon-stack：休闲向霓虹落块消除(18/25,tetris常青巨量搜索,Marathon+Sprint40+每日种子,移动端滑屏手势)；独立质检neon-typing QA PASS(每日种子确定性/连击/结算WPM全验证)", "minutes": 18}
+{"time": "2026-09-15T16:18:01+0800", "agent": "design", "ok": true, "did": "独立质检neon-link：初检FAIL系QA脚本断言过严(拒绝合法的0秒自动化通关timeSec=0)已修正脚本→复检PASS(5/5每日种子/段位阈值/持久化键全验证)；队列1份(neon-stack待消化)挖掘顺延下轮；QA PASS", "minutes": 14}

@@ -165,7 +165,8 @@ export default async function (h) {
   if (!sd.over || !sd.dailyDone || sd.streakCount < 1)
     return { pass: false, detail: `daily win persistence broken: over=${sd.over} dailyDone=${sd.dailyDone} streak=${sd.streakCount}` };
   const dailyKey = await h.evaluate(`(function(){ try { return JSON.parse(localStorage.getItem('np_neon-link_daily')); } catch(e){ return null; } })()`);
-  if (!dailyKey || dailyKey.done !== true || !dailyKey.date || !dailyKey.timeSec)
+  // timeSec may legitimately be 0 (automated instant clear) — only require it to be a number
+  if (!dailyKey || dailyKey.done !== true || !dailyKey.date || typeof dailyKey.timeSec !== 'number')
     return { pass: false, detail: `daily key wrong: ${JSON.stringify(dailyKey)}` };
   const streakKey = await h.evaluate(`(function(){ try { return JSON.parse(localStorage.getItem('np_neon-link_streak')); } catch(e){ return null; } })()`);
   if (!streakKey || streakKey.count < 1 || !streakKey.last)
