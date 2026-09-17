@@ -86,17 +86,22 @@ def slug_of(path):
     return m.group(1)
 
 
-def ga4_run(op, token, prop, days):
+def ga4_run(op, token, prop, days, hostname=None):
     end = datetime.date.today()
     start = end - datetime.timedelta(days=days - 1)
     url = "https://analyticsdata.googleapis.com/v1beta/properties/%s:runReport" % prop
-    resp = post(op, url, token, {
+    body = {
         "dateRanges": [{"startDate": start.isoformat(), "endDate": end.isoformat()}],
         "dimensions": [{"name": "pagePath"}],
         "metrics": [{"name": "activeUsers"}, {"name": "screenPageViews"}, {"name": "sessions"},
                     {"name": "averageSessionDuration"}, {"name": "engagementRate"}],
         "limit": 10000,
-    })
+    }
+    # 只统计线上主机，排除本地预览（127.0.0.1 等）带着同一打点跑出来的脏流量
+    if hostname:
+        values = [hostname] if isinstance(hostname, str) else list(hostname)
+        body["dimensionFilter"] = {"filter": {"fieldName": "hostName", "inListFilter": {"values": values}}}
+    resp = post(op, url, token, body)
     per_game, site_total = {}, {"activeUsers": 0, "screenPageViews": 0, "sessions": 0,
                                 "avgDuration": 0.0, "engagementRate": 0.0, "rows": 0}
     for row in resp.get("rows", []):
@@ -156,6 +161,7 @@ def main():
             cfg = json.load(f)
     prop = args.property or cfg.get("ga4_property_id")
     site = args.site_url or cfg.get("gsc_site_url", "https://seyrs1985.github.io/")
+    hostname = cfg.get("ga4_hostname") or urllib.parse.urlparse(site).netloc
 
     if not os.path.exists(args.key):
         raise SystemExit("未找到服务账号密钥: %s\n（放到该路径，或用 --key 指定；密钥不能放进仓库，deploy 会 git add -A）" % args.key)
@@ -168,11 +174,12 @@ def main():
     op = opener()
     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
 
-    summary = {"generated": now, "ga4_property": prop, "gsc_site": site, "ga4": {}, "gsc": {}}
-    lines = ["# Analytics 摘要（生成于 %s）" % now, ""]
+    summary = {"generated": now, "ga4_property": prop, "ga4_hostname": hostname, "gsc_site": site, "ga4": {}, "gsc": {}}
+    lines = ["# Analytics 摘要（生成于 %s）" % now, "",
+             "GA4 仅统计主机名：%s" % hostname, ""]
 
     for days in (7, 28):
-        g = ga4_run(op, token, prop, days)
+        g = ga4_run(op, token, prop, days, hostname)
         summary["ga4"]["%dd" % days] = g
     lines.append("## GA4 按游戏聚合")
     lines.append("| 窗口 | 游戏 | 活跃用户 | 页面浏览 | 会话 | 平均时长(s) | 参与率 |")
