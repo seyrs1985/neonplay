@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a18">
+<title>Neon Stack — Falling Block Puzzle</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <div id="topbar">
+    <div id="tabs">
+      <button id="tab-marathon" class="tab on"></button>
+      <button id="tab-sprint" class="tab"></button>
+      <button id="tab-daily" class="tab"></button>
+    </div>
+    <div id="chips">
+      <div class="chip"><span class="lb" id="lb-score"></span><b id="v-score">0</b></div>
+      <div class="chip"><span class="lb" id="lb-lines"></span><b id="v-lines">0</b></div>
+      <div class="chip"><span class="lb" id="lb-level"></span><b id="v-level">1</b> <span id="v-left"></span></div>
+      <canvas id="next" width="60" height="60" title="next"></canvas>
+      <button id="pauseBtn" class="pill" aria-label="pause">⏸</button>
+      <button id="muteBtn" class="pill" aria-label="mute">🔊</button>
+    </div>
+  </div>
+  <div id="stage">
+    <canvas id="cv" width="500" height="1000"></canvas>
+    <div id="panel"><div id="panelBox"></div></div>
+  </div>
+  <div id="hint"></div>
+</div>
+<script src="np_core.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/game.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

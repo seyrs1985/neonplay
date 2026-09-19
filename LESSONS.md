@@ -26,3 +26,9 @@
 deploy.sh 的 push 报 "cannot lock ref ... is at X but expected Y" 不一定是别人在推，也可能是自己上一发 deploy 的收尾竞争。处理=fetch 对比+pull --rebase 同步即可，内容无损；两次部署间隔拉开 ≥2 分钟；deploy.sh 中途死掉时 Pages wait/IndexNow 尾步要手工补（`python engine/ping_indexnow.py`）。
 ## 17. 台账时间戳禁止心算（2026-09-15 实发）
 连续集成时凭感觉写 STATUS/run_stats 时间会漂移 45 分钟级（系统提示的日期无分钟）。写任何台账行前先 `date +%H%M` 取真值；事后发现漂移以 git 提交时间为准修正。另：CronUpdate 无法把自动化投递重绑到别的活会话（nextRunAt 过期而 runCount/lastRunAt 双冻结依旧）——开发 Agent 类任务停摆的根治只有新会话重建。
+## 18. JS IIFE 内 var 变量与同名函数声明互毁（2026-09-19 实发）
+audio.js 里 `var sfx = null`（增益节点）与 `function sfx(name,data)` 同名共存：函数声明虽提升，但 var 初始化语句执行时把函数覆盖为 null/GainNode，`Sound.sfx` 变非函数且 60fps 每帧报 TypeError（83 连发）。正解：增益节点命名 sfxGain 与 API 函数区分；新写模块先 grep 同名。
+## 19. Rigged 测试牌靴必须大于紧急补鞋阈值（2026-09-19 实发）
+blackjack 的 draw() 有 `length<4 补鞋` 自保护，qa 用 4 张固定牌序测试时第二张 draw 触发重洗、断言全盘皆输。正解：紧急补鞋只在“抽空”时发生（移到 deal 入口判 <4 一次性补），draw 只 shift；给测试 rig 固定牌序时确认 shoe 长度 > 所有阈值。
+## 20. QA 自动驾驶的输入要保持到完整接触窗结束（2026-09-19 实发）
+neon-runner autopilot 在 dx=-10 时松开 duck，但无人机接触区到 dx=+16 才结束（含身位宽度），松早了站起来撞机身亡——这是 QA 脚本 bug 不是游戏 bug。正解：策略类测试的输入保持窗按 hitbox 宽度数学算（接触区=障碍x跨过 [PX-62, PX+16]），不凭感觉写提前量；同时注意种子扫描范围要落在模拟时长可达的距离内。

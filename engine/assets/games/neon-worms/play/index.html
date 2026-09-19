@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a18">
+<title>Neon Worms — Solo Slither Arena vs AI</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <div id="topbar">
+    <div class="chip"><span class="lb" id="lb-len"></span><b id="v-len">12</b></div>
+    <div class="chip"><span class="lb" id="lb-kills"></span><b id="v-kills">0</b></div>
+    <div class="chip"><span class="lb" id="lb-rank"></span><b id="v-rank">Slug</b></div>
+    <div class="chip"><span class="lb" id="lb-time"></span><b id="v-time">0:00</b></div>
+    <button id="muteBtn" class="pill" aria-label="mute">🔊</button>
+  </div>
+  <div id="stage">
+    <canvas id="cv"></canvas>
+    <div id="boardWrap"><div id="boardTitle"></div><ol id="board"></ol></div>
+    <button id="boostBtn" aria-label="boost">⚡</button>
+    <div id="panel"><div id="panelBox"></div></div>
+  </div>
+</div>
+<script src="np_core.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/game.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
