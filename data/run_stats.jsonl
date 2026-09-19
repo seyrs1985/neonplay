@@ -108,3 +108,4 @@
 {"time": "2026-09-18T00:14:59+0800", "agent": "design", "ok": true, "did": "挖掘完成不入队：neon-simon音乐记忆仅16/25(供给已有5+款,旋律化改良不足以破线,宁缺毋滥)；QA沿用(neon-link/neon-wordle已PASS,无新增未检条目)", "minutes": 9}
 {"time": "2026-09-19T00:15:23+0800", "agent": "design", "ok": true, "did": "产出方案 neon-runner：霓虹赛博跑者(17/25,dino 2.7亿月玩,跳蹲双动作+每日种子地形,与flappy-dash/rooftop-rush三形态互补)；QA沿用(无新增未检条目)", "minutes": 15}
 {"time": "2026-09-19T04:13:22+0800", "agent": "design", "ok": true, "did": "挖掘完成不入队：scoundrel卡牌地城仅15/25(需求小众2分+网页版供给已有4-5个,宁缺毋滥)；QA沿用(无新增未检条目)；连续两轮负结果提示可考虑放宽策划间隔至每日", "minutes": 11}
+{"time": "2026-09-19T08:14:16+0800", "agent": "design", "ok": true, "did": "产出方案 neon-blackjack：会教学的霓虹二十一点(18/25,基本策略实时提示层+每日20手,娱乐筹码AdSense合规,卡牌家族决策博弈补位)；QA沿用(无新增未检条目)", "minutes": 17}
