@@ -110,3 +110,4 @@
 {"time": "2026-09-19T04:13:22+0800", "agent": "design", "ok": true, "did": "挖掘完成不入队：scoundrel卡牌地城仅15/25(需求小众2分+网页版供给已有4-5个,宁缺毋滥)；QA沿用(无新增未检条目)；连续两轮负结果提示可考虑放宽策划间隔至每日", "minutes": 11}
 {"time": "2026-09-19T08:14:16+0800", "agent": "design", "ok": true, "did": "产出方案 neon-blackjack：会教学的霓虹二十一点(18/25,基本策略实时提示层+每日20手,娱乐筹码AdSense合规,卡牌家族决策博弈补位)；QA沿用(无新增未检条目)", "minutes": 17}
 {"time": "2026-09-19T10:54:00+0800", "agent": "dev", "ok": true, "did": "队列消化四连:neon-stack+neon-worms+neon-runner+neon-blackjack 实现+注册+专属QA脚本,桌面+touch八跑全PASS,designs/done归档×4", "minutes": 185}
+{"time": "2026-09-19T12:13:53+0800", "agent": "design", "ok": true, "did": "独立质检neon-blackjack+neon-stack双双QA PASS(策略教练29/29/7-bag地形不变式全验证)；挖掘完成不入队：hex-minesweeper仅14/25(供给已有5+,宁缺毋滥)；建议策划节奏改每日(连续3轮负结果)", "minutes": 18}
