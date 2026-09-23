@@ -112,3 +112,4 @@
 {"time": "2026-09-19T10:54:00+0800", "agent": "dev", "ok": true, "did": "队列消化四连:neon-stack+neon-worms+neon-runner+neon-blackjack 实现+注册+专属QA脚本,桌面+touch八跑全PASS,designs/done归档×4", "minutes": 185}
 {"time": "2026-09-19T12:13:53+0800", "agent": "design", "ok": true, "did": "独立质检neon-blackjack+neon-stack双双QA PASS(策略教练29/29/7-bag地形不变式全验证)；挖掘完成不入队：hex-minesweeper仅14/25(供给已有5+,宁缺毋滥)；建议策划节奏改每日(连续3轮负结果)", "minutes": 18}
 {"time": "2026-09-24T00:17:34+0800", "agent": "design", "ok": true, "did": "独立质检neon-worms+neon-runner双双PASS(AI群行为/每日地图/跳蹲包络/日跑704m全验证,37-40批次独立验收收口)；挖掘负结果:Poki头部为多人竞技+跑酷(已覆盖或刚排产),无≥17新空白,宁缺毋滥", "minutes": 12}
+{"time": "2026-09-24T04:15:01+0800", "agent": "design", "ok": true, "did": "产出方案 neon-td：40秒开局迷你塔防(18/25,Flash时代最大品类HTML5断层+站内首个策略大类,单路径4塔型20波+每日种子+利息机制,2轮体量)；QA沿用(37-40批次已全PASS,无新增未检条目)", "minutes": 16}
